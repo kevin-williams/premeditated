@@ -1,0 +1,2 @@
+# premeditated
+Meditation timer app
