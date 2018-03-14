@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 
-import { TimeSelect } from '../components/TimeSelect';
+import TimeSelect from '../components/TimeSelect';
 
 export default class AddTimer extends Component {
   state = {
@@ -11,6 +11,7 @@ export default class AddTimer extends Component {
 
   render() {
     const { selectedHours, selectedMinutes } = this.state;
+    console.log('selectedHours=', selectedHours);
     return (
       <View style={styles.container}>
         <TimeSelect
