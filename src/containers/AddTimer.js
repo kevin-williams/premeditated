@@ -11,10 +11,10 @@ export default class AddTimer extends Component {
 
   render() {
     const { selectedHours, selectedMinutes } = this.state;
-    console.log('selectedHours=', selectedHours);
     return (
       <View style={styles.container}>
         <TimeSelect
+          label="Duration"
           hours={selectedHours}
           minutes={selectedMinutes}
           onTimeSelected={time => {

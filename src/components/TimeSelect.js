@@ -28,10 +28,11 @@ export default class TimeSelect extends Component {
   };
 
   render() {
-    const { hours, minutes, onTimeSelected } = this.props;
+    const { hours, minutes, label, onTimeSelected } = this.props;
 
     return (
       <View>
+        <Text style={styles.labelStyle}>{label}</Text>
         <View style={styles.containerStyle}>
           <Text style={styles.textStyle}>Hours</Text>
           <Text style={styles.textStyle}>Minutes</Text>
@@ -79,5 +80,10 @@ const styles = {
   textStyle: {
     textAlign: 'center',
     flex: 1
+  },
+  labelStyle: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold'
   }
 };
