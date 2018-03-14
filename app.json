@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "premeditated",
-    "description": "This project is really great.",
+    "name": "Premeditated",
+    "description": "Simple meditation timers.   Save your favorites.",
     "slug": "premeditated",
     "privacy": "public",
     "sdkVersion": "25.0.0",
