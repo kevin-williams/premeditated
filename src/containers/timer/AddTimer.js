@@ -1,29 +1,22 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Audio } from 'expo';
 
-import TimeSelect from '../components/TimeSelect';
+import TimeSelect from '../../components/TimeSelect';
+import { updateTimer } from './timerActions';
 
 const MILLIS_PER_MINUTE = 2000; // 2 secs for testing
 // const MILLIS_PER_MINUTE = 60000;
 
-const bellSound = require('../../assets/sound/gong.mp3');
-const tingSound = require('../../assets/sound/ting.mp3');
+const bellSound = require('../../../assets/sound/gong.mp3');
+const tingSound = require('../../../assets/sound/ting.mp3');
 
 const endSound = new Audio.Sound();
 const intervalSound = new Audio.Sound();
 
-export default class AddTimer extends Component {
-  state = {
-    selectedHours: 0,
-    selectedMinutes: 3,
-    intervalHours: 0,
-    intervalMinutes: 1,
-    timerId: undefined,
-    intervalId: undefined
-  };
-
+class AddTimer extends Component {
   componentDidMount() {
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
@@ -37,31 +30,35 @@ export default class AddTimer extends Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.state.timerId);
-    clearInterval(this.state.intervalId);
+    clearTimeout(this.props.timer.selectedTimer.timerId);
+    clearInterval(this.props.timer.selectedTimer.intervalId);
   }
 
   startTimer() {
     console.log('starting timer');
     const timerId = setTimeout(() => {
       this.endTimer();
-    }, this.state.selectedMinutes * MILLIS_PER_MINUTE);
-    this.setState({ timerId });
+    }, this.props.timer.selectedTimer.selectedMinutes * MILLIS_PER_MINUTE);
 
-    if (this.state.intervalMinutes > 0) {
+    this.props.updateTimer({ ...this.props.timer.selectedTimer, timerId });
+
+    if (this.props.timer.selectedTimer.intervalMinutes > 0) {
       const intervalId = setInterval(() => {
         this.intervalTimer();
-      }, this.state.intervalMinutes * MILLIS_PER_MINUTE);
+      }, this.props.timer.selectedTimer.intervalMinutes * MILLIS_PER_MINUTE);
 
-      this.setState({ intervalId });
+      this.props.updateTimer({ ...this.props.timer.selectedTimer, intervalId });
     }
   }
 
   endTimer() {
     console.log('Timer went off');
     endSound.playAsync();
-    clearInterval(this.state.intervalId);
-    this.setState({ intervalId: undefined });
+    clearInterval(this.props.timer.selectedTimer.intervalId);
+    this.props.updateTimer({
+      ...this.props.timer.selectedTimer,
+      intervalId: undefined
+    });
   }
 
   intervalTimer() {
@@ -75,7 +72,7 @@ export default class AddTimer extends Component {
       selectedMinutes,
       intervalHours,
       intervalMinutes
-    } = this.state;
+    } = this.props.timer.selectedTimer;
 
     return (
       <View style={styles.container}>
@@ -85,7 +82,8 @@ export default class AddTimer extends Component {
           minutes={selectedMinutes}
           onTimeSelected={time => {
             console.log('change time=', time);
-            this.setState({
+            this.props.updateTimer({
+              ...this.props.timer.selectedTimer,
               selectedHours: time.hours,
               selectedMinutes: time.minutes
             });
@@ -98,7 +96,8 @@ export default class AddTimer extends Component {
           minutes={intervalMinutes}
           onTimeSelected={time => {
             console.log('change interval=', time);
-            this.setState({
+            this.props.updateTimer({
+              ...this.props.timer.selectedTimer,
               intervalHours: time.hours,
               intervalMinutes: time.minutes
             });
@@ -124,3 +123,6 @@ const styles = {
     justifyContent: 'center'
   }
 };
+
+const mapStateToProps = state => state;
+export default connect(mapStateToProps, { updateTimer })(AddTimer);

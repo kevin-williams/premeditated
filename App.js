@@ -1,14 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 
-import AddTimer from './src/containers/AddTimer';
+import reducers from './src/reducers';
+
+import AddTimer from './src/containers/timer/AddTimer';
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <AddTimer />
-      </View>
+      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
+        <View style={styles.container}>
+          <AddTimer />
+        </View>
+      </Provider>
     );
   }
 }
