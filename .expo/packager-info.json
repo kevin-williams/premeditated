@@ -3,6 +3,7 @@
   "packagerPort": 19006,
   "packagerPid": 20346,
   "expoServerNgrokUrl": "https://an-mj9.kevin-williams.premeditated.exp.direct",
-  "packagerNgrokUrl": "https://packager.an-mj9.kevin-williams.premeditated.exp.direct",
+  "packagerNgrokUrl":
+    "https://packager.an-mj9.kevin-williams.premeditated.exp.direct",
   "ngrokPid": 20422
 }
