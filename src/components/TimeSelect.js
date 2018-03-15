@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Picker, Text, View } from 'react-native';
+import { Platform, Picker, Text, View } from 'react-native';
 
 const hourPickerItems = [];
 const minutePickerItems = [];
@@ -75,7 +75,7 @@ const styles = {
   },
   pickerStyle: {
     width: 100,
-    height: 50
+    height: Platform.OS === 'ios' ? 200 : 50
   },
   textStyle: {
     textAlign: 'center',
