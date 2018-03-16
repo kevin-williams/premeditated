@@ -6,14 +6,14 @@ import ReduxThunk from 'redux-thunk';
 
 import reducers from './src/reducers';
 
-import AddTimer from './src/containers/timer/AddTimer';
+import TimerList from './src/containers/timer/TimerList';
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
         <View style={styles.container}>
-          <AddTimer />
+          <TimerList />
         </View>
       </Provider>
     );
