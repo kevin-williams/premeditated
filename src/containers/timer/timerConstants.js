@@ -1,3 +1,4 @@
+export const ADD_TIMER = 'ADD_TIMER';
 export const UPDATE_TIMER = 'UPDATE_TIMER';
 export const SELECT_TIMER = 'SELECT_TIMER';
 export const START_SELECTED_TIMER = 'START_SELECTED_TIMER';

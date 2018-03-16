@@ -52,6 +52,27 @@ export default (state = DEFAULT_STATE, action) => {
   console.log('timerReducer processing action=', action);
 
   switch (action.type) {
+    case c.ADD_TIMER: {
+      const newState = { ...state };
+      const newTimer = { ...action.timer };
+      let newId = 1;
+      state.timers.map(timer => {
+        if (timer.id > newId) {
+          newId = timer.id;
+        }
+
+        return null;
+      });
+
+      newTimer.id = ++newId;
+
+      if (!newTimer.title) {
+        newTimer.title = `Timer ${newTimer.id}`;
+      }
+      console.log('pushing on new timer=', newTimer);
+      newState.timers.push(newTimer);
+      return newState;
+    }
     case c.UPDATE_TIMER:
       return { ...state, selectedTimer: action.timer };
     case c.SELECT_TIMER: {

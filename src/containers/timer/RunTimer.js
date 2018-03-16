@@ -15,8 +15,8 @@ const endSound = new Audio.Sound();
 const intervalSound = new Audio.Sound();
 
 class RunTimer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     endSound
       .loadAsync(bellSound)
       .then(console.log('sound loaded'))

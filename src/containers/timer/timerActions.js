@@ -1,5 +1,10 @@
 import * as c from './timerConstants';
 
+export const addTimer = timer => ({
+  type: c.ADD_TIMER,
+  timer
+});
+
 export const updateTimer = timer => ({
   type: c.UPDATE_TIMER,
   timer

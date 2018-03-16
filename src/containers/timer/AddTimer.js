@@ -1,30 +1,57 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import TimeSelect from '../../components/TimeSelect';
-import { updateTimer } from './timerActions';
+
+import { addTimer } from './timerActions';
+
+const NEW_TIMER = {
+  title: '',
+  selectedHours: 0,
+  selectedMinutes: 10,
+  intervalHours: 0,
+  intervalMinutes: 5,
+  timerId: undefined,
+  intervalId: undefined
+};
 
 class AddTimer extends Component {
+  state = {
+    ...NEW_TIMER
+  };
+
+  saveTimer() {
+    this.props.addTimer(this.state);
+    this.props.closeModal();
+  }
+
   render() {
     const {
       selectedHours,
       selectedMinutes,
       intervalHours,
       intervalMinutes
-    } = this.props.timer.selectedTimer;
+    } = this.state;
 
     return (
       <View style={styles.container}>
+        <Text>Name</Text>
+        <TextInput
+          style={{ width: 200, height: 40 }}
+          onChangeText={text => this.setState({ title: text })}
+          placeholder="timer name"
+          value={this.state.title}
+        />
+
         <TimeSelect
           label="Duration"
           hours={selectedHours}
           minutes={selectedMinutes}
           onTimeSelected={time => {
             console.log('change time=', time);
-            this.props.updateTimer({
-              ...this.props.timer.selectedTimer,
+            this.setState({
               selectedHours: time.hours,
               selectedMinutes: time.minutes
             });
@@ -37,8 +64,7 @@ class AddTimer extends Component {
           minutes={intervalMinutes}
           onTimeSelected={time => {
             console.log('change interval=', time);
-            this.props.updateTimer({
-              ...this.props.timer.selectedTimer,
+            this.setState({
               intervalHours: time.hours,
               intervalMinutes: time.minutes
             });
@@ -47,8 +73,8 @@ class AddTimer extends Component {
 
         <Button
           large
-          title="Start"
-          onPress={this.startTimer.bind(this)}
+          title="Save"
+          onPress={this.saveTimer.bind(this)}
           backgroundColor="green"
         />
       </View>
@@ -66,4 +92,4 @@ const styles = {
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { updateTimer })(AddTimer);
+export default connect(mapStateToProps, { addTimer })(AddTimer);
