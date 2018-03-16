@@ -9,7 +9,9 @@ import {
 import { Button, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import { selectTimer } from './timerActions';
+import RunTimer from './RunTimer';
+
+import { selectTimer, startSelectedTimer } from './timerActions';
 
 class TimerCard extends Component {
   componentWillMount() {
@@ -23,7 +25,7 @@ class TimerCard extends Component {
 
   renderDescription() {
     if (this.props.myTimer.id === this.props.timer.selectedTimer.id) {
-      return (
+      let render = (
         <View>
           <Text style={styles.descriptionStyle}>
             Interval every {this.props.myTimer.intervalMinutes} mins
@@ -31,11 +33,17 @@ class TimerCard extends Component {
           <Button
             large
             title="Start"
-            onPress={console.log('start timer now')}
+            onPress={this.props.startSelectedTimer}
             backgroundColor="green"
           />
         </View>
       );
+
+      if (this.props.timer.selectedTimer.isRunning) {
+        render = <RunTimer />;
+      }
+
+      return render;
     }
   }
 
@@ -69,4 +77,6 @@ const styles = {
 
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps, { selectTimer })(TimerCard);
+export default connect(mapStateToProps, { selectTimer, startSelectedTimer })(
+  TimerCard
+);
