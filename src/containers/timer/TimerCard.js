@@ -89,7 +89,7 @@ const styles = {
     marginTop: 10
   },
   titleContainer: {
-    width: SCREEN_WIDTH / 2,
+    width: SCREEN_WIDTH - 40,
     alignSelf: 'center'
   },
   titleStyle: {
@@ -103,6 +103,7 @@ const styles = {
     textAlign: 'center'
   },
   descriptionStyle: {
+    textAlign: 'center',
     flex: 1
   }
 };

@@ -3,8 +3,28 @@ import * as c from './timerConstants';
 import { AsyncStorage } from 'react-native';
 
 const DEFAULT_STATE = {
-  selectedTimer: undefined,
-  timers: []
+  selectedTimer: {
+    id: 1,
+    title: '15 min with 5 min interval',
+    selectedHours: 0,
+    selectedMinutes: 15,
+    intervalHours: 0,
+    intervalMinutes: 5,
+    timerId: undefined,
+    intervalId: undefined
+  },
+  timers: [
+    {
+      id: 1,
+      title: '15 min with 5 min interval',
+      selectedHours: 0,
+      selectedMinutes: 15,
+      intervalHours: 0,
+      intervalMinutes: 5,
+      timerId: undefined,
+      intervalId: undefined
+    }
+  ]
 };
 
 export default (state = DEFAULT_STATE, action) => {
