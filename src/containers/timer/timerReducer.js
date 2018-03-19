@@ -91,8 +91,8 @@ export default (state = DEFAULT_STATE, action) => {
       return { ...state, selectedTimer: timer };
     }
 
-    case c.LOAD_APP:
-      return action.state;
+    case c.APP_DATA_LOADED:
+      return { ...action.state };
     default:
       return state;
   }

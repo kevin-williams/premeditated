@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, Dimensions, ListView, Modal, View } from 'react-native';
+import { Dimensions, ListView, Modal, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 import TimerCard from './TimerCard';
-import AddTimer from './AddTimer';
+import AddEditTimer from './AddTimer';
 
 import * as c from './timerConstants';
 import { loadApp } from './timerActions';
@@ -12,22 +12,12 @@ import { loadApp } from './timerActions';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class TimerList extends Component {
-  constructor(props) {
-    super(props);
-    AsyncStorage.getItem(c.APP_KEY)
-      .then(stateStr => {
-        console.log('loaded state=' + stateStr);
-        this.props.loadApp(JSON.parse(stateStr));
-        // Something here to re-init list
-      })
-      .catch(error => console.log('error loading state', error));
-  }
-
   state = {
     showAddModal: false
   };
 
   componentWillMount() {
+    this.props.loadApp();
     this.updateList();
   }
 
@@ -66,7 +56,7 @@ class TimerList extends Component {
           visible={this.state.showAddModal}
           onRequestClose={this.closeAddModal.bind(this)}
         >
-          <AddTimer closeModal={this.closeAddModal.bind(this)} />
+          <AddEditTimer closeModal={this.closeAddModal.bind(this)} />
         </Modal>
         <Avatar
           small

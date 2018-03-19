@@ -17,7 +17,7 @@ const NEW_TIMER = {
   intervalId: undefined
 };
 
-class AddTimer extends Component {
+class AddEditTimer extends Component {
   state = {
     ...NEW_TIMER
   };
@@ -92,4 +92,4 @@ const styles = {
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { addTimer })(AddTimer);
+export default connect(mapStateToProps, { addTimer })(AddEditTimer);
