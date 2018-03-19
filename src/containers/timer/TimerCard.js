@@ -6,7 +6,7 @@ import {
   LayoutAnimation,
   UIManager
 } from 'react-native';
-import { Avatar, Button, Card } from 'react-native-elements';
+import { Avatar, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import RunTimer from './RunTimer';
@@ -32,7 +32,7 @@ class TimerCard extends Component {
       this.props.myTimer.id === this.props.timer.selectedTimer.id
     ) {
       let render = (
-        <View>
+        <View style={styles.descriptionContainer}>
           <Text style={styles.timerDescStyle}>
             {this.props.myTimer.selectedHours} hr(s){' '}
             {this.props.myTimer.selectedMinutes} mins
@@ -40,11 +40,12 @@ class TimerCard extends Component {
           <Text style={styles.descriptionStyle}>
             Interval every {this.props.myTimer.intervalMinutes} mins
           </Text>
-          <Button
-            large
-            title="Start"
+          <Avatar
+            medium
+            rounded
+            title=">"
             onPress={this.props.startSelectedTimer}
-            backgroundColor="green"
+            overlayContainerStyle={styles.start}
           />
         </View>
       );
@@ -88,6 +89,10 @@ const styles = {
     marginRight: 10,
     marginTop: 10
   },
+  start: {
+    backgroundColor: 'green',
+    alignSelf: 'center'
+  },
   titleContainer: {
     width: SCREEN_WIDTH - 40,
     alignSelf: 'center'
@@ -105,6 +110,10 @@ const styles = {
   descriptionStyle: {
     textAlign: 'center',
     flex: 1
+  },
+  descriptionContainer: {
+    display: 'flex',
+    alignItems: 'center'
   }
 };
 

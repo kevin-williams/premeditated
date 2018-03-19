@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 import { Audio } from 'expo';
 import { stopSelectedTimer, updateTimer } from './timerActions';
 
@@ -87,11 +87,12 @@ class RunTimer extends Component {
     return (
       <View style={styles.container}>
         <Text>Timer running</Text>
-        <Button
-          large
-          title="Stop"
+        <Avatar
+          medium
+          rounded
+          title="-"
           onPress={this.props.stopSelectedTimer}
-          backgroundColor="red"
+          overlayContainerStyle={styles.stop}
         />
       </View>
     );
@@ -104,6 +105,9 @@ const styles = {
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  stop: {
+    backgroundColor: 'red'
   }
 };
 
