@@ -6,6 +6,11 @@ export const addTimer = timer => ({
   timer
 });
 
+export const deleteTimer = timerId => ({
+  type: c.DELETE_TIMER,
+  timerId
+});
+
 export const updateTimer = timer => ({
   type: c.UPDATE_TIMER,
   timer

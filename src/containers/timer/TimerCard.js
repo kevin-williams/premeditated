@@ -6,12 +6,14 @@ import {
   LayoutAnimation,
   UIManager
 } from 'react-native';
-import { Button, Card } from 'react-native-elements';
+import { Avatar, Button, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import RunTimer from './RunTimer';
 
-import { selectTimer, startSelectedTimer } from './timerActions';
+import { deleteTimer, selectTimer, startSelectedTimer } from './timerActions';
+
+import { SCREEN_WIDTH } from '../../utils';
 
 class TimerCard extends Component {
   componentWillMount() {
@@ -31,6 +33,10 @@ class TimerCard extends Component {
     ) {
       let render = (
         <View>
+          <Text style={styles.timerDescStyle}>
+            {this.props.myTimer.selectedHours} hr(s){' '}
+            {this.props.myTimer.selectedMinutes} mins
+          </Text>
           <Text style={styles.descriptionStyle}>
             Interval every {this.props.myTimer.intervalMinutes} mins
           </Text>
@@ -57,10 +63,18 @@ class TimerCard extends Component {
     return (
       <TouchableWithoutFeedback onPress={() => this.props.selectTimer(timer)}>
         <View>
-          <Card title={timer.title}>
-            <Text style={styles.titleStyle}>
-              {timer.selectedHours} hr(s) {timer.selectedMinutes} mins
-            </Text>
+          <Card>
+            <View style={styles.titleContainer}>
+              <Text style={styles.titleStyle}>{timer.title}</Text>
+            </View>
+            <Avatar
+              small
+              rounded
+              title="-"
+              onPress={() => this.props.deleteTimer(timer.id)}
+              activeOpacity={0.7}
+              containerStyle={styles.buttonStyle}
+            />
             {this.renderDescription()}
           </Card>
         </View>
@@ -70,9 +84,19 @@ class TimerCard extends Component {
 }
 
 const styles = {
+  titleContainer: {
+    width: SCREEN_WIDTH / 2,
+    alignSelf: 'center'
+  },
   titleStyle: {
-    fontSize: 18,
-    paddingLeft: 15
+    fontSize: 22,
+    paddingLeft: 15,
+    textAlign: 'center'
+  },
+  timerDescStyle: {
+    fontSize: 16,
+    paddingLeft: 15,
+    textAlign: 'center'
   },
   descriptionStyle: {
     flex: 1
@@ -81,6 +105,8 @@ const styles = {
 
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps, { selectTimer, startSelectedTimer })(
-  TimerCard
-);
+export default connect(mapStateToProps, {
+  deleteTimer,
+  selectTimer,
+  startSelectedTimer
+})(TimerCard);

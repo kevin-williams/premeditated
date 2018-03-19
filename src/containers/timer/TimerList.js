@@ -9,7 +9,7 @@ import AddEditTimer from './AddTimer';
 import * as c from './timerConstants';
 import { loadApp } from './timerActions';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import { SCREEN_WIDTH } from '../../utils';
 
 class TimerList extends Component {
   state = {

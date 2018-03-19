@@ -71,6 +71,14 @@ export default (state = DEFAULT_STATE, action) => {
       saveState(newState);
       return newState;
     }
+    case c.DELETE_TIMER: {
+      const newState = { ...state };
+      newState.timers = state.timers.filter(
+        timer => timer.id !== action.timerId
+      );
+      saveState(newState);
+      return newState;
+    }
     case c.UPDATE_TIMER: {
       const newState = { ...state, selectedTimer: action.timer };
       saveState(newState);
