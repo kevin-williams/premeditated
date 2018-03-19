@@ -73,7 +73,7 @@ class TimerCard extends Component {
               title="-"
               onPress={() => this.props.deleteTimer(timer.id)}
               activeOpacity={0.7}
-              containerStyle={styles.buttonStyle}
+              containerStyle={styles.delete}
             />
             {this.renderDescription()}
           </Card>
@@ -84,6 +84,10 @@ class TimerCard extends Component {
 }
 
 const styles = {
+  delete: {
+    marginRight: 10,
+    marginTop: 10
+  },
   titleContainer: {
     width: SCREEN_WIDTH / 2,
     alignSelf: 'center'

@@ -4,40 +4,7 @@ import { AsyncStorage } from 'react-native';
 
 const DEFAULT_STATE = {
   selectedTimer: undefined,
-  timers: [
-    {
-      id: 1,
-      title: 'medium test',
-      selectedHours: 0,
-      selectedMinutes: 10,
-      intervalHours: 0,
-      intervalMinutes: 3,
-      timerId: undefined,
-      intervalId: undefined,
-      test: true
-    },
-    {
-      id: 2,
-      title: 'short test',
-      selectedHours: 0,
-      selectedMinutes: 3,
-      intervalHours: 0,
-      intervalMinutes: 1,
-      timerId: undefined,
-      intervalId: undefined,
-      test: true
-    },
-    {
-      id: 3,
-      title: '10 mins',
-      selectedHours: 0,
-      selectedMinutes: 10,
-      intervalHours: 0,
-      intervalMinutes: 3,
-      timerId: undefined,
-      intervalId: undefined
-    }
-  ]
+  timers: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -46,18 +13,21 @@ export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case c.ADD_TIMER: {
       const newState = { ...state };
-      const timerIdObject = state.timers.reduce(
-        (accumulator = { id: 1 }, timer) => {
-          console.log('accumlator now=', accumulator);
-          if (timer.id > accumulator.id) {
-            return { ...accumulator, id: timer.id };
+      let newId = 1;
+      if (state.timers && state.timers.length > 0) {
+        const timerIdObject = state.timers.reduce(
+          (accumulator = { id: 1 }, timer) => {
+            console.log('accumlator now=', accumulator);
+            if (timer.id > accumulator.id) {
+              return { ...accumulator, id: timer.id };
+            }
+
+            return accumulator;
           }
+        );
 
-          return accumulator;
-        }
-      );
-
-      const newId = timerIdObject.id + 1;
+        newId = timerIdObject.id + 1;
+      }
 
       console.log('newId=', newId);
 
@@ -68,6 +38,7 @@ export default (state = DEFAULT_STATE, action) => {
       }
       console.log('pushing on new timer=', newTimer);
       newState.timers.push(newTimer);
+      newState.selectedTimer = newTimer;
       saveState(newState);
       return newState;
     }
