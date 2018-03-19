@@ -1,12 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, Modal, View } from 'react-native';
+import { AsyncStorage, Dimensions, ListView, Modal, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 import TimerCard from './TimerCard';
 import AddTimer from './AddTimer';
 
+import * as c from './timerConstants';
+import { loadApp } from './timerActions';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
 class TimerList extends Component {
+  constructor(props) {
+    super(props);
+    AsyncStorage.getItem(c.APP_KEY)
+      .then(stateStr => {
+        console.log('loaded state=' + stateStr);
+        this.props.loadApp(JSON.parse(stateStr));
+        // Something here to re-init list
+      })
+      .catch(error => console.log('error loading state', error));
+  }
+
   state = {
     showAddModal: false
   };
@@ -60,7 +76,11 @@ class TimerList extends Component {
           activeOpacity={0.7}
           containerStyle={styles.buttonStyle}
         />
-        <ListView dataSource={this.dataSource} renderRow={this.renderRow} />
+        <ListView
+          style={{ width: SCREEN_WIDTH }}
+          dataSource={this.dataSource}
+          renderRow={this.renderRow}
+        />
       </View>
     );
   }
@@ -81,4 +101,4 @@ const styles = {
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps)(TimerList);
+export default connect(mapStateToProps, { loadApp })(TimerList);

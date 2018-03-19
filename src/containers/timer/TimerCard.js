@@ -24,7 +24,11 @@ class TimerCard extends Component {
   }
 
   renderDescription() {
-    if (this.props.myTimer.id === this.props.timer.selectedTimer.id) {
+    if (
+      this.props.timer &&
+      this.props.timer.selectedTimer &&
+      this.props.myTimer.id === this.props.timer.selectedTimer.id
+    ) {
       let render = (
         <View>
           <Text style={styles.descriptionStyle}>

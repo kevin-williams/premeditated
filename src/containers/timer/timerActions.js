@@ -22,3 +22,8 @@ export const startSelectedTimer = () => ({
 export const stopSelectedTimer = () => ({
   type: c.STOP_SELECTED_TIMER
 });
+
+export const loadApp = state => ({
+  type: c.LOAD_APP,
+  state
+});
