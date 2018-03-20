@@ -49,6 +49,9 @@ export default (state = DEFAULT_STATE, action) => {
         newTimer.title = `Timer ${newTimer.id}`;
       }
       console.log('pushing on new timer=', newTimer);
+      if (!newState.timers) {
+        newState.timers = [];
+      }
       newState.timers.push(newTimer);
       newState.selectedTimerId = newTimer.id;
       saveState(newState);
