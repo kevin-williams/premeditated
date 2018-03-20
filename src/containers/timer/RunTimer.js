@@ -25,10 +25,12 @@ const DEFAULT_STATE = {
 class RunTimer extends Component {
   constructor(props) {
     super(props);
+
     endSound
       .loadAsync(bellSound)
       .then(console.log('sound loaded'))
       .catch(console.log('sound already loaded'));
+
     intervalSound
       .loadAsync(tingSound)
       .then(console.log('sound loaded'))
@@ -77,6 +79,12 @@ class RunTimer extends Component {
   intervalSound() {
     console.log('Play interval sound');
     intervalSound.replayAsync();
+  }
+
+  handleEndTimer() {
+    this.endSound();
+    this.handleStartStop();
+    // TODO Add "snooze" here to add time?
   }
 
   handleClose() {
@@ -129,11 +137,16 @@ class RunTimer extends Component {
         mainTimer: elapsedTime,
         remainingTimer: remainingTime
       });
+
+      if (remainingTime < 0) {
+        this.handleEndTimer();
+      }
     }, 30);
   }
 
   handleReset() {
     console.log('reset timer');
+    this.setState(DEFAULT_STATE);
   }
 
   renderButtons() {
