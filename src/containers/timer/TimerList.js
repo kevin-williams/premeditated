@@ -12,12 +12,16 @@ import { loadApp } from './timerActions';
 import { SCREEN_WIDTH } from '../../utils';
 
 class TimerList extends Component {
+  constructor(props) {
+    super(props);
+    this.props.loadApp();
+  }
+
   state = {
     showAddModal: false
   };
 
   componentWillMount() {
-    this.props.loadApp();
     this.updateList();
   }
 
@@ -30,7 +34,9 @@ class TimerList extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
 
-    this.dataSource = ds.cloneWithRows(this.props.timer.timers);
+    if (this.props.timer && this.props.timer.timers) {
+      this.dataSource = ds.cloneWithRows(this.props.timer.timers);
+    }
   }
 
   showAddModal() {

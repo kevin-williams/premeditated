@@ -40,5 +40,8 @@ export const loadApp = () => dispatch => {
         state: newState
       });
     })
-    .catch(error => console.log('error loading state', error));
+    .catch(error => {
+      console.log('error loading state', error);
+      dispatch({ type: c.APP_DATA_DEFAULT, state: undefined });
+    });
 };

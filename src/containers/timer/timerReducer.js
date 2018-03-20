@@ -35,16 +35,14 @@ export default (state = DEFAULT_STATE, action) => {
       const newState = { ...state };
       let newId = 1;
       if (state.timers && state.timers.length > 0) {
-        const timerIdObject = state.timers.reduce(
-          (accumulator = { id: 1 }, timer) => {
-            console.log('accumlator now=', accumulator);
-            if (timer.id > accumulator.id) {
-              return { ...accumulator, id: timer.id };
-            }
-
-            return accumulator;
+        const timerIdObject = state.timers.reduce((accumulator, timer) => {
+          console.log('accumlator now=', accumulator);
+          if (timer.id > accumulator.id) {
+            return { ...accumulator, id: timer.id };
           }
-        );
+
+          return accumulator;
+        });
 
         newId = timerIdObject.id + 1;
       }
@@ -92,6 +90,8 @@ export default (state = DEFAULT_STATE, action) => {
 
     case c.APP_DATA_LOADED:
       return { ...action.state };
+    case c.APP_DATA_DEFAULT:
+      return { ...DEFAULT_STATE };
     default:
       return state;
   }
