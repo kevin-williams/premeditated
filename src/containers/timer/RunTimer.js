@@ -6,11 +6,21 @@ import moment from 'moment';
 
 import { stopSelectedTimer } from './timerActions';
 
+const MILLIS_PER_MINUTE = 60000;
+const MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;
+
 const bellSound = require('../../../assets/sound/gong.mp3');
 const tingSound = require('../../../assets/sound/ting.mp3');
 
 const endSound = new Audio.Sound();
 const intervalSound = new Audio.Sound();
+
+const DEFAULT_STATE = {
+  isRunning: false,
+  mainTimer: null,
+  remainingTimer: null,
+  intervalTimers: []
+};
 
 class RunTimer extends Component {
   constructor(props) {
@@ -25,12 +35,7 @@ class RunTimer extends Component {
       .catch(console.log('sound already loaded'));
   }
 
-  state = {
-    isRunning: false,
-    mainTimer: null,
-    remainingTimer: null,
-    intervalTimers: []
-  };
+  state = DEFAULT_STATE;
 
   componentDidMount() {
     Audio.setAudioModeAsync({
@@ -64,22 +69,14 @@ class RunTimer extends Component {
     // }
   }
 
-  endTimer() {
-    // console.log('Timer went off');
-    // endSound.playAsync();
-    // clearInterval(this.props.timer.runningTimer.intervalId);
-    // clearTimeout(this.props.timer.runningTimer.timerId);
-    // this.props.updateTimer({
-    //   ...this.props.timer.runningTimer,
-    //   timerId: undefined,
-    //   intervalId: undefined
-    // });
-    // this.props.stopSelectedTimer();
+  endSound() {
+    console.log('Play end sound');
+    endSound.playAsync();
   }
 
-  intervalTimer() {
-    // console.log('Interval Timer went off');
-    // intervalSound.replayAsync();
+  intervalSound() {
+    console.log('Play interval sound');
+    intervalSound.replayAsync();
   }
 
   handleClose() {
@@ -89,7 +86,7 @@ class RunTimer extends Component {
 
   handleStartStop() {
     console.log('stop');
-    const { isRunning, firstTime, mainTimer, intervalTimer } = this.state;
+    const { isRunning } = this.state;
     this.setState({ isRunning: !isRunning });
 
     // Stop pressed
@@ -97,15 +94,42 @@ class RunTimer extends Component {
       clearInterval(this.interval);
       this.setState({ isRunning: false });
     } else {
-      // Start pressed
-      this.setState({ mainTimerStart: moment(), isRunning: true });
-
-      this.interval = setInterval(() => {
-        this.setState({
-          mainTimer: moment() - this.state.mainTimerStart + mainTimer
-        });
-      }, 30);
+      this.processStart();
     }
+  }
+
+  processStart() {
+    // Start pressed
+    const timer = this.props.timer.runningTimer;
+    const { mainTimer } = this.state;
+
+    const finalTime =
+      timer.selectedMinutes * MILLIS_PER_MINUTE +
+      timer.selectedHours * MILLIS_PER_HOUR;
+    const intervalTimes = [];
+
+    const intervalMillis = timer.intervalMinutes * MILLIS_PER_MINUTE;
+    // TESTING only const intervalMillis = timer.intervalMinutes * 10000;
+    for (let i = intervalMillis; i < finalTime; i += intervalMillis) {
+      console.log('adding interval=' + i);
+      intervalTimes.push({ time: i, soundPlayed: false });
+    }
+
+    this.setState({
+      mainTimerStart: moment(),
+      isRunning: true,
+      finalTime,
+      intervalTimes
+    });
+
+    this.interval = setInterval(() => {
+      const elapsedTime = moment() - this.state.mainTimerStart + mainTimer;
+      const remainingTime = finalTime - elapsedTime;
+      this.setState({
+        mainTimer: elapsedTime,
+        remainingTimer: remainingTime
+      });
+    }, 30);
   }
 
   handleReset() {
@@ -160,6 +184,48 @@ class RunTimer extends Component {
     );
   }
 
+  renderIntervals() {
+    if (!this.state.intervalTimes) {
+      return null;
+    }
+
+    const expiredTimers = [];
+
+    const intervalTimerDisplay = this.state.intervalTimes.map(
+      (timer, index) => {
+        const intervalTime = timer.time - this.state.mainTimer;
+
+        if (intervalTime > 0) {
+          return (
+            <Text key={`interval${index}`} style={styles.intervalTimer}>
+              {this.formatTime(intervalTime)}
+            </Text>
+          );
+        }
+
+        if (!timer.soundPlayed) {
+          this.intervalSound();
+          timer.soundPlayed = true;
+        }
+
+        expiredTimers.push(
+          <Text key={`interval${index}`} style={styles.intervalTimerElapsed}>
+            {this.formatTime(timer.time)}
+          </Text>
+        );
+
+        return null;
+      }
+    );
+
+    return (
+      <View style={styles.timerWrapper}>
+        {intervalTimerDisplay}
+        {expiredTimers}
+      </View>
+    );
+  }
+
   render() {
     const timer = this.props.timer.runningTimer;
 
@@ -186,8 +252,7 @@ class RunTimer extends Component {
         </View>
         <View style={styles.bottom}>
           {this.renderButtons()}
-          <Text style={styles.intervalTimer}>00:05.22</Text>
-          <Text style={styles.intervalTimer}>00:10.22</Text>
+          {this.renderIntervals()}
         </View>
       </Modal>
     );
@@ -217,7 +282,8 @@ const styles = {
     justifyContent: 'center'
   },
   timerWrapper: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    flexWrap: 'wrap'
   },
   mainTimer: {
     fontSize: 60,
@@ -231,7 +297,13 @@ const styles = {
     padding: 5
   },
   intervalTimer: {
-    fontSize: 40,
+    fontSize: 30,
+    alignSelf: 'center',
+    padding: 5
+  },
+  intervalTimerElapsed: {
+    fontSize: 20,
+    color: '#bbb',
     alignSelf: 'center',
     padding: 5
   },
