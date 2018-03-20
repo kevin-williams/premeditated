@@ -140,9 +140,9 @@ class RunTimer extends Component {
 
   formatTime(milliseconds) {
     if (!milliseconds) {
-      return '00:00';
+      return '00:00.0';
     }
-    return moment(milliseconds).format('mm:ss');
+    return moment(milliseconds).format('mm:ss.S');
   }
 
   renderTimers() {
