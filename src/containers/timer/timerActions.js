@@ -34,6 +34,11 @@ export const loadApp = () => dispatch => {
         type: c.APP_DATA_LOADED,
         state: newState
       });
+
+      dispatch({
+        type: c.SELECT_TIMER,
+        timer: { id: newState.selectedTimerId }
+      });
     })
     .catch(error => {
       console.log('error loading state', error);

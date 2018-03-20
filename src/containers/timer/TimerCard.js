@@ -62,22 +62,26 @@ class TimerCard extends Component {
     const timer = this.props.myTimer;
 
     let cardStyle = styles.card;
+    let cardHeaderStyle = styles.cardHeader;
     if (timer.id === this.props.timer.selectedTimerId) {
       cardStyle = styles.selectedCard;
+      cardHeaderStyle = [styles.cardHeader, styles.cardHeaderSelected];
     }
 
     return (
       <TouchableWithoutFeedback onPress={() => this.props.selectTimer(timer)}>
         <Card containerStyle={cardStyle}>
-          <Text style={styles.titleStyle}>{timer.title}</Text>
-          <Avatar
-            medium
-            rounded
-            title="-"
-            onPress={() => this.props.deleteTimer(timer.id)}
-            activeOpacity={0.7}
-            containerStyle={styles.delete}
-          />
+          <View style={cardHeaderStyle}>
+            <Text style={styles.titleStyle}>{timer.title}</Text>
+            <Avatar
+              small
+              rounded
+              title="-"
+              onPress={() => this.props.deleteTimer(timer.id)}
+              activeOpacity={0.7}
+              containerStyle={styles.delete}
+            />
+          </View>
           {this.renderDescription()}
         </Card>
       </TouchableWithoutFeedback>
@@ -88,21 +92,35 @@ class TimerCard extends Component {
 const styles = {
   selectedCard: {
     backgroundColor: 'white',
-    marginLeft: 20
+    marginLeft: 20,
+    borderRadius: 15
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    paddingBottom: 10,
+    flex: 1
+  },
+  cardHeaderSelected: {
+    borderBottomWidth: 0.5
   },
   card: {
     backgroundColor: '#e5e5e5',
     marginLeft: 30,
-    marginRight: 30
+    marginRight: 30,
+    borderRadius: 15
   },
-  delete: {},
+  delete: {
+    alignSelf: 'flex-end'
+  },
   start: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    backgroundColor: 'green'
   },
   titleStyle: {
     fontSize: 22,
     paddingLeft: 15,
-    textAlign: 'center'
+    textAlign: 'center',
+    flex: 2
   },
   timerDescStyle: {
     fontSize: 16,

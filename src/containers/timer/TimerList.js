@@ -72,6 +72,7 @@ class TimerList extends Component {
           containerStyle={styles.buttonStyle}
         />
         <ListView
+          enableEmptySections
           style={{ width: SCREEN_WIDTH }}
           dataSource={this.dataSource}
           renderRow={this.renderRow}
