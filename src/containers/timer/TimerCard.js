@@ -13,8 +13,6 @@ import RunTimer from './RunTimer';
 
 import { deleteTimer, selectTimer, startSelectedTimer } from './timerActions';
 
-import { SCREEN_WIDTH } from '../../utils';
-
 class TimerCard extends Component {
   componentWillMount() {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -73,7 +71,7 @@ class TimerCard extends Component {
         <Card containerStyle={cardStyle}>
           <Text style={styles.titleStyle}>{timer.title}</Text>
           <Avatar
-            small
+            medium
             rounded
             title="-"
             onPress={() => this.props.deleteTimer(timer.id)}
@@ -99,7 +97,6 @@ const styles = {
   },
   delete: {},
   start: {
-    backgroundColor: 'green',
     alignSelf: 'center'
   },
   titleStyle: {

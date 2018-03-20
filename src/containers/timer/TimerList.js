@@ -13,7 +13,7 @@ import { SCREEN_WIDTH } from '../../utils';
 class TimerList extends Component {
   constructor(props) {
     super(props);
-    // this.props.loadApp();
+    this.props.loadApp();
   }
 
   state = {

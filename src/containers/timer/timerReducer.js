@@ -62,11 +62,6 @@ export default (state = DEFAULT_STATE, action) => {
       saveState(newState);
       return newState;
     }
-    case c.UPDATE_TIMER: {
-      const newState = { ...state, runningTimer: action.timer };
-      saveState(newState);
-      return newState;
-    }
     case c.SELECT_TIMER: {
       return {
         ...state,
