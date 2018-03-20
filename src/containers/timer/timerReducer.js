@@ -3,16 +3,8 @@ import * as c from './timerConstants';
 import { AsyncStorage } from 'react-native';
 
 const DEFAULT_STATE = {
-  selectedTimer: {
-    id: 1,
-    title: '15 min with 5 min interval',
-    selectedHours: 0,
-    selectedMinutes: 15,
-    intervalHours: 0,
-    intervalMinutes: 5,
-    timerId: undefined,
-    intervalId: undefined
-  },
+  selectedTimerId: 1,
+  runningTimer: undefined,
   timers: [
     {
       id: 1,
@@ -33,6 +25,8 @@ export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case c.ADD_TIMER: {
       const newState = { ...state };
+
+      console.log('add timer new state=', newState);
       let newId = 1;
       if (state.timers && state.timers.length > 0) {
         const timerIdObject = state.timers.reduce((accumulator, timer) => {
@@ -56,7 +50,7 @@ export default (state = DEFAULT_STATE, action) => {
       }
       console.log('pushing on new timer=', newTimer);
       newState.timers.push(newTimer);
-      newState.selectedTimer = newTimer;
+      newState.selectedTimerId = newTimer.id;
       saveState(newState);
       return newState;
     }
@@ -69,23 +63,33 @@ export default (state = DEFAULT_STATE, action) => {
       return newState;
     }
     case c.UPDATE_TIMER: {
-      const newState = { ...state, selectedTimer: action.timer };
+      const newState = { ...state, runningTimer: action.timer };
       saveState(newState);
       return newState;
     }
     case c.SELECT_TIMER: {
-      const timer = { ...action.timer };
-      return { ...state, selectedTimer: timer };
+      return {
+        ...state,
+        selectedTimerId: action.timer.id,
+        runningTimer: undefined
+      };
     }
     case c.START_SELECTED_TIMER: {
-      const timer = state.selectedTimer;
-      timer.isRunning = true;
-      return { ...state, selectedTimer: timer };
+      let selectedTimer = {};
+      state.timers.map(timer => {
+        if (timer.id === state.selectedTimerId) {
+          selectedTimer = { ...timer };
+        }
+
+        return timer;
+      });
+      selectedTimer.isRunning = true;
+      return { ...state, runningTimer: selectedTimer };
     }
     case c.STOP_SELECTED_TIMER: {
-      const timer = state.selectedTimer;
+      const timer = state.runningTimer;
       timer.isRunning = false;
-      return { ...state, selectedTimer: timer };
+      return { ...state, runningTimer: timer };
     }
 
     case c.APP_DATA_LOADED:

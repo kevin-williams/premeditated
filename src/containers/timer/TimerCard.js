@@ -28,8 +28,7 @@ class TimerCard extends Component {
   renderDescription() {
     if (
       this.props.timer &&
-      this.props.timer.selectedTimer &&
-      this.props.myTimer.id === this.props.timer.selectedTimer.id
+      this.props.myTimer.id === this.props.timer.selectedTimerId
     ) {
       let render = (
         <View style={styles.descriptionContainer}>
@@ -50,7 +49,10 @@ class TimerCard extends Component {
         </View>
       );
 
-      if (this.props.timer.selectedTimer.isRunning) {
+      if (
+        this.props.timer.runningTimer &&
+        this.props.timer.runningTimer.isRunning
+      ) {
         render = <RunTimer />;
       }
 
@@ -61,40 +63,43 @@ class TimerCard extends Component {
   render() {
     const timer = this.props.myTimer;
 
+    let cardStyle = styles.card;
+    if (timer.id === this.props.timer.selectedTimerId) {
+      cardStyle = styles.selectedCard;
+    }
+
     return (
       <TouchableWithoutFeedback onPress={() => this.props.selectTimer(timer)}>
-        <View>
-          <Card>
-            <View style={styles.titleContainer}>
-              <Text style={styles.titleStyle}>{timer.title}</Text>
-            </View>
-            <Avatar
-              small
-              rounded
-              title="-"
-              onPress={() => this.props.deleteTimer(timer.id)}
-              activeOpacity={0.7}
-              containerStyle={styles.delete}
-            />
-            {this.renderDescription()}
-          </Card>
-        </View>
+        <Card containerStyle={cardStyle}>
+          <Text style={styles.titleStyle}>{timer.title}</Text>
+          <Avatar
+            small
+            rounded
+            title="-"
+            onPress={() => this.props.deleteTimer(timer.id)}
+            activeOpacity={0.7}
+            containerStyle={styles.delete}
+          />
+          {this.renderDescription()}
+        </Card>
       </TouchableWithoutFeedback>
     );
   }
 }
 
 const styles = {
-  delete: {
-    marginRight: 10,
-    marginTop: 10
+  selectedCard: {
+    backgroundColor: 'white',
+    marginLeft: 20
   },
+  card: {
+    backgroundColor: '#e5e5e5',
+    marginLeft: 30,
+    marginRight: 30
+  },
+  delete: {},
   start: {
     backgroundColor: 'green',
-    alignSelf: 'center'
-  },
-  titleContainer: {
-    width: SCREEN_WIDTH - 40,
     alignSelf: 'center'
   },
   titleStyle: {
@@ -108,11 +113,9 @@ const styles = {
     textAlign: 'center'
   },
   descriptionStyle: {
-    textAlign: 'center',
-    flex: 1
+    textAlign: 'center'
   },
   descriptionContainer: {
-    display: 'flex',
     alignItems: 'center'
   }
 };

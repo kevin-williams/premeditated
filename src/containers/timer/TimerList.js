@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Dimensions, ListView, Modal, View } from 'react-native';
+import { ListView, Modal, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 import TimerCard from './TimerCard';
 import AddEditTimer from './AddTimer';
 
-import * as c from './timerConstants';
 import { loadApp } from './timerActions';
 
 import { SCREEN_WIDTH } from '../../utils';
@@ -14,7 +13,7 @@ import { SCREEN_WIDTH } from '../../utils';
 class TimerList extends Component {
   constructor(props) {
     super(props);
-    this.props.loadApp();
+    // this.props.loadApp();
   }
 
   state = {

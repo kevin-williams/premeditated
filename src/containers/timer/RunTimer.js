@@ -39,38 +39,38 @@ class RunTimer extends Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.props.timer.selectedTimer.timerId);
-    clearInterval(this.props.timer.selectedTimer.intervalId);
+    clearTimeout(this.props.timer.runningTimer.timerId);
+    clearInterval(this.props.timer.runningTimer.intervalId);
   }
 
   startTimer() {
-    const millisPerMinute = this.props.timer.selectedTimer.test
+    const millisPerMinute = this.props.timer.runningTimer.test
       ? TEST_MILLIS_PER_MINUTE
       : MILLIS_PER_MINUTE;
 
     console.log('starting timer');
     const timerId = setTimeout(() => {
       this.endTimer();
-    }, this.props.timer.selectedTimer.selectedMinutes * millisPerMinute);
+    }, this.props.timer.runningTimer.selectedMinutes * millisPerMinute);
 
-    this.props.updateTimer({ ...this.props.timer.selectedTimer, timerId });
+    this.props.updateTimer({ ...this.props.timer.runningTimer, timerId });
 
-    if (this.props.timer.selectedTimer.intervalMinutes > 0) {
+    if (this.props.timer.runningTimer.intervalMinutes > 0) {
       const intervalId = setInterval(() => {
         this.intervalTimer();
-      }, this.props.timer.selectedTimer.intervalMinutes * millisPerMinute);
+      }, this.props.timer.runningTimer.intervalMinutes * millisPerMinute);
 
-      this.props.updateTimer({ ...this.props.timer.selectedTimer, intervalId });
+      this.props.updateTimer({ ...this.props.timer.runningTimer, intervalId });
     }
   }
 
   endTimer() {
     console.log('Timer went off');
     endSound.playAsync();
-    clearInterval(this.props.timer.selectedTimer.intervalId);
-    clearTimeout(this.props.timer.selectedTimer.timerId);
+    clearInterval(this.props.timer.runningTimer.intervalId);
+    clearTimeout(this.props.timer.runningTimer.timerId);
     this.props.updateTimer({
-      ...this.props.timer.selectedTimer,
+      ...this.props.timer.runningTimer,
       timerId: undefined,
       intervalId: undefined
     });
