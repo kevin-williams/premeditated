@@ -248,7 +248,7 @@ class RunTimer extends Component {
         animationType="slide"
         tranparent={false}
         visible
-        onRequestClose={() => console.log('close')}
+        onRequestClose={() => console.log('close timer modal')}
       >
         <View style={styles.top}>
           <View style={styles.headerContainer}>
@@ -321,11 +321,11 @@ const styles = {
     padding: 5
   },
   top: {
-    flex: 1
+    flex: 2
   },
   bottom: {
     borderTopWidth: 0.5,
-    flex: 2,
+    flex: 3,
     backgroundColor: '#F2F2F2'
   },
   buttonWrapper: {

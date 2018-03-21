@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, TextInput, View } from 'react-native';
+import { Text, TextInput, TouchableHighlight, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import TimeSelect from '../../components/TimeSelect';
@@ -27,6 +27,10 @@ class AddEditTimer extends Component {
     this.props.closeModal();
   }
 
+  handleClose() {
+    this.props.closeModal();
+  }
+
   render() {
     const {
       selectedHours,
@@ -37,6 +41,16 @@ class AddEditTimer extends Component {
 
     return (
       <View style={styles.container}>
+        <View style={styles.closeContainer}>
+          <Text style={styles.headerText}>Add/Edit Timer</Text>
+          <TouchableHighlight
+            style={styles.closeButton}
+            underlayColor="#777"
+            onPress={this.handleClose.bind(this)}
+          >
+            <Text style={{ fontSize: 18 }}>X</Text>
+          </TouchableHighlight>
+        </View>
         <Text>Name</Text>
         <TextInput
           style={{ width: 200, height: 40 }}
@@ -88,6 +102,21 @@ const styles = {
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  header: {
+    textAlign: 'center',
+    flex: 1
+  },
+  closeContainer: {
+    borderBottomWidth: 0.5,
+    paddingBottom: 10,
+    backgroundColor: '#F9F9F9',
+    flexDirection: 'row',
+    alignItems: 'flex-end'
+  },
+  closeButton: {
+    width: 40,
+    height: 40,
   }
 };
 
