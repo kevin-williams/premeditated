@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, Modal, View } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { LayoutAnimation, Modal, UIManager, View } from 'react-native';
+import { Avatar, List, ListItem } from 'react-native-elements';
 import { AdMobBanner } from 'expo';
 
-import TimerCard from './TimerCard';
+import TimerListSubtitle from './TimerListSubtitle';
 import AddEditTimer from './AddEditTimer';
 
-import { loadApp } from './timerActions';
+import { loadApp, selectTimer } from './timerActions';
 
 import { AD_MOB_ID, SCREEN_WIDTH } from '../../utils';
+
+const CustomLayoutLinear = {
+  duration: 100,
+  create: {
+    type: LayoutAnimation.Types.linear,
+    property: LayoutAnimation.Properties.opacity
+  },
+  update: {
+    type: LayoutAnimation.Types.linear
+  },
+  delete: {
+    duration: 50,
+    type: LayoutAnimation.Types.linear,
+    property: LayoutAnimation.Properties.opacity
+  }
+};
 
 class TimerList extends Component {
   constructor(props) {
@@ -22,21 +38,14 @@ class TimerList extends Component {
   };
 
   componentWillMount() {
-    this.updateList();
-  }
-
-  componentWillReceiveProps() {
-    this.updateList();
-  }
-
-  updateList() {
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-
-    if (this.props.timer && this.props.timer.timers) {
-      this.dataSource = ds.cloneWithRows(this.props.timer.timers);
+    if (UIManager.setLayoutAnimationEnabledExperimental) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
     }
+  }
+
+  componentWillUpdate() {
+    // LayoutAnimation.easeInEaseOut();
+    LayoutAnimation.configureNext(CustomLayoutLinear);
   }
 
   showAddModal() {
@@ -49,8 +58,21 @@ class TimerList extends Component {
     this.setState({ showAddModal: false });
   }
 
-  renderRow(timer) {
-    return <TimerCard myTimer={timer} />;
+  renderSubtitle(timer) {
+    return <TimerListSubtitle myTimer={timer} />;
+  }
+
+  renderListItems() {
+    return this.props.timer.timers.map((timer, index) => (
+      <ListItem
+        containerStyle={{ width: SCREEN_WIDTH }}
+        leftIcon={{ name: 'av-timer' }}
+        key={`timer_item_${index}`}
+        title={timer.title}
+        onPress={() => this.props.selectTimer(timer)}
+        subtitle={this.renderSubtitle(timer)}
+      />
+    ));
   }
 
   render() {
@@ -74,13 +96,9 @@ class TimerList extends Component {
             containerStyle={styles.buttonStyle}
           />
         </View>
-        <ListView
-          enableEmptySections
-          style={{ width: SCREEN_WIDTH }}
-          dataSource={this.dataSource}
-          renderRow={this.renderRow}
-        />
+        <List style={styles.list}>{this.renderListItems()}</List>
         <AdMobBanner
+          style={{ width: SCREEN_WIDTH, flex: 1 }}
           adUnitID={AD_MOB_ID}
           testDeviceID="EMULATOR"
           didFailToReceiveAdWithError={this.bannerError}
@@ -91,22 +109,25 @@ class TimerList extends Component {
 }
 
 const styles = {
+  container: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   buttonContainerStyle: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignSelf: 'flex-start',
     width: SCREEN_WIDTH
   },
   buttonStyle: {
     marginRight: 20,
     marginTop: 30
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+  list: {
+    flex: 1
   }
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { loadApp })(TimerList);
+export default connect(mapStateToProps, { loadApp, selectTimer })(TimerList);

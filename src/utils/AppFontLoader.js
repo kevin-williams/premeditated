@@ -1,7 +1,6 @@
 import React from 'react';
 import { AppLoading, Font } from 'expo';
 
-import FontAwesome from '../../node_modules/@expo/vector-icons/fonts/FontAwesome.ttf';
 import MaterialIcons from '../../node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf';
 
 class AppFontLoader extends React.Component {
@@ -12,7 +11,6 @@ class AppFontLoader extends React.Component {
   async componentWillMount() {
     try {
       await Font.loadAsync({
-        FontAwesome,
         MaterialIcons
       });
       this.setState({ fontLoaded: true });
