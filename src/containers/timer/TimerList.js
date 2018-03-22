@@ -66,7 +66,7 @@ class TimerList extends Component {
         <Avatar
           small
           rounded
-          title="+"
+          icon={{ name: 'add' }}
           onPress={this.showAddModal.bind(this)}
           activeOpacity={0.7}
           containerStyle={styles.buttonStyle}
