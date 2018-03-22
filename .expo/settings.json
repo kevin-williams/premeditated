@@ -1,13 +1,9 @@
 {
-  "hostType": "lan",
+  "hostType": "tunnel",
   "lanType": "ip",
   "dev": true,
   "strict": false,
   "minify": false,
   "urlType": "exp",
-<<<<<<< HEAD
-  "urlRandomness": "e8-ecq"
-=======
-  "urlRandomness": "uw-2bd"
->>>>>>> 21ec83dcf75f4bd7f4bb8e6e0a871a11232b4f21
+  "urlRandomness": "5f-sur"
 }

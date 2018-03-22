@@ -1,16 +1,8 @@
 {
-  "expoServerPort": 19000,
-<<<<<<< HEAD
-  "packagerPort": 19002,
-  "packagerPid": 9032,
-  "expoServerNgrokUrl": "https://3k-u56.kevin-williams.premeditated.exp.direct",
-  "packagerNgrokUrl": "https://packager.e8-ecq.kevin-williams.premeditated.exp.direct",
-  "ngrokPid": 30518
-=======
-  "packagerPort": 19004,
-  "packagerPid": 9437,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
->>>>>>> 21ec83dcf75f4bd7f4bb8e6e0a871a11232b4f21
+  "expoServerPort": 19005,
+  "packagerPort": 19006,
+  "packagerPid": 23418,
+  "expoServerNgrokUrl": "https://5f-sur.kevin-williams.premeditated.exp.direct",
+  "packagerNgrokUrl": "https://packager.5f-sur.kevin-williams.premeditated.exp.direct",
+  "ngrokPid": 23596
 }
