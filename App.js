@@ -6,6 +6,8 @@ import ReduxThunk from 'redux-thunk';
 import { AppLoading, Font } from 'expo';
 
 import reducers from './src/reducers';
+import FontAwesome from './node_modules/@expo/vector-icons/fonts/FontAwesome.ttf';
+import MaterialIcons from './node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf';
 
 import TimerList from './src/containers/timer/TimerList';
 
@@ -17,8 +19,8 @@ export default class App extends React.Component {
   async componentWillMount() {
     try {
       await Font.loadAsync({
-        FontAwesome: require('./node_modules/@expo/vector-icons/fonts/FontAwesome.ttf'),
-        MaterialIcons: require('./node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf')
+        FontAwesome,
+        MaterialIcons
       });
       this.setState({ fontLoaded: true });
     } catch (error) {
