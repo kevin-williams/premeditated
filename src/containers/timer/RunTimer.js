@@ -149,6 +149,13 @@ class RunTimer extends Component {
     this.setState(DEFAULT_STATE);
   }
 
+  formatTime(milliseconds) {
+    if (!milliseconds) {
+      return '00:00.0';
+    }
+    return moment(milliseconds).format('mm:ss.S');
+  }
+
   renderButtons() {
     const stopStyle = this.state.isRunning
       ? styles.stopButton
@@ -173,13 +180,6 @@ class RunTimer extends Component {
         </TouchableHighlight>
       </View>
     );
-  }
-
-  formatTime(milliseconds) {
-    if (!milliseconds) {
-      return '00:00.0';
-    }
-    return moment(milliseconds).format('mm:ss.S');
   }
 
   renderTimers() {

@@ -4,7 +4,7 @@ import { ListView, Modal, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 import TimerCard from './TimerCard';
-import AddEditTimer from './AddTimer';
+import AddEditTimer from './AddEditTimer';
 
 import { loadApp } from './timerActions';
 
