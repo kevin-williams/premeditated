@@ -26,41 +26,6 @@ class TimerListSubtitle extends Component {
     return hourStr + minuteStr;
   }
 
-  // renderDescription() {
-  //   if (
-  //     this.props.timer &&
-  //     this.props.myTimer.id === this.props.timer.selectedTimerId
-  //   ) {
-  //     let render = (
-  //       <View style={styles.descriptionContainer}>
-  //         <Text style={styles.timerDescStyle}>
-  //           {this.props.myTimer.selectedHours} hr(s){' '}
-  //           {this.props.myTimer.selectedMinutes} mins
-  //         </Text>
-  //         <Text style={styles.descriptionStyle}>
-  //           Interval every {this.props.myTimer.intervalMinutes} mins
-  //         </Text>
-  // <Avatar
-  //   medium
-  //   rounded
-  //   title=">"
-  //   onPress={this.props.startSelectedTimer}
-  //   overlayContainerStyle={styles.start}
-  // />
-  //       </View>
-  //     );
-
-  //     if (
-  //       this.props.timer.runningTimer &&
-  //       this.props.timer.runningTimer.isRunning
-  //     ) {
-  //       render = <RunTimer />;
-  //     }
-
-  //     return render;
-  //   }
-  // }
-
   render() {
     const timer = this.props.myTimer;
 

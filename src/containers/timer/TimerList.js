@@ -6,6 +6,7 @@ import { AdMobBanner } from 'expo';
 
 import TimerListSubtitle from './TimerListSubtitle';
 import AddEditTimer from './AddEditTimer';
+import RunTimer from './RunTimer';
 
 import { loadApp, selectTimer } from './timerActions';
 
@@ -76,6 +77,13 @@ class TimerList extends Component {
   }
 
   render() {
+    if (
+      this.props.timer.runningTimer &&
+      this.props.timer.runningTimer.isRunning
+    ) {
+      return <RunTimer />;
+    }
+
     return (
       <View style={styles.container}>
         <Modal

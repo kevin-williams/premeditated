@@ -146,6 +146,9 @@ class RunTimer extends Component {
 
   handleReset() {
     console.log('reset timer');
+    if (this.state.isRunning) {
+      this.handleStartStop();
+    }
     this.setState(DEFAULT_STATE);
   }
 
