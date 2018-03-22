@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ListView, Modal, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import { AdMobBanner } from 'expo';
 
 import TimerCard from './TimerCard';
 import AddEditTimer from './AddEditTimer';
 
 import { loadApp } from './timerActions';
 
-import { SCREEN_WIDTH } from '../../utils';
+import { AD_MOB_ID, SCREEN_WIDTH } from '../../utils';
 
 class TimerList extends Component {
   constructor(props) {
@@ -63,19 +64,26 @@ class TimerList extends Component {
         >
           <AddEditTimer closeModal={this.closeAddModal.bind(this)} />
         </Modal>
-        <Avatar
-          small
-          rounded
-          icon={{ name: 'add' }}
-          onPress={this.showAddModal.bind(this)}
-          activeOpacity={0.7}
-          containerStyle={styles.buttonStyle}
-        />
+        <View style={styles.buttonContainerStyle}>
+          <Avatar
+            small
+            rounded
+            icon={{ name: 'add' }}
+            onPress={this.showAddModal.bind(this)}
+            activeOpacity={0.7}
+            containerStyle={styles.buttonStyle}
+          />
+        </View>
         <ListView
           enableEmptySections
           style={{ width: SCREEN_WIDTH }}
           dataSource={this.dataSource}
           renderRow={this.renderRow}
+        />
+        <AdMobBanner
+          adUnitID={AD_MOB_ID}
+          testDeviceID="EMULATOR"
+          didFailToReceiveAdWithError={this.bannerError}
         />
       </View>
     );
@@ -83,8 +91,12 @@ class TimerList extends Component {
 }
 
 const styles = {
+  buttonContainerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    width: SCREEN_WIDTH
+  },
   buttonStyle: {
-    alignSelf: 'flex-end',
     marginRight: 20,
     marginTop: 30
   },
