@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Text, TouchableHighlight, View } from 'react-native';
+import { Avatar } from 'react-native-elements';
 import { Audio } from 'expo';
 import moment from 'moment';
 
@@ -50,25 +51,10 @@ class RunTimer extends Component {
   }
 
   componentWillUnmount() {
-    // clearTimeout(this.props.timer.runningTimer.timerId);
-    // clearInterval(this.props.timer.runningTimer.intervalId);
-  }
-
-  startTimer() {
-    // const millisPerMinute = this.props.timer.runningTimer.test
-    //   ? TEST_MILLIS_PER_MINUTE
-    //   : MILLIS_PER_MINUTE;
-    // console.log('starting timer');
-    // const timerId = setTimeout(() => {
-    //   this.endTimer();
-    // }, this.props.timer.runningTimer.selectedMinutes * millisPerMinute);
-    // // this.props.updateTimer({ ...this.props.timer.runningTimer, timerId });
-    // if (this.props.timer.runningTimer.intervalMinutes > 0) {
-    //   const intervalId = setInterval(() => {
-    //     this.intervalTimer();
-    //   }, this.props.timer.runningTimer.intervalMinutes * millisPerMinute);
-    // this.props.updateTimer({ ...this.props.timer.runningTimer, intervalId });
-    // }
+    if (this.state.isRunning) {
+      clearInterval(this.interval);
+      this.setState({ isRunning: false });
+    }
   }
 
   endSound() {
@@ -256,13 +242,14 @@ class RunTimer extends Component {
         <View style={styles.top}>
           <View style={styles.headerContainer}>
             <Text style={styles.header}>{timer.title}</Text>
-            <TouchableHighlight
-              style={styles.closeButton}
-              underlayColor="#777"
+            <Avatar
+              small
+              rounded
+              icon={{ name: 'close' }}
               onPress={this.handleClose.bind(this)}
-            >
-              <Text style={{ fontSize: 18 }}>X</Text>
-            </TouchableHighlight>
+              activeOpacity={0.7}
+              containerStyle={styles.closeButton}
+            />
           </View>
           {this.renderTimers()}
         </View>
@@ -353,8 +340,7 @@ const styles = {
     color: 'red'
   },
   closeButton: {
-    width: 40,
-    height: 40
+    marginRight: 20
   }
 };
 
