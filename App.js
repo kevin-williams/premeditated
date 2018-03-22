@@ -1,15 +1,36 @@
 import React from 'react';
-import { Font, StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
+import { AppLoading, Font } from 'expo';
 
 import reducers from './src/reducers';
 
 import TimerList from './src/containers/timer/TimerList';
 
 export default class App extends React.Component {
+  state = {
+    fontLoaded: false
+  };
+
+  async componentWillMount() {
+    try {
+      await Font.loadAsync({
+        FontAwesome: require('./node_modules/@expo/vector-icons/fonts/FontAwesome.ttf'),
+        MaterialIcons: require('./node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf')
+      });
+      this.setState({ fontLoaded: true });
+    } catch (error) {
+      console.log('error loading icon fonts', error);
+    }
+  }
+
   render() {
+    if (!this.state.fontLoaded) {
+      return <AppLoading />;
+    }
+
     return (
       <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
         <View style={styles.container}>
@@ -20,11 +41,11 @@ export default class App extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
   }
-});
+};
