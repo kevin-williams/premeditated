@@ -1,0 +1,34 @@
+{
+  "sounds": [
+    {
+      "name": "Liquid",
+      "file": "Liquid.mp3",
+      "license": "Recorded by Caroline Ford"
+    },
+    {
+      "name": "River",
+      "file": "River.mp3",
+      "license": "Recorded by Mike Koenig"
+    },
+    {
+      "name": "Stream",
+      "file": "Stream.mp3",
+      "license": "Recorded by Caroline Ford"
+    },
+    {
+      "name": "Tree Frogs",
+      "file": "Tree_Frogs.mp3",
+      "license": "Recorded by Mike Koenig"
+    },
+    {
+      "name": "Waterfall",
+      "file": "Waterfall.mp3",
+      "license": "Recorded by Mike Koenig"
+    },
+    {
+      "name": "Wind",
+      "file": "Wind.mp3",
+      "license": "Recorded by Mark DiAngelo"
+    }
+  ]
+}
