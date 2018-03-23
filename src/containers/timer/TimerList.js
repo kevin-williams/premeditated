@@ -64,6 +64,10 @@ class TimerList extends Component {
   }
 
   renderListItems() {
+    if (!this.props.timer.timers) {
+      return null;
+    }
+
     return this.props.timer.timers.map((timer, index) => (
       <ListItem
         containerStyle={{ width: SCREEN_WIDTH }}
