@@ -104,9 +104,11 @@ class RunTimer extends Component {
 
     const intervalMillis = timer.intervalMinutes * MILLIS_PER_MINUTE;
     // TESTING only const intervalMillis = timer.intervalMinutes * 10000;
-    for (let i = intervalMillis; i < finalTime; i += intervalMillis) {
-      console.log('adding interval=' + i);
-      intervalTimes.push({ time: i, soundPlayed: false });
+    if (intervalMillis > 0) {
+      for (let i = intervalMillis; i < finalTime; i += intervalMillis) {
+        console.log('adding interval=' + i);
+        intervalTimes.push({ time: i, soundPlayed: false });
+      }
     }
 
     this.setState({
