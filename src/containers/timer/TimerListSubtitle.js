@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 
 import RunTimer from './RunTimer';
 
-import { deleteTimer, selectTimer, startSelectedTimer } from './timerActions';
+import * as c from './timerConstants';
+import { deleteTimer, selectTimer, startSelectedTimer, showAddDialog } from './timerActions';
 
 class TimerListSubtitle extends Component {
   getTimerDescription(timer) {
@@ -51,7 +52,7 @@ class TimerListSubtitle extends Component {
           small
           rounded
           icon={{ name: 'edit' }}
-          onPress={() => this.props.editHandler()}
+          onPress={() => this.props.showAddDialog(c.EDIT_MODE)}
           activeOpacity={0.7}
           containerStyle={styles.delete}
         />
@@ -85,5 +86,6 @@ const mapStateToProps = state => state;
 export default connect(mapStateToProps, {
   deleteTimer,
   selectTimer,
+  showAddDialog,
   startSelectedTimer
 })(TimerListSubtitle);

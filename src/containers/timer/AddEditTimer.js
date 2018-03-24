@@ -5,7 +5,8 @@ import { Button } from 'react-native-elements';
 
 import TimeSelect from '../../components/TimeSelect';
 
-import { addTimer, updateTimer } from './timerActions';
+import * as c from './timerConstants';
+import { addTimer, updateTimer, closeAddDialog } from './timerActions';
 
 import { SCREEN_WIDTH } from '../../utils';
 
@@ -24,9 +25,9 @@ class AddEditTimer extends Component {
     ...NEW_TIMER
   };
 
-  componentWillMount() {
-    if (this.props.editTimer) {
-      const selectedTimer = this.props.timer.timers.filter(timer => timer.id === this.props.editTimer);
+  componentDidMount() {
+    if (this.props.timer.showAddEditDialog === c.EDIT_MODE) {
+      const selectedTimer = this.props.timer.timers.filter(timer => timer.id === this.props.timer.selectedTimerId);
       if (selectedTimer) {
         this.setState({ ...selectedTimer[0] })
       }
@@ -34,18 +35,14 @@ class AddEditTimer extends Component {
   }
 
   saveTimer() {
-    if (this.props.editTimer) {
+    if (this.props.timer.showAddEditDialog == c.EDIT_MODE) {
       console.log('saving timer', this.state);
       this.props.updateTimer(this.state);
     } else {
       console.log('addng timer', this.state);
       this.props.addTimer(this.state);
     }
-    this.props.closeModal();
-  }
-
-  handleClose() {
-    this.props.closeModal();
+    this.props.closeAddDialog();
   }
 
   render() {
@@ -63,7 +60,7 @@ class AddEditTimer extends Component {
           <TouchableHighlight
             style={styles.closeButton}
             underlayColor="#777"
-            onPress={this.handleClose.bind(this)}
+            onPress={() => this.props.closeAddDialog()}
           >
             <Text style={{ fontSize: 18 }}>X</Text>
           </TouchableHighlight>
@@ -120,7 +117,8 @@ const styles = {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 30
   },
   bottom: {
     flex: 3,
@@ -150,4 +148,4 @@ const styles = {
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { addTimer, updateTimer })(AddEditTimer);
+export default connect(mapStateToProps, { addTimer, updateTimer, closeAddDialog })(AddEditTimer);

@@ -8,9 +8,11 @@ import TimerListSubtitle from './TimerListSubtitle';
 import AddEditTimer from './AddEditTimer';
 import RunTimer from './RunTimer';
 
-import { loadApp, selectTimer } from './timerActions';
+import { loadApp, selectTimer, showAddDialog, closeAddDialog } from './timerActions';
 
 import { AD_MOB_ID, SCREEN_WIDTH } from '../../utils';
+
+import * as c from './timerConstants';
 
 const CustomLayoutLinear = {
   duration: 100,
@@ -34,10 +36,6 @@ class TimerList extends Component {
     this.props.loadApp();
   }
 
-  state = {
-    showAddModal: false
-  };
-
   componentWillMount() {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
       UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -49,23 +47,8 @@ class TimerList extends Component {
     LayoutAnimation.configureNext(CustomLayoutLinear);
   }
 
-  showAddModal() {
-    console.log('showing add modal');
-    this.setState({ showAddModal: true, editTimer: undefined });
-  }
-
-  showEditModal() {
-    console.log('showing edit modal');
-    this.setState({ showAddModal: true, editTimer: this.props.timer.selectedTimerId })
-  }
-
-  closeAddModal() {
-    console.log('closing add modal');
-    this.setState({ showAddModal: false, editTimer: undefined });
-  }
-
   renderSubtitle(timer) {
-    return <TimerListSubtitle myTimer={timer} editHandler={this.showEditModal.bind(this)} />;
+    return <TimerListSubtitle myTimer={timer} />;
   }
 
   renderListItems() {
@@ -93,24 +76,20 @@ class TimerList extends Component {
       return <RunTimer />;
     }
 
+    if (this.props.timer.showAddEditDialog === c.ADD_MODE || this.props.timer.showAddEditDialog === c.EDIT_MODE) {
+      return <AddEditTimer />;
+    }
+
     // TODO make title fancier
     return (
       <View style={styles.container}>
-        <Modal
-          animationType="slide"
-          tranparent={false}
-          visible={this.state.showAddModal}
-          onRequestClose={this.closeAddModal.bind(this)}
-        >
-          <AddEditTimer closeModal={this.closeAddModal.bind(this)} editTimer={this.state.editTimer} />
-        </Modal>
         <View style={styles.buttonContainerStyle}>
           <Text style={styles.title}>Premeditated</Text>
           <Avatar
             small
             rounded
             icon={{ name: 'add' }}
-            onPress={this.showAddModal.bind(this)}
+            onPress={() => this.props.showAddDialog(c.ADD_MODE)}
             activeOpacity={0.7}
             containerStyle={styles.buttonStyle}
           />
@@ -154,4 +133,4 @@ const styles = {
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { loadApp, selectTimer })(TimerList);
+export default connect(mapStateToProps, { loadApp, selectTimer, showAddDialog, closeAddDialog })(TimerList);

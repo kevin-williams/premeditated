@@ -4,6 +4,7 @@ import { AsyncStorage } from 'react-native';
 
 const DEFAULT_STATE = {
   selectedTimerId: 1,
+  showAddEditDialog: c.NOT_SHOWN,
   runningTimer: undefined,
   timers: [
     {
@@ -26,11 +27,9 @@ export default (state = DEFAULT_STATE, action) => {
     case c.ADD_TIMER: {
       const newState = { ...state };
 
-      console.log('add timer new state=', newState);
       let newId = 1;
       if (state.timers && state.timers.length > 0) {
         const timerIdObject = state.timers.reduce((accumulator, timer) => {
-          console.log('accumlator now=', accumulator);
           if (timer.id > accumulator.id) {
             return { ...accumulator, id: timer.id };
           }
@@ -41,14 +40,12 @@ export default (state = DEFAULT_STATE, action) => {
         newId = timerIdObject.id + 1;
       }
 
-      console.log('newId=', newId);
-
       const newTimer = { ...action.timer, id: newId };
 
       if (!newTimer.title) {
         newTimer.title = `Timer ${newTimer.id}`;
       }
-      console.log('pushing on new timer=', newTimer);
+
       if (!newState.timers) {
         newState.timers = [];
       }
@@ -93,7 +90,6 @@ export default (state = DEFAULT_STATE, action) => {
       const newState = { ...state };
       newState.timers = state.timers.map(
         timer => {
-          console.log(`timer.id=${timer.id} action.timer.id=${action.timer.id}`);
           if (timer.id === action.timer.id) {
             return action.timer;
           } else {
@@ -102,10 +98,13 @@ export default (state = DEFAULT_STATE, action) => {
         }
       );
 
-      console.log('update timer newState=', newState);
       saveState(newState);
       return newState;
     }
+
+    case c.SHOW_ADD_DIALOG:
+    case c.CLOSE_ADD_DIALOG:
+      return { ...state, showAddEditDialog: action.mode }
 
     case c.APP_DATA_LOADED:
       return { ...action.state };
@@ -117,8 +116,9 @@ export default (state = DEFAULT_STATE, action) => {
 };
 
 function saveState(state) {
+  const newState = { timers: state.timers, selectedTimerId: state.selectedTimerId };
   try {
-    const stateStr = JSON.stringify(state);
+    const stateStr = JSON.stringify(newState);
     console.log('saving state=' + stateStr);
     AsyncStorage.setItem(c.APP_KEY, stateStr);
   } catch (error) {
