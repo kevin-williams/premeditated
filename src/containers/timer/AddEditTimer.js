@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements';
 
 import TimeSelect from '../../components/TimeSelect';
 
-import { addTimer } from './timerActions';
+import { addTimer, updateTimer } from './timerActions';
 
 import { SCREEN_WIDTH } from '../../utils';
 
@@ -24,8 +24,23 @@ class AddEditTimer extends Component {
     ...NEW_TIMER
   };
 
+  componentWillMount() {
+    if (this.props.editTimer) {
+      const selectedTimer = this.props.timer.timers.filter(timer => timer.id === this.props.editTimer);
+      if (selectedTimer) {
+        this.setState({ ...selectedTimer[0] })
+      }
+    };
+  }
+
   saveTimer() {
-    this.props.addTimer(this.state);
+    if (this.props.editTimer) {
+      console.log('saving timer', this.state);
+      this.props.updateTimer(this.state);
+    } else {
+      console.log('addng timer', this.state);
+      this.props.addTimer(this.state);
+    }
     this.props.closeModal();
   }
 
@@ -135,4 +150,4 @@ const styles = {
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { addTimer })(AddEditTimer);
+export default connect(mapStateToProps, { addTimer, updateTimer })(AddEditTimer);

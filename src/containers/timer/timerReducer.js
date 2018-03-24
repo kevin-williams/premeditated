@@ -89,6 +89,23 @@ export default (state = DEFAULT_STATE, action) => {
       timer.isRunning = false;
       return { ...state, runningTimer: timer };
     }
+    case c.UPDATE_TIMER: {
+      const newState = { ...state };
+      newState.timers = state.timers.map(
+        timer => {
+          console.log(`timer.id=${timer.id} action.timer.id=${action.timer.id}`);
+          if (timer.id === action.timer.id) {
+            return action.timer;
+          } else {
+            return timer;
+          }
+        }
+      );
+
+      console.log('update timer newState=', newState);
+      saveState(newState);
+      return newState;
+    }
 
     case c.APP_DATA_LOADED:
       return { ...action.state };

@@ -24,6 +24,11 @@ export const stopSelectedTimer = () => ({
   type: c.STOP_SELECTED_TIMER
 });
 
+export const updateTimer = timer => ({
+  type: c.UPDATE_TIMER,
+  timer
+});
+
 export const loadApp = () => dispatch => {
   AsyncStorage.getItem(c.APP_KEY)
     .then(stateStr => {

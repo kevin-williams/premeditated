@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LayoutAnimation, Modal, UIManager, View } from 'react-native';
+import { LayoutAnimation, Modal, UIManager, Text, View } from 'react-native';
 import { Avatar, List, ListItem } from 'react-native-elements';
 import { AdMobBanner } from 'expo';
 
@@ -51,16 +51,21 @@ class TimerList extends Component {
 
   showAddModal() {
     console.log('showing add modal');
-    this.setState({ showAddModal: true });
+    this.setState({ showAddModal: true, editTimer: undefined });
+  }
+
+  showEditModal() {
+    console.log('showing edit modal');
+    this.setState({ showAddModal: true, editTimer: this.props.timer.selectedTimerId })
   }
 
   closeAddModal() {
     console.log('closing add modal');
-    this.setState({ showAddModal: false });
+    this.setState({ showAddModal: false, editTimer: undefined });
   }
 
   renderSubtitle(timer) {
-    return <TimerListSubtitle myTimer={timer} />;
+    return <TimerListSubtitle myTimer={timer} editHandler={this.showEditModal.bind(this)} />;
   }
 
   renderListItems() {
@@ -88,6 +93,7 @@ class TimerList extends Component {
       return <RunTimer />;
     }
 
+    // TODO make title fancier
     return (
       <View style={styles.container}>
         <Modal
@@ -96,9 +102,10 @@ class TimerList extends Component {
           visible={this.state.showAddModal}
           onRequestClose={this.closeAddModal.bind(this)}
         >
-          <AddEditTimer closeModal={this.closeAddModal.bind(this)} />
+          <AddEditTimer closeModal={this.closeAddModal.bind(this)} editTimer={this.state.editTimer} />
         </Modal>
         <View style={styles.buttonContainerStyle}>
+          <Text style={styles.title}>Premeditated</Text>
           <Avatar
             small
             rounded
@@ -135,6 +142,11 @@ const styles = {
   buttonStyle: {
     marginRight: 20,
     marginTop: 30
+  }, title: {
+    marginTop: 30,
+    fontSize: 24,
+    textAlign: 'center',
+    flex: 1
   },
   list: {
     flex: 1

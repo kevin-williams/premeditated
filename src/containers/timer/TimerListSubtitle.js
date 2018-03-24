@@ -50,6 +50,14 @@ class TimerListSubtitle extends Component {
         <Avatar
           small
           rounded
+          icon={{ name: 'edit' }}
+          onPress={() => this.props.editHandler()}
+          activeOpacity={0.7}
+          containerStyle={styles.delete}
+        />
+        <Avatar
+          small
+          rounded
           icon={{ name: 'delete-forever' }}
           onPress={() => this.props.deleteTimer(timer.id)}
           activeOpacity={0.7}
