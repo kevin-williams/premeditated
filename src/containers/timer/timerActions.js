@@ -1,5 +1,6 @@
-import * as c from './timerConstants';
 import { AsyncStorage } from 'react-native';
+
+import * as c from './timerConstants';
 
 export const addTimer = timer => ({
   type: c.ADD_TIMER,
@@ -26,7 +27,6 @@ export const closeAddDialog = () => ({
   mode: c.NOT_SHOWN
 });
 
-
 export const startSelectedTimer = () => ({
   type: c.START_SELECTED_TIMER
 });
@@ -45,12 +45,10 @@ export const loadApp = () => dispatch => {
     .then(stateStr => {
       console.log('loaded state=' + stateStr);
       const newState = JSON.parse(stateStr);
-
       dispatch({
         type: c.APP_DATA_LOADED,
         state: newState
       });
-
       dispatch({
         type: c.SELECT_TIMER,
         timer: { id: newState.selectedTimerId }

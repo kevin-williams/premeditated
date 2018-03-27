@@ -25,8 +25,6 @@ import { AD_MOB_ID, SCREEN_WIDTH } from '../../utils';
 
 import * as c from './timerConstants';
 
-const backgroundImage = require('../../../assets/backgrounds/River.png');
-
 const CustomLayoutLinear = {
   duration: 100,
   create: {
@@ -120,7 +118,7 @@ class TimerList extends Component {
     return (
       <ImageBackground
         resizeMode="cover"
-        source={backgroundImage}
+        source={this.props.timer.appBackground}
         style={styles.backgroundImage}
       >
         <View style={styles.container}>

@@ -1,6 +1,8 @@
+import { AsyncStorage } from 'react-native';
+
 import * as c from './timerConstants';
 
-import { AsyncStorage } from 'react-native';
+const backgroundImage = require('../../../assets/backgrounds/River.png');
 
 const DEFAULT_STATE = {
   selectedTimerId: 1,
@@ -17,7 +19,8 @@ const DEFAULT_STATE = {
       timerId: undefined,
       intervalId: undefined
     }
-  ]
+  ],
+  appBackground: backgroundImage
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -88,15 +91,13 @@ export default (state = DEFAULT_STATE, action) => {
     }
     case c.UPDATE_TIMER: {
       const newState = { ...state };
-      newState.timers = state.timers.map(
-        timer => {
-          if (timer.id === action.timer.id) {
-            return action.timer;
-          } else {
-            return timer;
-          }
+      newState.timers = state.timers.map(timer => {
+        if (timer.id === action.timer.id) {
+          return action.timer;
+        } else {
+          return timer;
         }
-      );
+      });
 
       saveState(newState);
       return newState;
@@ -104,10 +105,17 @@ export default (state = DEFAULT_STATE, action) => {
 
     case c.SHOW_ADD_DIALOG:
     case c.CLOSE_ADD_DIALOG:
-      return { ...state, showAddEditDialog: action.mode }
+      return { ...state, showAddEditDialog: action.mode };
 
-    case c.APP_DATA_LOADED:
-      return { ...action.state };
+    case c.APP_DATA_LOADED: {
+      // Check for default background
+      const newState = { ...action.state };
+      if (!action.state.appBackground) {
+        newState.appBackground = backgroundImage;
+      }
+
+      return newState;
+    }
     case c.APP_DATA_DEFAULT:
       return { ...DEFAULT_STATE };
     default:
@@ -116,7 +124,11 @@ export default (state = DEFAULT_STATE, action) => {
 };
 
 function saveState(state) {
-  const newState = { timers: state.timers, selectedTimerId: state.selectedTimerId };
+  const newState = {
+    timers: state.timers,
+    selectedTimerId: state.selectedTimerId,
+    appBackground: state.appBackground
+  };
   try {
     const stateStr = JSON.stringify(newState);
     console.log('saving state=' + stateStr);
