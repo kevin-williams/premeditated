@@ -69,24 +69,36 @@ class TimerList extends Component {
       return null;
     }
 
-    return this.props.timer.timers.map((timer, index) => (
-      <ListItem
-        containerStyle={styles.listItem}
-        avatar={
-          <Avatar
-            small
-            rounded
-            icon={{ name: 'av-timer', color: 'white' }}
-            containerStyle={{ backgroundColor: 'grey' }}
-          />
-        }
-        key={`timer_item_${index}`}
-        title={timer.title}
-        titleStyle={styles.listItemTitle}
-        onPress={() => this.props.selectTimer(timer)}
-        subtitle={this.renderSubtitle(timer)}
-      />
-    ));
+    return this.props.timer.timers.map((timer, index) => {
+      let listItemStyle = styles.listItem;
+      let titleStyle = styles.listItemTitle;
+      if (timer.id === this.props.timer.selectedTimerId) {
+        listItemStyle = [styles.listItem, styles.listItemSelectedBackground];
+        titleStyle = [
+          styles.listItemTitle,
+          styles.listItemTitleSelectedBackground
+        ];
+      }
+
+      return (
+        <ListItem
+          containerStyle={listItemStyle}
+          avatar={
+            <Avatar
+              small
+              rounded
+              icon={{ name: 'av-timer', color: 'white' }}
+              containerStyle={{ backgroundColor: 'grey' }}
+            />
+          }
+          key={`timer_item_${index}`}
+          title={timer.title}
+          titleStyle={titleStyle}
+          onPress={() => this.props.selectTimer(timer)}
+          subtitle={this.renderSubtitle(timer)}
+        />
+      );
+    });
   }
 
   render() {
@@ -157,6 +169,11 @@ const styles = {
     marginTop: 30,
     fontSize: 24,
     textAlign: 'center',
+    color: 'black',
+    backgroundColor: 'rgba(222,222,222,0.7)',
+    borderRadius: 20,
+    marginLeft: 20,
+    marginRight: 20,
     flex: 1
   },
   addButton: {
@@ -172,20 +189,20 @@ const styles = {
     backgroundColor: 'rgba(222,222,222,0.4)',
     width: SCREEN_WIDTH
   },
+  listItemSelectedBackground: {
+    backgroundColor: 'rgba(222,222,222,0.9)'
+  },
   listItemTitle: {
     fontSize: 18,
+    color: 'black',
     backgroundColor: 'rgba(222,222,222,0.7)',
     borderRadius: 5,
     paddingLeft: 10,
     marginBottom: 10,
     width: SCREEN_WIDTH * 0.5
   },
-  rightTitle: {
-    fontSize: 14,
-    color: 'black'
-  },
-  rightTitleContainer: {
-    marginLeft: 10
+  listItemTitleSelectedBackground: {
+    backgroundColor: 'transparent'
   }
 };
 

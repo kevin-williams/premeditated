@@ -36,14 +36,18 @@ class TimerListSubtitle extends Component {
     if (timer.id !== this.props.timer.selectedTimerId) {
       return (
         <View>
-          <Text>{this.getTimerDescription(timer)}</Text>
+          <Text style={styles.subtitleText}>
+            {this.getTimerDescription(timer)}
+          </Text>
         </View>
       );
     }
 
     return (
       <View style={styles.subtitleContainer}>
-        <Text>{this.getTimerDescription(timer)}</Text>
+        <Text style={styles.subtitleText}>
+          {this.getTimerDescription(timer)}
+        </Text>
         <Avatar
           medium
           rounded
@@ -76,6 +80,11 @@ const styles = {
   subtitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  subtitleText: {
+    marginLeft: 20,
+    fontSize: 14,
+    color: 'black'
   },
   button: {
     backgroundColor: 'white'
