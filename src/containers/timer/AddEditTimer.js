@@ -101,7 +101,9 @@ class AddEditTimer extends Component {
             }}
           />
 
-          <SoundPicker />
+          <SoundPicker selectedSound={this.state.backgroundSound} path={'../../../assets/sound/background'} onChange={(newSound) => {
+            console.log('sound changed', newSound); this.setState({ backgroundSound: newSound })
+          }} />
 
           <Button
             large

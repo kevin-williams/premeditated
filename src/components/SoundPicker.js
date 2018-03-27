@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, Picker, Text, View } from 'react-native';
+import { Audio } from 'expo';
 
 const sounds = [
     {
@@ -16,6 +17,9 @@ const sounds = [
 
 const pickers = [];
 
+const selectedSound = new Audio.Sound();
+
+
 export default class SoundPicker extends Component {
 
     constructor(props) {
@@ -23,13 +27,23 @@ export default class SoundPicker extends Component {
         this.loadPickerItems();
     }
 
-    state = {
-        selectedSound: undefined
+    soundChanged(itemValue) {
+        console.log('new sound=' + itemValue);
+        this.props.onChange(itemValue);
+
+        // const soundFile = require(`${this.props.path}/${itemValue.file}`);
+
+        // selectedSound.loadAsync(soundFile)
+        //     .then(() => selectedSound.playAsync())
+        //     .catch((error) => console.log('Error loading sound', error));
     }
 
     loadPickerItems() {
+        if (pickers.length > 0) {
+            return;
+        }
         sounds.map((sound, index) => {
-            pickers.push(<Picker.Item key={`Sound-${index}`} label={sound.name} value={sound} />);
+            pickers.push(<Picker.Item key={`Sound-${index}`} label={sound.name} value={sound.file} />);
         });
 
         console.log('pickers=', pickers);
@@ -42,8 +56,8 @@ export default class SoundPicker extends Component {
         return (<View>
             <Text>Background</Text>
             <Picker style={{ width: 300 }}
-                selectedValue={this.state.selectedSound}
-                onValueChange={itemValue => { console.log('new sound=' + itemValue); this.setState({ selectedSound: itemValue }) }}
+                selectedValue={this.props.selectedSound}
+                onValueChange={this.soundChanged.bind(this)}
             >
                 {pickers}
             </Picker>
