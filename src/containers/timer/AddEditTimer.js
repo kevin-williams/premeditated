@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Text, TextInput, TouchableHighlight, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
+import SoundPicker from '../../components/SoundPicker';
 import TimeSelect from '../../components/TimeSelect';
 
 import * as c from './timerConstants';
@@ -99,6 +100,8 @@ class AddEditTimer extends Component {
               });
             }}
           />
+
+          <SoundPicker />
 
           <Button
             large

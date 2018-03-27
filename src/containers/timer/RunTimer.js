@@ -13,7 +13,7 @@ const MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;
 
 const bellSound = require('../../../assets/sound/gong.mp3');
 const tingSound = require('../../../assets/sound/ting.mp3');
-const riverSound = require('../../../assets/sound/background/Wind.mp3');
+const riverSound = require('../../../assets/sound/background/River.mp3');
 
 const endSound = new Audio.Sound();
 const intervalSound = new Audio.Sound();
