@@ -7,14 +7,17 @@ import moment from 'moment';
 
 import { stopSelectedTimer } from './timerActions';
 
-const MILLIS_PER_MINUTE = 60000;
+// const MILLIS_PER_MINUTE = 60000;
+const MILLIS_PER_MINUTE = 10000;
 const MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;
 
 const bellSound = require('../../../assets/sound/gong.mp3');
 const tingSound = require('../../../assets/sound/ting.mp3');
+const riverSound = require('../../../assets/sound/background/Wind.mp3');
 
 const endSound = new Audio.Sound();
 const intervalSound = new Audio.Sound();
+const backgroundSound = new Audio.Sound();
 
 const DEFAULT_STATE = {
   isRunning: false,
@@ -36,6 +39,11 @@ class RunTimer extends Component {
       .loadAsync(tingSound)
       .then(console.log('sound loaded'))
       .catch(console.log('sound already loaded'));
+
+    backgroundSound
+      .loadAsync(riverSound)
+      .then(console.log('sound loaded'))
+      .catch(console.log('sound already loaded'));
   }
 
   state = DEFAULT_STATE;
@@ -43,10 +51,11 @@ class RunTimer extends Component {
   componentDidMount() {
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
-      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-      playsInSilentModeIOS: true,
-      shouldDuckAndroid: true,
-      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_MIX_WITH_OTHERS,
+      playsInSilentModeIOS: false,
+      shouldDuckAndroid: false,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS
+
     });
   }
 
@@ -58,8 +67,10 @@ class RunTimer extends Component {
   }
 
   endSound() {
-    console.log('Play end sound');
-    endSound.playAsync();
+    backgroundSound.stopAsync().then(() => {
+      console.log('Play end sound');
+      endSound.replayAsync();
+    })
   }
 
   intervalSound() {
@@ -87,6 +98,7 @@ class RunTimer extends Component {
     if (isRunning) {
       clearInterval(this.interval);
       this.setState({ isRunning: false });
+      backgroundSound.stopAsync();
     } else {
       this.processStart();
     }
@@ -117,6 +129,9 @@ class RunTimer extends Component {
       finalTime,
       intervalTimes
     });
+
+    backgroundSound.setIsLoopingAsync(true);
+    backgroundSound.replayAsync();
 
     this.interval = setInterval(() => {
       const elapsedTime = moment() - this.state.mainTimerStart + mainTimer;
