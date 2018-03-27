@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LayoutAnimation, Modal, UIManager, Text, View } from 'react-native';
+import {
+  ImageBackground,
+  LayoutAnimation,
+  UIManager,
+  Text,
+  View
+} from 'react-native';
 import { Avatar, List, ListItem } from 'react-native-elements';
 import { AdMobBanner } from 'expo';
 
@@ -8,11 +14,18 @@ import TimerListSubtitle from './TimerListSubtitle';
 import AddEditTimer from './AddEditTimer';
 import RunTimer from './RunTimer';
 
-import { loadApp, selectTimer, showAddDialog, closeAddDialog } from './timerActions';
+import {
+  loadApp,
+  selectTimer,
+  showAddDialog,
+  closeAddDialog
+} from './timerActions';
 
 import { AD_MOB_ID, SCREEN_WIDTH } from '../../utils';
 
 import * as c from './timerConstants';
+
+const backgroundImage = require('../../../assets/backgrounds/River.png');
 
 const CustomLayoutLinear = {
   duration: 100,
@@ -58,10 +71,18 @@ class TimerList extends Component {
 
     return this.props.timer.timers.map((timer, index) => (
       <ListItem
-        containerStyle={{ width: SCREEN_WIDTH }}
-        leftIcon={{ name: 'av-timer' }}
+        containerStyle={styles.listItem}
+        avatar={
+          <Avatar
+            small
+            rounded
+            icon={{ name: 'av-timer', color: 'white' }}
+            containerStyle={{ backgroundColor: 'grey' }}
+          />
+        }
         key={`timer_item_${index}`}
         title={timer.title}
+        titleStyle={styles.listItemTitle}
         onPress={() => this.props.selectTimer(timer)}
         subtitle={this.renderSubtitle(timer)}
       />
@@ -76,41 +97,55 @@ class TimerList extends Component {
       return <RunTimer />;
     }
 
-    if (this.props.timer.showAddEditDialog === c.ADD_MODE || this.props.timer.showAddEditDialog === c.EDIT_MODE) {
+    if (
+      this.props.timer.showAddEditDialog === c.ADD_MODE ||
+      this.props.timer.showAddEditDialog === c.EDIT_MODE
+    ) {
       return <AddEditTimer />;
     }
 
     // TODO make title fancier
     return (
-      <View style={styles.container}>
-        <View style={styles.buttonContainerStyle}>
-          <Text style={styles.title}>Premeditated</Text>
-          <Avatar
-            small
-            rounded
-            icon={{ name: 'add' }}
-            onPress={() => this.props.showAddDialog(c.ADD_MODE)}
-            activeOpacity={0.7}
-            containerStyle={styles.buttonStyle}
+      <ImageBackground
+        resizeMode="cover"
+        source={backgroundImage}
+        style={styles.backgroundImage}
+      >
+        <View style={styles.container}>
+          <View style={styles.buttonContainerStyle}>
+            <Text style={styles.title}>Premeditated</Text>
+            <Avatar
+              small
+              rounded
+              icon={{ name: 'add' }}
+              onPress={() => this.props.showAddDialog(c.ADD_MODE)}
+              activeOpacity={0.7}
+              containerStyle={styles.addButton}
+            />
+          </View>
+          <List containerStyle={styles.list}>{this.renderListItems()}</List>
+          <AdMobBanner
+            style={{ width: SCREEN_WIDTH, flex: 1 }}
+            adUnitID={AD_MOB_ID}
+            testDeviceID="EMULATOR"
+            didFailToReceiveAdWithError={error =>
+              console.log('error loading ad banner', error)
+            }
           />
         </View>
-        <List style={styles.list}>{this.renderListItems()}</List>
-        <AdMobBanner
-          style={{ width: SCREEN_WIDTH, flex: 1 }}
-          adUnitID={AD_MOB_ID}
-          testDeviceID="EMULATOR"
-          didFailToReceiveAdWithError={this.bannerError}
-        />
-      </View>
+      </ImageBackground>
     );
   }
 }
 
 const styles = {
-  container: {
-    backgroundColor: '#fff',
+  backgroundImage: {
+    width: SCREEN_WIDTH,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  container: {
+    backgroundColor: 'rgba(222,222,222,0.2)'
   },
   buttonContainerStyle: {
     flexDirection: 'row',
@@ -118,19 +153,46 @@ const styles = {
     alignSelf: 'flex-start',
     width: SCREEN_WIDTH
   },
-  buttonStyle: {
-    marginRight: 20,
-    marginTop: 30
-  }, title: {
+  title: {
     marginTop: 30,
     fontSize: 24,
     textAlign: 'center',
     flex: 1
   },
+  addButton: {
+    backgroundColor: 'white',
+    marginRight: 20,
+    marginTop: 30
+  },
   list: {
+    backgroundColor: 'transparent',
     flex: 1
+  },
+  listItem: {
+    backgroundColor: 'rgba(222,222,222,0.4)',
+    width: SCREEN_WIDTH
+  },
+  listItemTitle: {
+    fontSize: 18,
+    backgroundColor: 'rgba(222,222,222,0.7)',
+    borderRadius: 5,
+    paddingLeft: 10,
+    marginBottom: 10,
+    width: SCREEN_WIDTH * 0.5
+  },
+  rightTitle: {
+    fontSize: 14,
+    color: 'black'
+  },
+  rightTitleContainer: {
+    marginLeft: 10
   }
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { loadApp, selectTimer, showAddDialog, closeAddDialog })(TimerList);
+export default connect(mapStateToProps, {
+  loadApp,
+  selectTimer,
+  showAddDialog,
+  closeAddDialog
+})(TimerList);

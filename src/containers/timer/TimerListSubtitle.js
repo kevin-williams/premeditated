@@ -3,10 +3,13 @@ import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import RunTimer from './RunTimer';
-
 import * as c from './timerConstants';
-import { deleteTimer, selectTimer, startSelectedTimer, showAddDialog } from './timerActions';
+import {
+  deleteTimer,
+  selectTimer,
+  startSelectedTimer,
+  showAddDialog
+} from './timerActions';
 
 class TimerListSubtitle extends Component {
   getTimerDescription(timer) {
@@ -54,7 +57,7 @@ class TimerListSubtitle extends Component {
           icon={{ name: 'edit' }}
           onPress={() => this.props.showAddDialog(c.EDIT_MODE)}
           activeOpacity={0.7}
-          containerStyle={styles.delete}
+          overlaycontainerStyle={styles.button}
         />
         <Avatar
           small
@@ -62,7 +65,7 @@ class TimerListSubtitle extends Component {
           icon={{ name: 'delete-forever' }}
           onPress={() => this.props.deleteTimer(timer.id)}
           activeOpacity={0.7}
-          containerStyle={styles.delete}
+          overlaycontainerStyle={styles.button}
         />
       </View>
     );
@@ -74,7 +77,9 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  delete: {},
+  button: {
+    backgroundColor: 'white'
+  },
   start: {
     alignSelf: 'center',
     backgroundColor: 'green'
