@@ -2,19 +2,6 @@ import React, { Component } from 'react';
 import { Platform, Picker, Text, View } from 'react-native';
 import { Audio } from 'expo';
 
-const sounds = [
-    {
-        "name": "Waterfall",
-        "file": "Waterfall.mp3",
-        "license": "Recorded by Mike Koenig"
-    },
-    {
-        "name": "Wind",
-        "file": "Wind.mp3",
-        "license": "Recorded by Mark DiAngelo"
-    }
-]
-
 const pickers = [];
 
 const selectedSound = new Audio.Sound();
@@ -42,7 +29,7 @@ export default class SoundPicker extends Component {
         if (pickers.length > 0) {
             return;
         }
-        sounds.map((sound, index) => {
+        this.props.sounds.map((sound, index) => {
             pickers.push(<Picker.Item key={`Sound-${index}`} label={sound.name} value={sound.file} />);
         });
 

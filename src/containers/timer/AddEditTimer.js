@@ -6,6 +6,9 @@ import { Button } from 'react-native-elements';
 import SoundPicker from '../../components/SoundPicker';
 import TimeSelect from '../../components/TimeSelect';
 
+import backgroundSoundFiles from '../../../assets/sound/background/background_sounds.json';
+import soundFiles from '../../../assets/sound/sounds.json';
+
 import * as c from './timerConstants';
 import { addTimer, updateTimer, closeAddDialog } from './timerActions';
 
@@ -87,6 +90,9 @@ class AddEditTimer extends Component {
               });
             }}
           />
+          <SoundPicker label="End Sound" selectedSound={this.state.endSound} sounds={soundFiles.sounds} path={'../../../assets/sound'} onChange={(newSound) => {
+            console.log('end sound changed', newSound); this.setState({ endSound: newSound })
+          }} />
 
           <TimeSelect
             label="Interval"
@@ -100,10 +106,14 @@ class AddEditTimer extends Component {
               });
             }}
           />
-
-          <SoundPicker selectedSound={this.state.backgroundSound} path={'../../../assets/sound/background'} onChange={(newSound) => {
-            console.log('sound changed', newSound); this.setState({ backgroundSound: newSound })
+          <SoundPicker label="Interval Sound" selectedSound={this.state.intervalSound} sounds={soundFiles.sounds} path={'../../../assets/sound'} onChange={(newSound) => {
+            console.log('interval sound changed', newSound); this.setState({ intervalSound: newSound })
           }} />
+
+          <SoundPicker label="Background Sound" selectedSound={this.state.backgroundSound} sounds={backgroundSoundFiles.sounds} path={'../../../assets/sound/background'} onChange={(newSound) => {
+            console.log('background sound changed', newSound); this.setState({ backgroundSound: newSound })
+          }} />
+
 
           <Button
             large
