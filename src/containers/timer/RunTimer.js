@@ -269,7 +269,7 @@ class RunTimer extends Component {
         >
           <View style={styles.top}>
             <View style={styles.headerContainer}>
-              <Text style={styles.header}>{timer.title}</Text>
+              <Text style={styles.headerText}>{timer.title}</Text>
               <Avatar
                 small
                 rounded
@@ -300,7 +300,8 @@ const styles = {
     justifyContent: 'center'
   },
 
-  header: {
+  headerText: {
+    fontSize: 24,
     backgroundColor: 'transparent',
     textAlign: 'center',
     flex: 1
@@ -335,17 +336,21 @@ const styles = {
     padding: 5
   },
   intervalTimer: {
-    backgroundColor: 'transparent',
-    fontSize: 30,
+    backgroundColor: 'rgba(222,222,222,0.4)',
+    borderRadius: 10,
+    fontSize: 25,
     alignSelf: 'center',
-    padding: 5
+    padding: 5,
+    margin: 5
   },
   intervalTimerElapsed: {
     backgroundColor: 'transparent',
-    fontSize: 20,
+    borderRadius: 10,
+    fontSize: 18,
     color: '#bbb',
     alignSelf: 'center',
-    padding: 5
+    padding: 5,
+    margin: 5
   },
   top: {
     backgroundColor: 'rgba(222,222,222,0.4)',
@@ -354,7 +359,8 @@ const styles = {
   bottom: {
     backgroundColor: 'rgba(222,222,222,0.4)',
     borderTopWidth: 0.5,
-    flex: 3
+    flex: 3,
+    marginBottom: 30
   },
   buttonWrapper: {
     backgroundColor: 'transparent',
@@ -379,6 +385,7 @@ const styles = {
     color: 'red'
   },
   closeButton: {
+    backgroundColor: 'white',
     marginRight: 20
   }
 };

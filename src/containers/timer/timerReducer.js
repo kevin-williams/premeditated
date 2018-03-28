@@ -2,7 +2,9 @@ import { AsyncStorage } from 'react-native';
 
 import * as c from './timerConstants';
 
-const backgroundImage = require('../../../assets/backgrounds/River.png');
+import { Backgrounds } from '../../../assets/backgrounds/backgrounds';
+
+const backgroundImage = Backgrounds.Sky;
 
 const DEFAULT_STATE = {
   selectedTimerId: 1,
