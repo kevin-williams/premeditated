@@ -196,8 +196,7 @@ const styles = {
     backgroundColor: 'rgba(222,222,222,0.7)',
     borderRadius: 5,
     paddingLeft: 10,
-    marginBottom: 10,
-    width: SCREEN_WIDTH * 0.5
+    marginBottom: 10
   },
   listItemTitleSelectedBackground: {
     backgroundColor: 'transparent'

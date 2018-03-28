@@ -126,8 +126,7 @@ export default (state = DEFAULT_STATE, action) => {
 function saveState(state) {
   const newState = {
     timers: state.timers,
-    selectedTimerId: state.selectedTimerId,
-    appBackground: state.appBackground
+    selectedTimerId: state.selectedTimerId
   };
   try {
     const stateStr = JSON.stringify(newState);

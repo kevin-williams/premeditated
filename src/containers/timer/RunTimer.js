@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Text, TouchableHighlight, View } from 'react-native';
+import {
+  ImageBackground,
+  Modal,
+  Text,
+  TouchableHighlight,
+  View
+} from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Audio } from 'expo';
 import moment from 'moment';
 
 import { stopSelectedTimer } from './timerActions';
+
+import { SCREEN_WIDTH } from '../../utils';
 
 // const MILLIS_PER_MINUTE = 60000;
 const MILLIS_PER_MINUTE = 10000;
@@ -55,7 +63,6 @@ class RunTimer extends Component {
       playsInSilentModeIOS: false,
       shouldDuckAndroid: false,
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS
-
     });
   }
 
@@ -70,7 +77,7 @@ class RunTimer extends Component {
     backgroundSound.stopAsync().then(() => {
       console.log('Play end sound');
       endSound.replayAsync();
-    })
+    });
   }
 
   intervalSound() {
@@ -250,92 +257,107 @@ class RunTimer extends Component {
 
     return (
       <Modal
-        style={styles.modal}
         animationType="slide"
         tranparent={false}
         visible
         onRequestClose={() => console.log('close timer modal')}
       >
-        <View style={styles.top}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>{timer.title}</Text>
-            <Avatar
-              small
-              rounded
-              icon={{ name: 'close' }}
-              onPress={this.handleClose.bind(this)}
-              activeOpacity={0.7}
-              containerStyle={styles.closeButton}
-            />
+        <ImageBackground
+          resizeMode="cover"
+          source={this.props.timer.appBackground}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.top}>
+            <View style={styles.headerContainer}>
+              <Text style={styles.header}>{timer.title}</Text>
+              <Avatar
+                small
+                rounded
+                icon={{ name: 'close' }}
+                onPress={this.handleClose.bind(this)}
+                activeOpacity={0.7}
+                containerStyle={styles.closeButton}
+              />
+            </View>
+            {this.renderTimers()}
           </View>
-          {this.renderTimers()}
-        </View>
-        <View style={styles.bottom}>
-          {this.renderButtons()}
-          {this.renderIntervals()}
-        </View>
+          <View style={styles.bottom}>
+            {this.renderButtons()}
+            {this.renderIntervals()}
+          </View>
+        </ImageBackground>
       </Modal>
     );
   }
 }
 
 const styles = {
-  modal: {
+  backgroundImage: {
+    width: SCREEN_WIDTH,
     flexDirection: 'column',
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    alignContent: 'stretch',
     justifyContent: 'center'
   },
+
   header: {
+    backgroundColor: 'transparent',
     textAlign: 'center',
     flex: 1
   },
   headerContainer: {
+    backgroundColor: 'transparent',
     borderBottomWidth: 0.5,
     paddingTop: 20,
     paddingBottom: 10,
-    backgroundColor: '#F9F9F9',
     flexDirection: 'row'
   },
   timerContainer: {
+    backgroundColor: 'transparent',
     justifyContent: 'center'
   },
   timerWrapper: {
+    backgroundColor: 'transparent',
     alignSelf: 'center',
     flexWrap: 'wrap'
   },
   mainTimer: {
+    backgroundColor: 'transparent',
     fontSize: 60,
     fontWeight: '100',
     alignSelf: 'flex-end',
     padding: 5
   },
   remainingTimer: {
+    backgroundColor: 'transparent',
     fontSize: 40,
     alignSelf: 'flex-end',
     padding: 5
   },
   intervalTimer: {
+    backgroundColor: 'transparent',
     fontSize: 30,
     alignSelf: 'center',
     padding: 5
   },
   intervalTimerElapsed: {
+    backgroundColor: 'transparent',
     fontSize: 20,
     color: '#bbb',
     alignSelf: 'center',
     padding: 5
   },
   top: {
+    backgroundColor: 'rgba(222,222,222,0.4)',
     flex: 2
   },
   bottom: {
+    backgroundColor: 'rgba(222,222,222,0.4)',
     borderTopWidth: 0.5,
-    flex: 3,
-    backgroundColor: '#F2F2F2'
+    flex: 3
   },
   buttonWrapper: {
+    backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingTop: 15,
