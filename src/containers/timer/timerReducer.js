@@ -4,7 +4,7 @@ import * as c from './timerConstants';
 
 import { Backgrounds } from '../../../assets/backgrounds/backgrounds';
 
-const backgroundImage = Backgrounds.Sky;
+const backgroundImage = Backgrounds.River;
 
 const DEFAULT_STATE = {
   selectedTimerId: 1,

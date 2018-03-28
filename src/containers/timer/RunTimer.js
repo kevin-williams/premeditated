@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  ImageBackground,
-  Modal,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native';
+import { ImageBackground, Modal, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Audio } from 'expo';
 import moment from 'moment';
@@ -173,24 +167,30 @@ class RunTimer extends Component {
     const stopStyle = this.state.isRunning
       ? styles.stopButton
       : styles.startButton;
-    const stopText = this.state.isRunning ? 'Stop' : 'Start';
+
+    const stopIcon = this.state.isRunning
+      ? { name: 'pause-circle-outline' }
+      : { name: 'play-arrow' };
 
     return (
       <View style={styles.buttonWrapper}>
-        <TouchableHighlight
-          underlayColor="#777"
+        <Avatar
+          medium
+          rounded
+          icon={stopIcon}
           onPress={this.handleStartStop.bind(this)}
-          style={styles.button}
-        >
-          <Text style={stopStyle}>{stopText}</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor="#777"
+          activeOpacity={0.7}
+          overlayContainerStyle={stopStyle}
+        />
+
+        <Avatar
+          medium
+          rounded
+          icon={{ name: 'refresh' }}
           onPress={this.handleReset.bind(this)}
-          style={styles.button}
-        >
-          <Text>Reset</Text>
-        </TouchableHighlight>
+          activeOpacity={0.7}
+          containerStyle={styles.closeButton}
+        />
       </View>
     );
   }
@@ -280,11 +280,9 @@ class RunTimer extends Component {
               />
             </View>
             {this.renderTimers()}
-          </View>
-          <View style={styles.bottom}>
             {this.renderButtons()}
-            {this.renderIntervals()}
           </View>
+          <View style={styles.bottom}>{this.renderIntervals()}</View>
         </ImageBackground>
       </Modal>
     );
@@ -302,14 +300,15 @@ const styles = {
 
   headerText: {
     fontSize: 24,
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(222,222,222,0.7)',
+    borderRadius: 20,
     textAlign: 'center',
     flex: 1
   },
   headerContainer: {
     backgroundColor: 'transparent',
     borderBottomWidth: 0.5,
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 10,
     flexDirection: 'row'
   },
@@ -324,14 +323,14 @@ const styles = {
   },
   mainTimer: {
     backgroundColor: 'transparent',
-    fontSize: 60,
+    fontSize: 50,
     fontWeight: '100',
     alignSelf: 'flex-end',
     padding: 5
   },
   remainingTimer: {
     backgroundColor: 'transparent',
-    fontSize: 40,
+    fontSize: 35,
     alignSelf: 'flex-end',
     padding: 5
   },
@@ -354,12 +353,14 @@ const styles = {
   },
   top: {
     backgroundColor: 'rgba(222,222,222,0.4)',
-    flex: 2
+    height: 280
   },
   bottom: {
     backgroundColor: 'rgba(222,222,222,0.4)',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flex: 1,
     borderTopWidth: 0.5,
-    flex: 3,
     marginBottom: 30
   },
   buttonWrapper: {
@@ -379,13 +380,13 @@ const styles = {
   },
 
   startButton: {
-    color: '#00cc00'
+    backgroundColor: 'rgba(0, 209, 0, .5)'
   },
   stopButton: {
-    color: 'red'
+    backgroundColor: 'rgba(255, 0, 0, .5)'
   },
   closeButton: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(180,180,180,.7)',
     marginRight: 20
   }
 };
