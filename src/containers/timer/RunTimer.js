@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ImageBackground, Modal, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import { Audio } from 'expo';
+import { Audio, KeepAwake } from 'expo';
 import moment from 'moment';
 
 import { stopSelectedTimer } from './timerActions';
@@ -264,9 +264,10 @@ class RunTimer extends Component {
       >
         <ImageBackground
           resizeMode="cover"
-          source={this.props.timer.appBackground}
+          source={this.props.timer.appBackground.uri}
           style={styles.backgroundImage}
         >
+          <KeepAwake />
           <View style={styles.top}>
             <View style={styles.headerContainer}>
               <Text style={styles.headerText}>{timer.title}</Text>

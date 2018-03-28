@@ -1,13 +1,13 @@
-export const Backgrounds = {
-  Bark: require('./Bark1.png'),
-  Cave: require('./Cave1.png'),
-  Coffee: require('./Coffee.png'),
-  Flower_Pink: require('./Flower_Pink.png'),
-  Flower_Purple: require('./Flower_Purple.png'),
-  Flower_Red: require('./Flower_Red.png'),
-  Natural_Bridge: require('./Natural_Bridge.png'),
-  River: require('./River.png'),
-  Sky: require('./sky.png'),
-  Snowtree: require('./snowtree.png'),
-  Sunset: require('./sunset.png')
-};
+export const Backgrounds = [
+  { name: 'Bark', uri: require('./Bark1.png') },
+  { name: 'Cave', uri: require('./Cave1.png') },
+  { name: 'Coffee', uri: require('./Coffee.png') },
+  { name: 'Flower_Pink', uri: require('./Flower_Pink.png') },
+  { name: 'Flower_Purple', uri: require('./Flower_Purple.png') },
+  { name: 'Flower_Red', uri: require('./Flower_Red.png') },
+  { name: 'Natural_Bridge', uri: require('./Natural_Bridge.png') },
+  { name: 'River', uri: require('./River.png') },
+  { name: 'Sky', uri: require('./sky.png') },
+  { name: 'Snowtree', uri: require('./snowtree.png') },
+  { name: 'Sunset', uri: require('./sunset.png') }
+];

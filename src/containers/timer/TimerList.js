@@ -118,7 +118,7 @@ class TimerList extends Component {
     return (
       <ImageBackground
         resizeMode="cover"
-        source={this.props.timer.appBackground}
+        source={this.props.timer.appBackground.uri}
         style={styles.backgroundImage}
       >
         <View style={styles.container}>

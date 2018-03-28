@@ -1,12 +1,12 @@
 {
   "expo": {
     "name": "Premeditated",
+    "version": "1.0.4",
     "description": "Simple meditation timers.   Save your favorites.",
     "slug": "premeditated",
     "privacy": "public",
     "sdkVersion": "25.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -14,6 +14,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": [
+      "assets/sound/*",
+      "assets/sound/background/*",
+      "assets/backgrounds/*"
+    ],
     "ios": {
       "supportsTablet": true
     }
