@@ -6,6 +6,7 @@ import { Audio, KeepAwake } from 'expo';
 import moment from 'moment';
 
 import { stopSelectedTimer } from './timerActions';
+import TimerProgress from '../../components/TimerProgress';
 
 import { SCREEN_WIDTH } from '../../utils';
 
@@ -23,8 +24,9 @@ const backgroundSound = new Audio.Sound();
 
 const DEFAULT_STATE = {
   isRunning: false,
-  mainTimer: null,
-  remainingTimer: null,
+  mainTimer: 0,
+  remainingTimer: 0,
+  finalTime: 0,
   intervalTimers: []
 };
 
@@ -158,9 +160,15 @@ class RunTimer extends Component {
 
   formatTime(milliseconds) {
     if (!milliseconds) {
-      return '00:00.0';
+      return '00:00';
     }
-    return moment(milliseconds).format('mm:ss.S');
+
+    let format = 'mm:ss';
+    if (milliseconds > MILLIS_PER_MINUTE * 60) {
+      format = 'hh:mm:ss';
+    }
+
+    return moment(milliseconds).format(format);
   }
 
   renderButtons() {
@@ -199,11 +207,12 @@ class RunTimer extends Component {
     return (
       <View style={styles.timerContainer}>
         <View style={styles.timerWrapper}>
-          <Text style={styles.mainTimer}>
-            {this.formatTime(this.state.mainTimer)}
-          </Text>
+          <TimerProgress
+            currentTime={this.state.mainTimer}
+            endTime={this.state.finalTime}
+          />
           <Text style={styles.remainingTimer}>
-            {this.formatTime(this.state.remainingTimer)}
+            Remaining {this.formatTime(this.state.remainingTimer)}
           </Text>
         </View>
       </View>
@@ -215,41 +224,25 @@ class RunTimer extends Component {
       return null;
     }
 
-    const expiredTimers = [];
-
     const intervalTimerDisplay = this.state.intervalTimes.map(
       (timer, index) => {
-        const intervalTime = timer.time - this.state.mainTimer;
-
-        if (intervalTime > 0) {
-          return (
-            <Text key={`interval${index}`} style={styles.intervalTimer}>
-              {this.formatTime(intervalTime)}
-            </Text>
-          );
-        }
-
         if (!timer.soundPlayed) {
           this.intervalSound();
           timer.soundPlayed = true;
         }
 
-        expiredTimers.push(
-          <Text key={`interval${index}`} style={styles.intervalTimerElapsed}>
-            {this.formatTime(timer.time)}
-          </Text>
+        return (
+          <TimerProgress
+            key={`interval-${index}`}
+            label={timer.name}
+            currentTime={this.state.mainTimer}
+            endTime={timer.time}
+          />
         );
-
-        return null;
       }
     );
 
-    return (
-      <View style={styles.timerWrapper}>
-        {intervalTimerDisplay}
-        {expiredTimers}
-      </View>
-    );
+    return <View style={styles.timerWrapper}>{intervalTimerDisplay}</View>;
   }
 
   render() {
@@ -320,37 +313,13 @@ const styles = {
   timerWrapper: {
     backgroundColor: 'transparent',
     alignSelf: 'center',
-    flexWrap: 'wrap'
-  },
-  mainTimer: {
-    backgroundColor: 'transparent',
-    fontSize: 50,
-    fontWeight: '100',
-    alignSelf: 'flex-end',
-    padding: 5
+    width: 200
   },
   remainingTimer: {
     backgroundColor: 'transparent',
-    fontSize: 35,
-    alignSelf: 'flex-end',
+    fontSize: 20,
+    alignSelf: 'center',
     padding: 5
-  },
-  intervalTimer: {
-    backgroundColor: 'rgba(222,222,222,0.4)',
-    borderRadius: 10,
-    fontSize: 25,
-    alignSelf: 'center',
-    padding: 5,
-    margin: 5
-  },
-  intervalTimerElapsed: {
-    backgroundColor: 'transparent',
-    borderRadius: 10,
-    fontSize: 18,
-    color: '#bbb',
-    alignSelf: 'center',
-    padding: 5,
-    margin: 5
   },
   top: {
     backgroundColor: 'rgba(222,222,222,0.4)',
