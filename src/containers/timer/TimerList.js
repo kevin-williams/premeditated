@@ -139,7 +139,6 @@ class TimerList extends Component {
               width: SCREEN_WIDTH,
               height: 50,
               marginBottom: 50,
-              flex: 1,
               alignSelf: 'flex-end'
             }}
             adUnitID={AD_MOB_ID}
@@ -187,8 +186,6 @@ const styles = {
   },
   list: {
     backgroundColor: 'transparent',
-    flexBasis: '80%',
-    flexGrow: 4,
     flex: 1
   },
   listItem: {
