@@ -163,15 +163,13 @@ class RunTimer extends Component {
       return '00:00';
     }
 
-    const d = moment.duration(milliseconds, 'milliseconds');
+    const d = moment.utc(milliseconds);
     const hours = d.hours();
-    const mins = d.minutes() < 10 ? `0${d.minutes()}` : d.minutes();
-    const secs = d.seconds() < 10 ? `0${d.seconds()}` : d.seconds();
 
     if (hours > 0) {
-      return `${hours}:${mins}.${secs}`;
+      return d.format('h:mm');
     }
-    return `${mins}.${secs}`;
+    return d.format('mm.ss');
   }
 
   renderButtons() {
