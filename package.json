@@ -6,10 +6,10 @@
     "expo": "^25.0.0",
     "moment": "^2.21.0",
     "react": "16.2.0",
-    "react-native":
-      "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
     "react-native-elements": "^0.19.0",
     "react-redux": "^5.0.7",
+    "react-router-native": "^4.2.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   },

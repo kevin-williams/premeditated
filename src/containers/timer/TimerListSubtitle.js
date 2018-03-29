@@ -11,43 +11,23 @@ import {
   showAddDialog
 } from './timerActions';
 
+import { getTimerDescription } from '../../utils';
+
 class TimerListSubtitle extends Component {
-  getTimerDescription(timer) {
-    let hourStr = '';
-    if (timer.selectedHours === 1) {
-      hourStr = `${timer.selectedHours} hr `;
-    } else if (timer.selectedHours > 1) {
-      hourStr = `${timer.selectedHours} hrs `;
-    }
-
-    let minuteStr = '';
-    if (timer.selectedMinutes === 1) {
-      minuteStr = `${timer.selectedMinutes} min `;
-    } else if (timer.selectedMinutes > 1) {
-      minuteStr = `${timer.selectedMinutes} mins `;
-    }
-
-    return hourStr + minuteStr;
-  }
-
   render() {
     const timer = this.props.myTimer;
 
     if (timer.id !== this.props.timer.selectedTimerId) {
       return (
         <View>
-          <Text style={styles.subtitleText}>
-            {this.getTimerDescription(timer)}
-          </Text>
+          <Text style={styles.subtitleText}>{getTimerDescription(timer)}</Text>
         </View>
       );
     }
 
     return (
       <View style={styles.subtitleContainer}>
-        <Text style={styles.subtitleText}>
-          {this.getTimerDescription(timer)}
-        </Text>
+        <Text style={styles.subtitleText}>{getTimerDescription(timer)}</Text>
         <Avatar
           medium
           rounded

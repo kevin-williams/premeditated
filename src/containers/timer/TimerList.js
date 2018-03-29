@@ -135,7 +135,13 @@ class TimerList extends Component {
           </View>
           <List containerStyle={styles.list}>{this.renderListItems()}</List>
           <AdMobBanner
-            style={{ width: SCREEN_WIDTH, flex: 1 }}
+            style={{
+              width: SCREEN_WIDTH,
+              height: 50,
+              marginBottom: 50,
+              flex: 1,
+              alignSelf: 'flex-end'
+            }}
             adUnitID={AD_MOB_ID}
             testDeviceID="EMULATOR"
             didFailToReceiveAdWithError={error =>
@@ -152,7 +158,7 @@ const styles = {
   backgroundImage: {
     width: SCREEN_WIDTH,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-between'
   },
   container: {
     backgroundColor: 'rgba(222,222,222,0.2)'
@@ -181,6 +187,8 @@ const styles = {
   },
   list: {
     backgroundColor: 'transparent',
+    flexBasis: '80%',
+    flexGrow: 4,
     flex: 1
   },
   listItem: {

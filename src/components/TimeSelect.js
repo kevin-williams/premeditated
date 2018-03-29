@@ -1,66 +1,103 @@
 import React, { Component } from 'react';
-import { Platform, Picker, Text, View } from 'react-native';
+import {
+  DatePickerIOS,
+  Modal,
+  Platform,
+  Text,
+  TimePickerAndroid,
+  View
+} from 'react-native';
 
-const hourPickerItems = [];
-const minutePickerItems = [];
+import { Avatar } from 'react-native-elements';
+import { getTimerDescription } from '../utils';
 
 export default class TimeSelect extends Component {
-  constructor() {
-    super();
-    this.loadPickerHours();
-    this.loadPickerMinutes();
+  state = {
+    showModal: false
+  };
+
+  showTimeDialog() {
+    if (Platform.OS === 'ios') {
+      this.setState({ showModal: true });
+    } else {
+      this.showAndroidPicker();
+    }
   }
 
-  loadPickerHours = () => {
-    for (let i = 0; i <= 2; i++) {
-      hourPickerItems.push(
-        <Picker.Item key={`HourItem${i}`} label={`${i}`} value={i} />
-      );
-    }
-  };
+  async showAndroidPicker() {
+    const { hours, minutes } = this.props;
 
-  loadPickerMinutes = () => {
-    for (let i = 0; i <= 59; i++) {
-      minutePickerItems.push(
-        <Picker.Item key={`MinuteItem${i}`} label={`${i}`} value={i} />
-      );
+    try {
+      const {
+        action,
+        hour: selectedHours,
+        minute: selectedMinutes
+      } = await TimePickerAndroid.open({
+        hour: hours,
+        minute: minutes,
+        is24Hour: true,
+        mode: 'clock'
+      });
+
+      console.log(`selected ${selectedHours}:${selectedMinutes} for ${action}`);
+
+      if (action !== TimePickerAndroid.dismissedAction) {
+        this.props.onTimeSelected({
+          hours: selectedHours,
+          minutes: selectedMinutes
+        });
+      }
+    } catch ({ code, message }) {
+      console.warn('Cannot open time picker', message);
     }
-  };
+  }
+
+  renderTimeDialog() {
+    if (Platform.OS === 'ios') {
+      return this.renderIOSPicker();
+    }
+
+    return null;
+  }
+
+  renderIOSPicker() {
+    return (
+      <DatePickerIOS
+        onDateChange={date => console.log('date changed', date)}
+        mode="time"
+        minuteInterval="1"
+      />
+    );
+  }
 
   render() {
     const { hours, minutes, label, onTimeSelected } = this.props;
 
-    return (
-      <View>
-        <Text style={styles.labelStyle}>{label}</Text>
-        <View style={styles.containerStyle}>
-          <Text style={styles.textStyle}>Hours</Text>
-          <Text style={styles.textStyle}>Minutes</Text>
-        </View>
-        <View style={styles.containerStyle}>
-          <Picker
-            style={{ width: 100, height: 50 }}
-            selectedValue={hours}
-            prompt="Hours"
-            onValueChange={itemValue =>
-              onTimeSelected({ hours: itemValue, minutes })
-            }
-          >
-            {hourPickerItems}
-          </Picker>
+    const timeDescription = getTimerDescription({
+      selectedHours: hours,
+      selectedMinutes: minutes
+    });
 
-          <Picker
-            style={{ width: 100, height: 50 }}
-            rr
-            selectedValue={minutes}
-            prompt="Minutes"
-            onValueChange={itemValue =>
-              onTimeSelected({ hours, minutes: itemValue })
-            }
-          >
-            {minutePickerItems}
-          </Picker>
-        </View>
+    return (
+      <View style={styles.containerStyle}>
+        <Modal
+          visible={this.state.showModal}
+          onRequestClose={() => this.setState({ showModal: false })}
+          animationType="slide"
+          tranparent
+        >
+          {this.renderTimeDialog()}
+        </Modal>
+        <Text style={styles.label}>{label}</Text>
+        <Text style={styles.time}>{timeDescription}</Text>
+        <Avatar
+          small
+          rounded
+          icon={{ name: 'av-timer' }}
+          onPress={this.showTimeDialog.bind(this)}
+          activeOpacity={0.7}
+          overlaycontainerStyle={styles.button}
+        />
       </View>
     );
   }
@@ -70,20 +107,27 @@ const styles = {
   containerStyle: {
     display: 'flex',
     flexDirection: 'row',
-    alignContent: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    margin: 5
   },
   pickerStyle: {
     width: 100,
     height: Platform.OS === 'ios' ? 200 : 50
   },
+  button: {
+    backgroundColor: 'white',
+    alignSelf: 'flex-end'
+  },
   textStyle: {
     textAlign: 'center',
     flex: 1
   },
-  labelStyle: {
+  label: {
     textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 'bold'
+    fontSize: 18
+  },
+  time: {
+    textAlign: 'center',
+    fontSize: 15
   }
 };

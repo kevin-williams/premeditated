@@ -4,7 +4,7 @@ import * as c from './timerConstants';
 
 import { Backgrounds } from '../../../assets/backgrounds/backgrounds';
 
-const backgroundImage = Backgrounds[7];
+const DEFAULT_BACKGROUND_IMAGE = Backgrounds[7];
 
 const DEFAULT_STATE = {
   selectedTimerId: 1,
@@ -22,7 +22,7 @@ const DEFAULT_STATE = {
       intervalId: undefined
     }
   ],
-  appBackground: backgroundImage
+  appBackground: DEFAULT_BACKGROUND_IMAGE
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -112,8 +112,14 @@ export default (state = DEFAULT_STATE, action) => {
     case c.APP_DATA_LOADED: {
       // Check for default background
       const newState = { ...action.state };
-      if (!action.state.appBackground) {
-        newState.appBackground = backgroundImage;
+      if (!action.state.appBackgroundName) {
+        newState.appBackground = DEFAULT_BACKGROUND_IMAGE;
+      } else {
+        Backgrounds.map(bg => {
+          if (action.state.appBackgroundName === bg.name) {
+            newState.appBackground = bg;
+          }
+        });
       }
 
       return newState;
@@ -128,7 +134,8 @@ export default (state = DEFAULT_STATE, action) => {
 function saveState(state) {
   const newState = {
     timers: state.timers,
-    selectedTimerId: state.selectedTimerId
+    selectedTimerId: state.selectedTimerId,
+    applicationBackgroundName: state.appBackground.name
   };
   try {
     const stateStr = JSON.stringify(newState);

@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 23043,
-  "expoServerNgrokUrl": "https://5f-sur.kevin-williams.premeditated.exp.direct",
-  "packagerNgrokUrl": "https://packager.5f-sur.kevin-williams.premeditated.exp.direct",
-  "ngrokPid": 23180
+  "packagerPid": 24570,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
