@@ -8,7 +8,7 @@ import moment from 'moment';
 import { stopSelectedTimer } from './timerActions';
 import TimerProgress from '../../components/TimerProgress';
 
-import { SCREEN_WIDTH } from '../../utils';
+import { SCREEN_WIDTH, getTimerDescription } from '../../utils';
 
 // const MILLIS_PER_MINUTE = 60000;
 const MILLIS_PER_MINUTE = 10000;
@@ -231,10 +231,13 @@ class RunTimer extends Component {
           timer.soundPlayed = true;
         }
 
+        const label = timer.name ? timer.name : this.formatTime(timer.time);
+        console.log('label=', label);
+
         return (
           <TimerProgress
             key={`interval-${index}`}
-            label={timer.name}
+            label={label}
             currentTime={this.state.mainTimer}
             endTime={timer.time}
           />
@@ -242,7 +245,12 @@ class RunTimer extends Component {
       }
     );
 
-    return <View style={styles.timerWrapper}>{intervalTimerDisplay}</View>;
+    return (
+      <View style={styles.timerWrapper}>
+        <Text style={styles.intervalText}>Interval Timers</Text>
+        {intervalTimerDisplay}
+      </View>
+    );
   }
 
   render() {
@@ -320,6 +328,12 @@ const styles = {
     fontSize: 20,
     alignSelf: 'center',
     padding: 5
+  },
+  intervalText: {
+    fontSize: 20,
+    backgroundColor: 'rgba(222,222,222,0.7)',
+    borderRadius: 20,
+    textAlign: 'center'
   },
   top: {
     backgroundColor: 'rgba(222,222,222,0.4)',

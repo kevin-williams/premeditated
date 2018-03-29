@@ -10,11 +10,11 @@ import {
 
 export default class TimerProgress extends Component {
   renderProgressBar() {
-    const { startTime, endTime, currentTime } = this.props;
+    const { endTime, currentTime } = this.props;
     let progress = 0;
 
-    if (endTime - startTime > 0) {
-      progress = currentTime / (endTime - startTime);
+    if (endTime > 0) {
+      progress = currentTime / endTime;
     }
 
     // console.log(`progress=${progress}`);
@@ -53,6 +53,5 @@ TimerProgress.defaultProps = {
 TimerProgress.propTypes = {
   label: PropTypes.string,
   currentTime: PropTypes.number.isRequired,
-  startTime: PropTypes.number,
   endTime: PropTypes.number.isRequired
 };
