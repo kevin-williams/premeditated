@@ -10,8 +10,8 @@ import TimerProgress from '../../components/TimerProgress';
 
 import { SCREEN_WIDTH, getTimerDescription } from '../../utils';
 
-// const MILLIS_PER_MINUTE = 60000;
-const MILLIS_PER_MINUTE = 10000;
+const MILLIS_PER_MINUTE = 60000;
+// const MILLIS_PER_MINUTE = 10000;
 const MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;
 
 const bellSound = require('../../../assets/sound/gong.mp3');
@@ -163,12 +163,15 @@ class RunTimer extends Component {
       return '00:00';
     }
 
-    let format = 'mm:ss';
-    if (milliseconds > MILLIS_PER_MINUTE * 60) {
-      format = 'hh:mm:ss';
-    }
+    const d = moment.duration(milliseconds, 'milliseconds');
+    const hours = d.hours();
+    const mins = d.minutes() < 10 ? `0${d.minutes()}` : d.minutes();
+    const secs = d.seconds() < 10 ? `0${d.seconds()}` : d.seconds();
 
-    return moment(milliseconds).format(format);
+    if (hours > 0) {
+      return `${hours}:${mins}.${secs}`;
+    }
+    return `${mins}.${secs}`;
   }
 
   renderButtons() {
@@ -232,7 +235,6 @@ class RunTimer extends Component {
         }
 
         const label = timer.name ? timer.name : this.formatTime(timer.time);
-        console.log('label=', label);
 
         return (
           <TimerProgress

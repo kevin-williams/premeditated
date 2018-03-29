@@ -39,7 +39,7 @@ export default class TimerProgress extends Component {
   render() {
     return (
       <View>
-        <Text>{this.props.label}</Text>
+        <Text style={this.props.textStyle}>{this.props.label}</Text>
         {this.renderProgressBar()}
       </View>
     );
@@ -47,11 +47,15 @@ export default class TimerProgress extends Component {
 }
 
 TimerProgress.defaultProps = {
-  startTime: 0
+  startTime: 0,
+  textStyle: {
+    fontSize: 18
+  }
 };
 
 TimerProgress.propTypes = {
   label: PropTypes.string,
   currentTime: PropTypes.number.isRequired,
-  endTime: PropTypes.number.isRequired
+  endTime: PropTypes.number.isRequired,
+  textStyle: PropTypes.object
 };
