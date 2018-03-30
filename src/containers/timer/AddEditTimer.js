@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, TextInput, TouchableHighlight, View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { ImageBackground, Text, TextInput, View } from 'react-native';
+import { Avatar } from 'react-native-elements';
 
 import SoundPicker from '../../components/SoundPicker';
 import TimeSelect from '../../components/TimeSelect';
@@ -31,11 +31,13 @@ class AddEditTimer extends Component {
 
   componentDidMount() {
     if (this.props.timer.showAddEditDialog === c.EDIT_MODE) {
-      const selectedTimer = this.props.timer.timers.filter(timer => timer.id === this.props.timer.selectedTimerId);
+      const selectedTimer = this.props.timer.timers.filter(
+        timer => timer.id === this.props.timer.selectedTimerId
+      );
       if (selectedTimer) {
-        this.setState({ ...selectedTimer[0] })
+        this.setState({ ...selectedTimer[0] });
       }
-    };
+    }
   }
 
   saveTimer() {
@@ -58,25 +60,34 @@ class AddEditTimer extends Component {
     } = this.state;
 
     return (
-      <View style={styles.container}>
-        <View style={styles.closeContainer}>
+      <ImageBackground
+        resizeMode="cover"
+        source={this.props.timer.appBackground.uri}
+        style={styles.backgroundImage}
+      >
+        <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Add/Edit Timer</Text>
-          <TouchableHighlight
-            style={styles.closeButton}
-            underlayColor="#777"
+          <Avatar
+            small
+            rounded
+            icon={{ name: 'close' }}
             onPress={() => this.props.closeAddDialog()}
-          >
-            <Text style={{ fontSize: 18 }}>X</Text>
-          </TouchableHighlight>
+            activeOpacity={0.7}
+            containerStyle={styles.closeButtonTop}
+          />
         </View>
         <View style={styles.bottom}>
-          <Text>Name</Text>
-          <TextInput
-            style={{ width: 200, height: 40 }}
-            onChangeText={text => this.setState({ title: text })}
-            placeholder="timer name"
-            value={this.state.title}
-          />
+          <View style={styles.nameContainer}>
+            <Text style={styles.nameLabel}>Timer Name</Text>
+            <TextInput
+              style={styles.nameInput}
+              placeholderTextColor="grey"
+              onChangeText={text => this.setState({ title: text })}
+              placeholder="timer name"
+              underlineColorAndroid="transparent"
+              value={this.state.title}
+            />
+          </View>
 
           <TimeSelect
             label="Duration"
@@ -90,9 +101,16 @@ class AddEditTimer extends Component {
               });
             }}
           />
-          <SoundPicker label="End Sound" selectedSound={this.state.endSound} sounds={soundFiles.sounds} path={'../../../assets/sound'} onChange={(newSound) => {
-            console.log('end sound changed', newSound); this.setState({ endSound: newSound })
-          }} />
+          <SoundPicker
+            label="End Sound"
+            selectedSound={this.state.endSound}
+            sounds={soundFiles.sounds}
+            path={'../../../assets/sound'}
+            onChange={newSound => {
+              console.log('end sound changed', newSound);
+              this.setState({ endSound: newSound });
+            }}
+          />
 
           <TimeSelect
             label="Interval"
@@ -106,34 +124,59 @@ class AddEditTimer extends Component {
               });
             }}
           />
-          <SoundPicker label="Interval Sound" selectedSound={this.state.intervalSound} sounds={soundFiles.sounds} path={'../../../assets/sound'} onChange={(newSound) => {
-            console.log('interval sound changed', newSound); this.setState({ intervalSound: newSound })
-          }} />
-
-          <SoundPicker label="Background Sound" selectedSound={this.state.backgroundSound} sounds={backgroundSoundFiles.sounds} path={'../../../assets/sound/background'} onChange={(newSound) => {
-            console.log('background sound changed', newSound); this.setState({ backgroundSound: newSound })
-          }} />
-
-
-          <Button
-            large
-            title="Save"
-            onPress={this.saveTimer.bind(this)}
-            backgroundColor="green"
+          <SoundPicker
+            label="Interval Sound"
+            selectedSound={this.state.intervalSound}
+            sounds={soundFiles.sounds}
+            path={'../../../assets/sound'}
+            onChange={newSound => {
+              console.log('interval sound changed', newSound);
+              this.setState({ intervalSound: newSound });
+            }}
           />
+
+          <SoundPicker
+            label="Background Sound"
+            selectedSound={this.state.backgroundSound}
+            sounds={backgroundSoundFiles.sounds}
+            path={'../../../assets/sound/background'}
+            onChange={newSound => {
+              console.log('background sound changed', newSound);
+              this.setState({ backgroundSound: newSound });
+            }}
+          />
+
+          <View style={styles.buttonContainer}>
+            <Avatar
+              medium
+              rounded
+              icon={{ name: 'check' }}
+              onPress={this.saveTimer.bind(this)}
+              activeOpacity={0.7}
+              containerStyle={styles.saveButton}
+            />
+            <Avatar
+              medium
+              rounded
+              icon={{ name: 'close' }}
+              onPress={() => this.props.closeAddDialog()}
+              activeOpacity={0.7}
+              containerStyle={styles.closeButton}
+            />
+          </View>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
 
 const styles = {
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  backgroundImage: {
+    flexDirection: 'column',
+    width: SCREEN_WIDTH,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 30
+    justifyContent: 'space-around',
+    flex: 1
   },
   bottom: {
     flex: 3,
@@ -144,23 +187,49 @@ const styles = {
     fontSize: 18,
     flex: 5
   },
-  closeContainer: {
+  headerContainer: {
     width: SCREEN_WIDTH,
     borderBottomWidth: 0.5,
-    paddingBottom: 10,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: 'rgba(222,222,222,0.7)',
     flexDirection: 'row',
-    alignItems: 'flex-end'
+    alignItems: 'center',
+    marginTop: 25
+  },
+  nameContainer: {
+    width: 200,
+    backgroundColor: 'rgba(222,222,222,0.9)',
+    borderRadius: 10,
+    margin: 10
+  },
+  nameLabel: {
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  nameInput: {
+    borderWidth: 0.5,
+    paddingLeft: 5,
+    paddingRight: 5,
+    margin: 10
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  saveButton: {
+    backgroundColor: 'rgba(0, 222, 0, 0.6)'
+  },
+  closeButtonTop: {
+    backgroundColor: 'rgba(180,180,180,.7)',
+    margin: 10
   },
   closeButton: {
-    width: 40,
-    height: 40,
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: 'rgba(222, 0, 0, 0.6)'
   }
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { addTimer, updateTimer, closeAddDialog })(AddEditTimer);
+export default connect(mapStateToProps, {
+  addTimer,
+  updateTimer,
+  closeAddDialog
+})(AddEditTimer);
