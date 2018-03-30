@@ -7,6 +7,7 @@ import {
   TimePickerAndroid,
   View
 } from 'react-native';
+import moment from 'moment';
 
 import { Avatar } from 'react-native-elements';
 import { getTimerDescription } from '../utils';
@@ -63,7 +64,15 @@ export default class TimeSelect extends Component {
   renderIOSPicker() {
     return (
       <DatePickerIOS
-        onDateChange={date => console.log('date changed', date)}
+        onDateChange={date => {
+          console.log('date changed', date);
+          const m = moment(date);
+
+          this.props.onTimeSelected({
+            hours: m.hours(),
+            minutes: m.minutes()
+          });
+        }}
         mode="time"
         minuteInterval="1"
       />
@@ -71,7 +80,7 @@ export default class TimeSelect extends Component {
   }
 
   render() {
-    const { hours, minutes, label, onTimeSelected } = this.props;
+    const { hours, minutes, label } = this.props;
 
     const timeDescription = getTimerDescription({
       selectedHours: hours,
@@ -79,7 +88,7 @@ export default class TimeSelect extends Component {
     });
 
     return (
-      <View style={styles.containerStyle}>
+      <View style={[styles.containerStyle, this.props.style]}>
         <Modal
           visible={this.state.showModal}
           onRequestClose={() => this.setState({ showModal: false })}

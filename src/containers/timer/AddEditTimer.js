@@ -90,6 +90,7 @@ class AddEditTimer extends Component {
           </View>
 
           <TimeSelect
+            style={styles.timeSelect}
             label="Duration"
             hours={selectedHours}
             minutes={selectedMinutes}
@@ -113,6 +114,7 @@ class AddEditTimer extends Component {
           />
 
           <TimeSelect
+            style={styles.timeSelect}
             label="Interval"
             hours={intervalHours}
             minutes={intervalMinutes}
@@ -224,6 +226,11 @@ const styles = {
   },
   closeButton: {
     backgroundColor: 'rgba(222, 0, 0, 0.6)'
+  },
+  timeSelect: {
+    backgroundColor: 'rgba(222,222,222,0.9)',
+    borderRadius: 10,
+    padding: 10
   }
 };
 
