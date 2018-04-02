@@ -41,11 +41,11 @@ class AddEditTimer extends Component {
   }
 
   saveTimer() {
-    if (this.props.timer.showAddEditDialog == c.EDIT_MODE) {
+    if (this.props.timer.showAddEditDialog === c.EDIT_MODE) {
       console.log('saving timer', this.state);
       this.props.updateTimer(this.state);
     } else {
-      console.log('addng timer', this.state);
+      console.log('adding timer', this.state);
       this.props.addTimer(this.state);
     }
     this.props.closeAddDialog();
