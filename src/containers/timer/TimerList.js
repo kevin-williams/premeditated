@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Animated,
   ImageBackground,
   LayoutAnimation,
+  PanResponder,
   UIManager,
   Text,
   View
@@ -16,7 +18,9 @@ import RunTimer from './RunTimer';
 
 import {
   loadApp,
+  deleteTimer,
   selectTimer,
+  startSelectedTimer,
   showAddDialog,
   closeAddDialog
 } from './timerActions';
@@ -24,6 +28,9 @@ import {
 import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription } from '../../utils';
 
 import * as c from './timerConstants';
+
+const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.4;
+const SWIPE_OUT_DURATION = 250;
 
 const CustomLayoutLinear = {
   duration: 100,
@@ -45,6 +52,27 @@ class TimerList extends Component {
   constructor(props) {
     super(props);
     this.props.loadApp();
+
+    this.position = new Animated.ValueXY();
+
+    this.panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gesture) => {
+        // console.log('gesture=', gesture);
+        this.position.setValue({ x: gesture.dx, y: 0 });
+      },
+      onPanResponderRelease: (event, gesture) => {
+        // console.log('release=', gesture);
+        if (gesture.dx > SWIPE_THRESHOLD) {
+          this.forceSwipe('Right');
+        } else if (gesture.dx < -SWIPE_THRESHOLD) {
+          this.forceSwipe('Left');
+        } else {
+          this.resetPosition();
+        }
+      }
+    });
   }
 
   componentWillMount() {
@@ -56,6 +84,49 @@ class TimerList extends Component {
   componentWillUpdate() {
     // LayoutAnimation.easeInEaseOut();
     LayoutAnimation.configureNext(CustomLayoutLinear);
+  }
+
+  onSwipeComplete(direction) {
+    console.log(`Swiped ${direction}`);
+    if (direction === 'Right') {
+      this.props.startSelectedTimer();
+    } else {
+      this.props.deleteTimer(this.props.timer.selectedTimerId);
+    }
+
+    this.position.setValue({ x: 0, y: 0 });
+  }
+
+  getSwipeStyle(timer) {
+    if (this.props.timer.selectedTimerId !== timer.id) {
+      return {};
+    }
+
+    return {
+      ...this.position.getLayout(),
+      transform: [{ translateX: this.position.x }]
+    };
+  }
+
+  /**
+   * Passed the swipe threshold, so now finish the rest of the swipe out
+   * @param direction
+   */
+  forceSwipe(direction) {
+    const newX = direction === 'Right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
+
+    Animated.timing(this.position, {
+      toValue: { x: newX, y: 0 },
+      duration: SWIPE_OUT_DURATION
+    }).start(() => {
+      this.onSwipeComplete(direction);
+    });
+  }
+
+  resetPosition() {
+    Animated.spring(this.position, {
+      toValue: { x: 0, y: 0 }
+    }).start();
   }
 
   renderSubtitle(timer) {
@@ -79,32 +150,37 @@ class TimerList extends Component {
       }
 
       return (
-        <ListItem
-          containerStyle={listItemStyle}
-          avatar={
-            <Avatar
-              small
-              rounded
-              icon={{ name: 'av-timer', color: 'white' }}
-              containerStyle={{ backgroundColor: 'grey' }}
-            />
-          }
-          badge={{
-            value: getTimerDescription(timer),
-            textStyle: { color: 'white' },
-            containerStyle: {
-              width: 110,
-              marginTop: -20,
-              marginLeft: 10,
-              backgroundColor: 'grey'
+        <Animated.View
+          key={timer.id}
+          style={this.getSwipeStyle(timer)}
+          {...this.panResponder.panHandlers}
+        >
+          <ListItem
+            containerStyle={listItemStyle}
+            avatar={
+              <Avatar
+                small
+                rounded
+                icon={{ name: 'av-timer', color: 'white' }}
+                containerStyle={{ backgroundColor: 'grey' }}
+              />
             }
-          }}
-          key={`timer_item_${index}`}
-          title={timer.title}
-          titleStyle={titleStyle}
-          onPress={() => this.props.selectTimer(timer)}
-          subtitle={this.renderSubtitle(timer)}
-        />
+            badge={{
+              value: getTimerDescription(timer),
+              textStyle: { color: 'white' },
+              containerStyle: {
+                width: 110,
+                marginTop: -20,
+                marginLeft: 10,
+                backgroundColor: 'grey'
+              }
+            }}
+            title={timer.title}
+            titleStyle={titleStyle}
+            onPress={() => this.props.selectTimer(timer)}
+            subtitle={this.renderSubtitle(timer)}
+          />
+        </Animated.View>
       );
     });
   }
@@ -221,7 +297,9 @@ const styles = {
 const mapStateToProps = state => state;
 export default connect(mapStateToProps, {
   loadApp,
+  deleteTimer,
   selectTimer,
+  startSelectedTimer,
   showAddDialog,
   closeAddDialog
 })(TimerList);
