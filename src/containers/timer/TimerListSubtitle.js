@@ -11,30 +11,16 @@ import {
   showAddDialog
 } from './timerActions';
 
-import { getTimerDescription } from '../../utils';
-
 class TimerListSubtitle extends Component {
   render() {
     const timer = this.props.myTimer;
 
     if (timer.id !== this.props.timer.selectedTimerId) {
-      return (
-        <View>
-          <Text style={styles.subtitleText}>{getTimerDescription(timer)}</Text>
-        </View>
-      );
+      return null;
     }
 
     return (
       <View style={styles.subtitleContainer}>
-        <Text style={styles.subtitleText}>{getTimerDescription(timer)}</Text>
-        <Avatar
-          medium
-          rounded
-          icon={{ name: 'play-arrow' }}
-          onPress={this.props.startSelectedTimer}
-          overlayContainerStyle={styles.start}
-        />
         <Avatar
           small
           rounded
@@ -42,6 +28,13 @@ class TimerListSubtitle extends Component {
           onPress={() => this.props.showAddDialog(c.EDIT_MODE)}
           activeOpacity={0.7}
           overlaycontainerStyle={styles.button}
+        />
+        <Avatar
+          medium
+          rounded
+          icon={{ name: 'play-arrow' }}
+          onPress={this.props.startSelectedTimer}
+          overlayContainerStyle={styles.start}
         />
         <Avatar
           small
@@ -59,7 +52,7 @@ class TimerListSubtitle extends Component {
 const styles = {
   subtitleContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-around'
   },
   subtitleText: {
     marginLeft: 20,

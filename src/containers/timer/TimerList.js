@@ -21,7 +21,7 @@ import {
   closeAddDialog
 } from './timerActions';
 
-import { AD_MOB_ID, SCREEN_WIDTH } from '../../utils';
+import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription } from '../../utils';
 
 import * as c from './timerConstants';
 
@@ -89,6 +89,16 @@ class TimerList extends Component {
               containerStyle={{ backgroundColor: 'grey' }}
             />
           }
+          badge={{
+            value: getTimerDescription(timer),
+            textStyle: { color: 'white' },
+            containerStyle: {
+              width: 110,
+              marginTop: -20,
+              marginLeft: 10,
+              backgroundColor: 'grey'
+            }
+          }}
           key={`timer_item_${index}`}
           title={timer.title}
           titleStyle={titleStyle}
