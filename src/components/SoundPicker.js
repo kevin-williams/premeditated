@@ -24,20 +24,19 @@ export default class SoundPicker extends Component {
   }
 
   loadPickerItems() {
-    if (pickers.length > 0) {
-      return;
-    }
-    this.props.sounds.map((sound, index) => {
-      pickers.push(
-        <Picker.Item
-          key={`Sound-${index}`}
-          label={sound.name}
-          value={sound.file}
-        />
-      );
-    });
-
-    console.log('pickers=', pickers);
+    // if (pickers.length > 0) {
+    //   return;
+    // }
+    // this.props.sounds.map((sound, index) => {
+    //   pickers.push(
+    //     <Picker.Item
+    //       key={`Sound-${index}`}
+    //       label={sound.name}
+    //       value={sound.file}
+    //     />
+    //   );
+    // });
+    // console.log('pickers=', pickers);
   }
 
   // TODO fix this when I get to doing the sound pickers

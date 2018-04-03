@@ -65,10 +65,7 @@ class AddEditTimer extends Component {
           minutes={interval.mins}
           onTimeSelected={time => {
             console.log('change interval=', time);
-            this.setState({
-              intervalHours: time.hours,
-              intervalMinutes: time.minutes
-            });
+            // TODO NEW interval procedure
           }}
         />
         <SoundPicker
@@ -122,13 +119,16 @@ class AddEditTimer extends Component {
           <TimeSelect
             style={styles.timeSelect}
             label="Duration"
-            hours={duration.house}
+            hours={duration.hours}
             minutes={duration.mins}
             onTimeSelected={time => {
               console.log('change time=', time);
               this.setState({
-                selectedHours: time.hours,
-                selectedMinutes: time.minutes
+                duration: {
+                  ...this.state.duration,
+                  hours: time.hours,
+                  mins: time.minutes
+                }
               });
             }}
           />
