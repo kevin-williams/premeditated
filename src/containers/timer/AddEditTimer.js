@@ -6,8 +6,8 @@ import { Avatar } from 'react-native-elements';
 import SoundPicker from '../../components/SoundPicker';
 import TimeSelect from '../../components/TimeSelect';
 
-import backgroundSoundFiles from '../../../assets/sound/background/background_sounds.json';
-import soundFiles from '../../../assets/sound/sounds.json';
+import { backgroundSounds } from '../../../assets/sound/background/background_sounds';
+import { sounds } from '../../../assets/sound/sounds';
 
 import * as c from './timerConstants';
 import { addTimer, updateTimer, closeAddDialog } from './timerActions';
@@ -16,12 +16,13 @@ import { SCREEN_WIDTH } from '../../utils';
 
 const NEW_TIMER = {
   title: '',
-  selectedHours: 0,
-  selectedMinutes: 10,
-  intervalHours: 0,
-  intervalMinutes: 5,
-  timerId: undefined,
-  intervalId: undefined
+  test: true,
+  duration: {
+    hours: 0,
+    mins: 15,
+    sound: undefined
+  },
+  intervals: []
 };
 
 class AddEditTimer extends Component {
@@ -51,13 +52,42 @@ class AddEditTimer extends Component {
     this.props.closeAddDialog();
   }
 
+  renderIntervalSelects() {
+    const { intervals } = this.state;
+    console.log('intervals=', intervals);
+
+    return intervals.map(interval => (
+      <View>
+        <TimeSelect
+          style={styles.timeSelect}
+          label="Interval"
+          hours={interval.hours}
+          minutes={interval.mins}
+          onTimeSelected={time => {
+            console.log('change interval=', time);
+            this.setState({
+              intervalHours: time.hours,
+              intervalMinutes: time.minutes
+            });
+          }}
+        />
+        <SoundPicker
+          label="Interval Sound"
+          selectedSound={interval.intervalSound}
+          sounds={sounds}
+          path={'../../../assets/sound'}
+          onChange={newSound => {
+            console.log('interval sound changed', newSound);
+            // interval.intervalSound = newSound;
+          }}
+        />
+      </View>
+    ));
+  }
+
   render() {
-    const {
-      selectedHours,
-      selectedMinutes,
-      intervalHours,
-      intervalMinutes
-    } = this.state;
+    const { duration } = this.state;
+    console.log('duration=', duration);
 
     return (
       <ImageBackground
@@ -92,8 +122,8 @@ class AddEditTimer extends Component {
           <TimeSelect
             style={styles.timeSelect}
             label="Duration"
-            hours={selectedHours}
-            minutes={selectedMinutes}
+            hours={duration.house}
+            minutes={duration.mins}
             onTimeSelected={time => {
               console.log('change time=', time);
               this.setState({
@@ -105,7 +135,7 @@ class AddEditTimer extends Component {
           <SoundPicker
             label="End Sound"
             selectedSound={this.state.endSound}
-            sounds={soundFiles.sounds}
+            sounds={sounds}
             path={'../../../assets/sound'}
             onChange={newSound => {
               console.log('end sound changed', newSound);
@@ -113,34 +143,12 @@ class AddEditTimer extends Component {
             }}
           />
 
-          <TimeSelect
-            style={styles.timeSelect}
-            label="Interval"
-            hours={intervalHours}
-            minutes={intervalMinutes}
-            onTimeSelected={time => {
-              console.log('change interval=', time);
-              this.setState({
-                intervalHours: time.hours,
-                intervalMinutes: time.minutes
-              });
-            }}
-          />
-          <SoundPicker
-            label="Interval Sound"
-            selectedSound={this.state.intervalSound}
-            sounds={soundFiles.sounds}
-            path={'../../../assets/sound'}
-            onChange={newSound => {
-              console.log('interval sound changed', newSound);
-              this.setState({ intervalSound: newSound });
-            }}
-          />
+          {this.renderIntervalSelects()}
 
           <SoundPicker
             label="Background Sound"
             selectedSound={this.state.backgroundSound}
-            sounds={backgroundSoundFiles.sounds}
+            sounds={backgroundSounds}
             path={'../../../assets/sound/background'}
             onChange={newSound => {
               console.log('background sound changed', newSound);

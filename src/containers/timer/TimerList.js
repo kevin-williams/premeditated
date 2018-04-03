@@ -182,7 +182,7 @@ class TimerList extends Component {
             />
           }
           badge={{
-            value: getTimerDescription(timer),
+            value: getTimerDescription(timer.duration),
             textStyle: { color: 'white' },
             containerStyle: {
               width: 110,

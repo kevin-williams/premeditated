@@ -8,10 +8,9 @@ import moment from 'moment';
 import { stopSelectedTimer } from './timerActions';
 import TimerProgress from '../../components/TimerProgress';
 
-import { SCREEN_WIDTH, getTimerDescription } from '../../utils';
+import { SCREEN_WIDTH } from '../../utils';
 
 const MILLIS_PER_MINUTE = 60000;
-// const MILLIS_PER_MINUTE = 10000;
 const MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;
 
 const bellSound = require('../../../assets/sound/gong.mp3');
@@ -107,24 +106,39 @@ class RunTimer extends Component {
     }
   }
 
+  getMillisFromTimer(entry, test) {
+    if (test) {
+      return (
+        (entry.mins * MILLIS_PER_MINUTE + entry.hours * MILLIS_PER_HOUR) / 10
+      );
+    }
+
+    return entry.mins * MILLIS_PER_MINUTE + entry.hours * MILLIS_PER_HOUR;
+  }
+
   processStart() {
     // Start pressed
     const timer = this.props.timer.runningTimer;
     const { mainTimer } = this.state;
 
-    const finalTime =
-      timer.selectedMinutes * MILLIS_PER_MINUTE +
-      timer.selectedHours * MILLIS_PER_HOUR;
+    const finalTime = this.getMillisFromTimer(timer.duration, timer.test);
     const intervalTimes = [];
 
-    const intervalMillis = timer.intervalMinutes * MILLIS_PER_MINUTE;
-    // TESTING only const intervalMillis = timer.intervalMinutes * 10000;
-    if (intervalMillis > 0) {
-      for (let i = intervalMillis; i < finalTime; i += intervalMillis) {
-        console.log('adding interval=' + i);
-        intervalTimes.push({ time: i, soundPlayed: false });
-      }
-    }
+    // const intervalMillis = timer.intervalMinutes * MILLIS_PER_MINUTE;
+    // // TESTING only const intervalMillis = timer.intervalMinutes * 10000;
+    // if (intervalMillis > 0) {
+    //   for (let i = intervalMillis; i < finalTime; i += intervalMillis) {
+    //     console.log('adding interval=' + i);
+    //     intervalTimes.push({ time: i, soundPlayed: false });
+    //   }
+    // }
+
+    timer.intervals.map(interval => {
+      intervalTimes.push({
+        time: this.getMillisFromTimer(interval, timer.test),
+        soundPlayed: false
+      });
+    });
 
     this.setState({
       mainTimerStart: moment(),
@@ -371,7 +385,8 @@ const styles = {
   },
   closeButton: {
     backgroundColor: 'rgba(180,180,180,.7)',
-    marginRight: 20
+    marginRight: 10,
+    marginLeft: 10
   }
 };
 

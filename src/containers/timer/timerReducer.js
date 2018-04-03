@@ -14,12 +14,15 @@ const DEFAULT_STATE = {
     {
       id: 1,
       title: '15 min with 5 min interval',
-      selectedHours: 0,
-      selectedMinutes: 15,
-      intervalHours: 0,
-      intervalMinutes: 5,
-      timerId: undefined,
-      intervalId: undefined
+      duration: {
+        hours: 0,
+        mins: 15,
+        sound: undefined
+      },
+      intervals: [
+        { hours: 0, mins: 5, sound: undefined },
+        { hours: 0, mins: 10, sound: undefined }
+      ]
     }
   ],
   appBackground: DEFAULT_BACKGROUND_IMAGE

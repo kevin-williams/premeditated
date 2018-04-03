@@ -1,4 +1,4 @@
-export const APP_KEY = '@kbw-premeditated:state';
+export const APP_KEY = '@kbw-premeditated:state_v1';
 
 export const ADD_TIMER = 'ADD_TIMER';
 export const DELETE_TIMER = 'DELETE_TIMER';

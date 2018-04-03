@@ -7,19 +7,19 @@ export const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 export const AD_MOB_ID = 'ca-app-pub-6513320241703770/6458258805';
 
-export const getTimerDescription = timer => {
+export const getTimerDescription = timeEntry => {
   let hourStr = '';
-  if (timer.selectedHours === 1) {
-    hourStr = `${timer.selectedHours} hr `;
-  } else if (timer.selectedHours > 1) {
-    hourStr = `${timer.selectedHours} hrs `;
+  if (timeEntry.hours === 1) {
+    hourStr = `${timeEntry.hours} hr `;
+  } else if (timeEntry.hours > 1) {
+    hourStr = `${timeEntry.hours} hrs `;
   }
 
   let minuteStr = '';
-  if (timer.selectedMinutes === 1) {
-    minuteStr = `${timer.selectedMinutes} min `;
-  } else if (timer.selectedMinutes > 1) {
-    minuteStr = `${timer.selectedMinutes} mins `;
+  if (timeEntry.mins === 1) {
+    minuteStr = `${timeEntry.mins} min `;
+  } else if (timeEntry.mins > 1) {
+    minuteStr = `${timeEntry.mins} mins `;
   }
 
   return hourStr + minuteStr;

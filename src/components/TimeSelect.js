@@ -83,8 +83,8 @@ export default class TimeSelect extends Component {
     const { hours, minutes, label } = this.props;
 
     const timeDescription = getTimerDescription({
-      selectedHours: hours,
-      selectedMinutes: minutes
+      hours,
+      mins: minutes
     });
 
     return (
