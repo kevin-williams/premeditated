@@ -9,8 +9,6 @@ import reducers from './src/reducers';
 
 import TimerList from './src/containers/timer/TimerList';
 
-import WheelPicker from './src/components/WheelPicker';
-
 export default class App extends React.Component {
   render() {
     return (
@@ -26,12 +24,6 @@ export default class App extends React.Component {
     );
   }
 }
-
-// const test = (<View style={styles.container}>
-//   <TimerList />          </View>
-// );
-// const test2 = <WheelPicker items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]} />;
-
 
 const styles = {
   container: {

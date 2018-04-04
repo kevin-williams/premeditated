@@ -116,6 +116,7 @@ const styles = {
   containerStyle: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     margin: 5
   },
@@ -133,7 +134,8 @@ const styles = {
   },
   label: {
     textAlign: 'center',
-    fontSize: 18
+    fontSize: 18,
+    marginRight: 10
   },
   time: {
     textAlign: 'center',

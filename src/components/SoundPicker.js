@@ -1,58 +1,59 @@
 import React, { Component } from 'react';
-import { Platform, Picker, Text, View } from 'react-native';
+import PropTypes from 'prop-types';
+import { Picker, Text, View } from 'react-native';
 import { Audio } from 'expo';
 
-const pickers = [];
-
-const selectedSound = new Audio.Sound();
-
 export default class SoundPicker extends Component {
-  constructor(props) {
-    super(props);
-    this.loadPickerItems();
+  componentDidMount() {
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_MIX_WITH_OTHERS,
+      playsInSilentModeIOS: false,
+      shouldDuckAndroid: false,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS
+    });
   }
 
-  soundChanged(itemValue) {
-    console.log('new sound=' + itemValue);
-    this.props.onChange(itemValue);
+  async soundChanged(newSound) {
+    console.log('selected sound=', newSound);
 
-    // const soundFile = require(`${this.props.path}/${itemValue.file}`);
+    const selectedSound = new Audio.Sound();
 
-    // selectedSound.loadAsync(soundFile)
-    //     .then(() => selectedSound.playAsync())
-    //     .catch((error) => console.log('Error loading sound', error));
+    try {
+      await selectedSound.loadAsync(newSound.file);
+
+      await selectedSound.playAsync();
+      setTimeout(() => selectedSound.stopAsync(), 5000);
+    } catch (error) {
+      console.log('error loading sound', error);
+    }
+    this.props.onChange(newSound);
   }
 
-  loadPickerItems() {
-    // if (pickers.length > 0) {
-    //   return;
-    // }
-    // this.props.sounds.map((sound, index) => {
-    //   pickers.push(
-    //     <Picker.Item
-    //       key={`Sound-${index}`}
-    //       label={sound.name}
-    //       value={sound.file}
-    //     />
-    //   );
-    // });
-    // console.log('pickers=', pickers);
-  }
-
-  // TODO fix this when I get to doing the sound pickers
   render() {
-    return null;
+    return (
+      <View style={{ width: 150 }}>
+        <Text>{this.props.label}</Text>
+        <Picker
+          selectedValue={this.props.selectedSound}
+          onValueChange={this.soundChanged.bind(this)}
+        >
+          {this.props.sounds.map((sound, index) => (
+            <Picker.Item
+              key={`Sound-${index}`}
+              label={sound.name}
+              value={sound}
+            />
+          ))}
+        </Picker>
+      </View>
+    );
   }
-  // render() {
-
-  //     return (<View>
-  //         <Text>Background</Text>
-  //         <Picker style={{ width: 300 }}
-  //             selectedValue={this.props.selectedSound}
-  //             onValueChange={this.soundChanged.bind(this)}
-  //         >
-  //             {pickers}
-  //         </Picker>
-  //     </View >);
-  // }
 }
+
+SoundPicker.propTypes = {
+  label: PropTypes.string,
+  selectedSound: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
+  sounds: PropTypes.array.isRequired
+};
