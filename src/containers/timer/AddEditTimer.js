@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ImageBackground, Text, TextInput, View } from 'react-native';
+import {
+  ImageBackground,
+  ScrollView,
+  Text,
+  TextInput,
+  View
+} from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 import SoundPicker from '../../components/SoundPicker';
@@ -78,7 +84,17 @@ class AddEditTimer extends Component {
 
     return (
       <View style={styles.timeSelect}>
-        <Text>Intervals</Text>
+        <View style={styles.intervalHeader}>
+          <Text>Intervals</Text>
+          <Avatar
+            small
+            rounded
+            icon={{ name: 'add' }}
+            onPress={() => this.props.showAddDialog(c.ADD_MODE)}
+            activeOpacity={0.7}
+            containerStyle={styles.addButton}
+          />
+        </View>
         {intervalRender}
       </View>
     );
@@ -105,7 +121,7 @@ class AddEditTimer extends Component {
             containerStyle={styles.closeButtonTop}
           />
         </View>
-        <View style={styles.bottom}>
+        <ScrollView style={styles.timerContainer}>
           <View style={styles.nameContainer}>
             <Text style={styles.nameLabel}>Name</Text>
             <TextInput
@@ -155,25 +171,24 @@ class AddEditTimer extends Component {
               }}
             />
           </View>
-
-          <View style={styles.buttonContainer}>
-            <Avatar
-              medium
-              rounded
-              icon={{ name: 'check' }}
-              onPress={this.saveTimer.bind(this)}
-              activeOpacity={0.7}
-              containerStyle={styles.saveButton}
-            />
-            <Avatar
-              medium
-              rounded
-              icon={{ name: 'close' }}
-              onPress={() => this.props.closeAddDialog()}
-              activeOpacity={0.7}
-              containerStyle={styles.closeButton}
-            />
-          </View>
+        </ScrollView>
+        <View style={styles.buttonContainer}>
+          <Avatar
+            medium
+            rounded
+            icon={{ name: 'check' }}
+            onPress={this.saveTimer.bind(this)}
+            activeOpacity={0.7}
+            containerStyle={styles.saveButton}
+          />
+          <Avatar
+            medium
+            rounded
+            icon={{ name: 'close' }}
+            onPress={() => this.props.closeAddDialog()}
+            activeOpacity={0.7}
+            containerStyle={styles.closeButton}
+          />
         </View>
       </ImageBackground>
     );
@@ -188,7 +203,8 @@ const styles = {
     justifyContent: 'space-around',
     flex: 1
   },
-  bottom: {
+  timerContainer: {
+    width: SCREEN_WIDTH,
     flex: 3,
     marginTop: 5
   },
@@ -209,10 +225,9 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: SCREEN_WIDTH * 0.8,
     backgroundColor: 'rgba(222,222,222,0.9)',
     borderRadius: 10,
-    margin: 5
+    margin: 10
   },
   nameLabel: {
     fontSize: 18,
@@ -225,9 +240,15 @@ const styles = {
     width: 200,
     margin: 10
   },
+  intervalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    width: SCREEN_WIDTH,
+    margin: 10
   },
   saveButton: {
     backgroundColor: 'rgba(0, 222, 0, 0.6)'
