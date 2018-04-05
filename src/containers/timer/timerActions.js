@@ -43,12 +43,17 @@ export const updateTimer = timer => ({
 export const loadApp = () => dispatch => {
   AsyncStorage.getItem(c.APP_KEY)
     .then(stateStr => {
-      console.log('loaded state=' + stateStr);
+      // console.log('loaded state=' + stateStr);
       const newState = JSON.parse(stateStr);
       dispatch({
         type: c.APP_DATA_LOADED,
         state: newState
       });
+
+      if (!newState.selectedTimerId && newState.timers.length > 0) {
+        newState.selectedTimerId = newState.timers[0].id;
+      }
+
       dispatch({
         type: c.SELECT_TIMER,
         timer: { id: newState.selectedTimerId }

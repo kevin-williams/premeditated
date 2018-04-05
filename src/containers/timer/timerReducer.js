@@ -3,6 +3,8 @@ import { AsyncStorage } from 'react-native';
 import * as c from './timerConstants';
 
 import { Backgrounds } from '../../../assets/backgrounds/backgrounds';
+import { backgroundSounds } from '../../../assets/sound/background/background_sounds';
+import { sounds } from '../../../assets/sound/sounds';
 
 const DEFAULT_BACKGROUND_IMAGE = Backgrounds[7];
 
@@ -114,16 +116,7 @@ export default (state = DEFAULT_STATE, action) => {
 
     case c.APP_DATA_LOADED: {
       // Check for default background
-      const newState = { ...action.state };
-      if (!action.state.appBackgroundName) {
-        newState.appBackground = DEFAULT_BACKGROUND_IMAGE;
-      } else {
-        Backgrounds.map(bg => {
-          if (action.state.appBackgroundName === bg.name) {
-            newState.appBackground = bg;
-          }
-        });
-      }
+      const newState = convertOnLoad(action.state);
 
       return newState;
     }
@@ -136,10 +129,11 @@ export default (state = DEFAULT_STATE, action) => {
 
 function saveState(state) {
   const newState = {
-    timers: state.timers,
+    timers: convertForSaving(state.timers),
     selectedTimerId: state.selectedTimerId,
     applicationBackgroundName: state.appBackground.name
   };
+
   try {
     const stateStr = JSON.stringify(newState);
     console.log('saving state=' + stateStr);
@@ -147,4 +141,81 @@ function saveState(state) {
   } catch (error) {
     console.log('Error saving state', error);
   }
+}
+
+/**
+ * Change the referenced objects to just store the names.   Will rehydrate on load.
+ */
+function convertForSaving(timers) {
+  return timers.map(timer => {
+    const newTimer = { ...timer };
+    if (timer.duration.sound && timer.duration.sound.name) {
+      newTimer.duration.sound = timer.duration.sound.name;
+    }
+
+    if (timer.backgroundSound && timer.backgroundSound.name) {
+      newTimer.backgroundSound = timer.backgroundSound.name;
+    }
+
+    newTimer.intervals = timer.intervals.map(interval => {
+      const newInterval = { ...interval };
+      if (interval.sound && interval.sound.name) {
+        newInterval.sound = interval.sound.name;
+      }
+      return newInterval;
+    });
+
+    return newTimer;
+  });
+}
+
+function convertOnLoad(state) {
+  if (!state) {
+    return DEFAULT_STATE;
+  }
+  const newState = fixBackgroundImage(state);
+
+  newState.timers = fixSounds(state.timers);
+
+  console.log('final state after load', newState);
+  return newState;
+}
+
+function fixBackgroundImage(state) {
+  const newState = { ...state };
+  if (!state.appBackgroundName) {
+    newState.appBackground = DEFAULT_BACKGROUND_IMAGE;
+  } else {
+    Backgrounds.map(bg => {
+      if (state.appBackgroundName === bg.name) {
+        newState.appBackground = bg;
+      }
+    });
+  }
+
+  return newState;
+}
+
+function fixSounds(timers) {
+  return timers.map(timer => {
+    const newTimer = { ...timer };
+    newTimer.backgroundSound = backgroundSounds.find(
+      sound => sound.name === newTimer.backgroundSound
+    );
+
+    newTimer.duration.sound = sounds.find(
+      sound => sound.name === newTimer.duration.sound
+    );
+
+    newTimer.intervals = newTimer.intervals.map(interval => {
+      const newInterval = { ...interval };
+      newInterval.sound = sounds.find(
+        sound => sound.name === newInterval.sound
+      );
+
+      return newInterval;
+    });
+
+    return newTimer;
+  });
 }

@@ -82,22 +82,32 @@ class AddEditTimer extends Component {
       />
     ));
 
-    return (
-      <View style={styles.timeSelect}>
-        <View style={styles.intervalHeader}>
-          <Text>Intervals</Text>
-          <Avatar
-            small
-            rounded
-            icon={{ name: 'add' }}
-            onPress={() => this.props.showAddDialog(c.ADD_MODE)}
-            activeOpacity={0.7}
-            containerStyle={styles.addButton}
-          />
+    if (this.state.addInterval) {
+      return (
+        <View style={styles.timeSelect}>
+          <View style={styles.intervalHeader}>
+            <Text>Add Intervals</Text>
+          </View>
         </View>
-        {intervalRender}
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={styles.timeSelect}>
+          <View style={styles.intervalHeader}>
+            <Text>Intervals</Text>
+            <Avatar
+              small
+              rounded
+              icon={{ name: 'add' }}
+              onPress={() => this.setState({ addInterval: true })}
+              activeOpacity={0.7}
+              containerStyle={styles.addButton}
+            />
+          </View>
+          {intervalRender}
+        </View>
+      );
+    }
   }
 
   render() {
