@@ -22,8 +22,8 @@ const DEFAULT_STATE = {
         sound: undefined
       },
       intervals: [
-        { hours: 0, mins: 5, sound: undefined },
-        { hours: 0, mins: 10, sound: undefined }
+        { name: '5 mins', hours: 0, mins: 5, sound: sounds[4] },
+        { name: '10 mins', hours: 0, mins: 10, sound: sounds[4] }
       ]
     }
   ],

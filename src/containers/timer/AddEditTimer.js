@@ -19,7 +19,7 @@ import { sounds } from '../../../assets/sound/sounds';
 import * as c from './timerConstants';
 import { addTimer, updateTimer, closeAddDialog } from './timerActions';
 
-import { SCREEN_WIDTH } from '../../utils';
+import { SCREEN_WIDTH, getTimerDescription } from '../../utils';
 
 const NEW_TIMER = {
   title: '',
@@ -60,6 +60,14 @@ class AddEditTimer extends Component {
     this.props.closeAddDialog();
   }
 
+  addIntervalsToState(intervals) {
+    let newIntervals = [];
+    newIntervals = newIntervals.concat(this.state.intervals);
+    newIntervals = newIntervals.concat(intervals);
+    console.log('adding new intervals', newIntervals);
+    this.setState({ intervals: newIntervals });
+  }
+
   renderIntervalSelects(hideButton) {
     const { intervals } = this.state;
     console.log('intervals=', intervals);
@@ -77,8 +85,11 @@ class AddEditTimer extends Component {
           this.setState(newState);
         }}
         onSoundChange={sound => {
+          const newIntervals = [].concat(this.state.intervals);
           const myInterval = this.state.intervals[index];
           myInterval.sound = sound;
+
+          this.setState({ intervals: newIntervals });
         }}
       />
     ));
@@ -117,10 +128,13 @@ class AddEditTimer extends Component {
         style={styles.backgroundImage}
       >
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Add/Edit Intervals</Text>
+          <Text style={styles.headerText}>
+            Add/Edit Intervals for {getTimerDescription(this.state.duration)}
+          </Text>
         </View>
         <AddNewInterval
-          onChange={intervals => console.log('new intervals=', intervals)}
+          timer={this.state}
+          onChange={this.addIntervalsToState.bind(this)}
         />
         <ScrollView style={styles.timerContainer}>
           {this.renderIntervalSelects(true)}
@@ -171,7 +185,7 @@ class AddEditTimer extends Component {
               style={styles.nameInput}
               placeholderTextColor="grey"
               onChangeText={text => this.setState({ title: text })}
-              placeholder="timer name"
+              placeholder="timer name (optional)"
               underlineColorAndroid="transparent"
               value={this.state.title}
             />

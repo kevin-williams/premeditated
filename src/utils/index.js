@@ -17,9 +17,9 @@ export const getTimerDescription = timeEntry => {
 
   let minuteStr = '';
   if (timeEntry.mins === 1) {
-    minuteStr = `${timeEntry.mins} min `;
+    minuteStr = `${timeEntry.mins} min`;
   } else if (timeEntry.mins > 1) {
-    minuteStr = `${timeEntry.mins} mins `;
+    minuteStr = `${timeEntry.mins} mins`;
   }
 
   return hourStr + minuteStr;
