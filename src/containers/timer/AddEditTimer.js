@@ -10,8 +10,8 @@ import {
 import { Avatar } from 'react-native-elements';
 
 import SoundPicker from '../../components/SoundPicker';
-import TimeSelect from '../../components/TimeSelect';
 import TimeEntryEditor from '../../components/TimeEntryEditor';
+import AddNewInterval from '../../components/AddNewInterval';
 
 import { backgroundSounds } from '../../../assets/sound/background/background_sounds';
 import { sounds } from '../../../assets/sound/sounds';
@@ -60,7 +60,7 @@ class AddEditTimer extends Component {
     this.props.closeAddDialog();
   }
 
-  renderIntervalSelects() {
+  renderIntervalSelects(hideButton) {
     const { intervals } = this.state;
     console.log('intervals=', intervals);
 
@@ -83,37 +83,69 @@ class AddEditTimer extends Component {
       />
     ));
 
-    if (this.state.addInterval) {
-      return (
-        <View style={styles.timeSelect}>
-          <View style={styles.intervalHeader}>
-            <Text>Add Intervals</Text>
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.timeSelect}>
-          <View style={styles.intervalHeader}>
-            <Text>Intervals</Text>
-            <Avatar
-              small
-              rounded
-              icon={{ name: 'add' }}
-              onPress={() => this.setState({ addInterval: true })}
-              activeOpacity={0.7}
-              containerStyle={styles.addButton}
-            />
-          </View>
-          {intervalRender}
-        </View>
-      );
+    let addButton = (
+      <Avatar
+        small
+        rounded
+        icon={{ name: 'add' }}
+        onPress={() => this.setState({ addInterval: true })}
+        activeOpacity={0.7}
+        containerStyle={styles.addButton}
+      />
+    );
+
+    if (hideButton) {
+      addButton = null;
     }
+
+    return (
+      <View style={styles.timeSelect}>
+        <View style={styles.intervalHeader}>
+          <Text>Intervals</Text>
+          {addButton}
+        </View>
+        {intervalRender}
+      </View>
+    );
+  }
+
+  renderAddInterval() {
+    return (
+      <ImageBackground
+        resizeMode="cover"
+        source={this.props.timer.appBackground.uri}
+        style={styles.backgroundImage}
+      >
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Add/Edit Intervals</Text>
+        </View>
+        <AddNewInterval
+          onChange={intervals => console.log('new intervals=', intervals)}
+        />
+        <ScrollView style={styles.timerContainer}>
+          {this.renderIntervalSelects(true)}
+        </ScrollView>
+        <View style={styles.buttonContainer}>
+          <Avatar
+            medium
+            rounded
+            icon={{ name: 'check' }}
+            onPress={() => this.setState({ addInterval: false })}
+            activeOpacity={0.7}
+            containerStyle={styles.saveButton}
+          />
+        </View>
+      </ImageBackground>
+    );
   }
 
   render() {
     const { duration } = this.state;
     console.log('duration=', duration);
+
+    if (this.state.addInterval) {
+      return this.renderAddInterval();
+    }
 
     return (
       <ImageBackground
@@ -175,7 +207,6 @@ class AddEditTimer extends Component {
               label="Background Sound"
               selectedSound={this.state.backgroundSound}
               sounds={backgroundSounds}
-              path={'../../../assets/sound/background'}
               onChange={newSound => {
                 console.log('background sound changed', newSound);
                 this.setState({ backgroundSound: newSound });
