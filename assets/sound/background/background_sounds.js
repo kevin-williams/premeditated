@@ -1,5 +1,10 @@
 export const backgroundSounds = [
   {
+    name: 'None',
+    file: undefined,
+    license: ''
+  },
+  {
     name: 'Liquid',
     file: require('./Liquid.mp3'),
     license: 'Recorded by Caroline Ford'

@@ -13,13 +13,9 @@ import { SCREEN_WIDTH } from '../../utils';
 const MILLIS_PER_MINUTE = 60000;
 const MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;
 
-const bellSound = require('../../../assets/sound/gong.mp3');
-const tingSound = require('../../../assets/sound/ting.mp3');
-const riverSound = require('../../../assets/sound/background/River.mp3');
-
-const endSound = new Audio.Sound();
-const intervalSound = new Audio.Sound();
-const backgroundSound = new Audio.Sound();
+let endSound = null;
+let intervalSound = null;
+let backgroundSound = null;
 
 const DEFAULT_STATE = {
   isRunning: false,
@@ -30,28 +26,11 @@ const DEFAULT_STATE = {
 };
 
 class RunTimer extends Component {
-  constructor(props) {
-    super(props);
-
-    endSound
-      .loadAsync(bellSound)
-      .then(console.log('sound loaded'))
-      .catch(console.log('sound already loaded'));
-
-    intervalSound
-      .loadAsync(tingSound)
-      .then(console.log('sound loaded'))
-      .catch(console.log('sound already loaded'));
-
-    backgroundSound
-      .loadAsync(riverSound)
-      .then(console.log('sound loaded'))
-      .catch(console.log('sound already loaded'));
-  }
-
   state = DEFAULT_STATE;
 
   componentDidMount() {
+    console.log('this.props.timer', this.props.timer);
+
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_MIX_WITH_OTHERS,
@@ -59,6 +38,21 @@ class RunTimer extends Component {
       shouldDuckAndroid: false,
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS
     });
+    if (!endSound) {
+      endSound = new Audio.Sound();
+      endSound
+        .loadAsync(this.props.timer.runningTimer.duration.sound.file)
+        .then(console.log('duration sound loaded'))
+        .catch(console.log('duration sound already loaded'));
+    }
+
+    if (!backgroundSound) {
+      backgroundSound = new Audio.Sound();
+      backgroundSound
+        .loadAsync(this.props.timer.runningTimer.backgroundSound.file)
+        .then(console.log('background sound loaded'))
+        .catch(console.log('background sound already loaded'));
+    }
   }
 
   componentWillUnmount() {
@@ -75,9 +69,15 @@ class RunTimer extends Component {
     });
   }
 
-  intervalSound() {
+  async intervalSound(sound) {
     console.log('Play interval sound');
-    intervalSound.replayAsync();
+    try {
+      intervalSound = new Audio.Sound();
+      await intervalSound.loadAsync(sound.file);
+      intervalSound.replayAsync();
+    } catch (error) {
+      console.log('error loading interval sound', error);
+    }
   }
 
   handleEndTimer() {
@@ -136,6 +136,7 @@ class RunTimer extends Component {
     timer.intervals.map(interval => {
       intervalTimes.push({
         time: this.getMillisFromTimer(interval, timer.test),
+        sound: interval.sound,
         soundPlayed: false
       });
     });
@@ -242,7 +243,7 @@ class RunTimer extends Component {
     const intervalTimerDisplay = this.state.intervalTimes.map(
       (timer, index) => {
         if (!timer.soundPlayed) {
-          this.intervalSound();
+          this.intervalSound(timer.sound);
           timer.soundPlayed = true;
         }
 

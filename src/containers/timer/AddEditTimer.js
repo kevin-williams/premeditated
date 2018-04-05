@@ -27,9 +27,10 @@ const NEW_TIMER = {
   duration: {
     hours: 0,
     mins: 15,
-    sound: undefined
+    sound: sounds[0]
   },
-  intervals: []
+  intervals: [],
+  backgroundSound: backgroundSounds[0]
 };
 
 class AddEditTimer extends Component {
