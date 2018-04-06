@@ -19,7 +19,7 @@ import { sounds } from '../../../assets/sound/sounds';
 import * as c from './timerConstants';
 import { addTimer, updateTimer, closeAddDialog } from './timerActions';
 
-import { SCREEN_WIDTH, getTimerDescription, SCREEN_HEIGHT } from '../../utils';
+import { SCREEN_WIDTH, getTimerDescription } from '../../utils';
 
 const NEW_TIMER = {
   title: '',
@@ -88,6 +88,12 @@ class AddEditTimer extends Component {
           const myInterval = this.state.intervals[index];
           myInterval.sound = sound;
 
+          this.setState({ intervals: newIntervals });
+        }}
+        onDelete={timeEntry => {
+          const newIntervals = this.state.intervals.filter(
+            entry => entry !== timeEntry
+          );
           this.setState({ intervals: newIntervals });
         }}
       />

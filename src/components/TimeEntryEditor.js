@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput, View } from 'react-native';
+import { Avatar } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import SoundPicker from './SoundPicker';
@@ -24,6 +25,20 @@ export default class TimeEntryEditor extends Component {
   }
 
   render() {
+    let deleteButton = null;
+    if (this.props.onDelete) {
+      deleteButton = (
+        <Avatar
+          small
+          rounded
+          icon={{ name: 'delete-forever' }}
+          onPress={() => this.props.onDelete(this.props.timeEntry)}
+          activeOpacity={0.7}
+          overlaycontainerStyle={styles.button}
+        />
+      );
+    }
+
     return (
       <View style={[styles.rowStyle, this.props.containerStyle]}>
         {this.renderTimeEntryName()}
@@ -45,6 +60,7 @@ export default class TimeEntryEditor extends Component {
             this.props.onSoundChange(newSound);
           }}
         />
+        {deleteButton}
       </View>
     );
   }
@@ -54,6 +70,9 @@ const styles = {
   rowStyle: {
     flexDirection: 'row',
     alignContent: 'space-between'
+  },
+  button: {
+    backgroundColor: 'white'
   }
 };
 
