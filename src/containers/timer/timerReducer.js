@@ -19,7 +19,7 @@ const DEFAULT_STATE = {
       duration: {
         hours: 0,
         mins: 15,
-        sound: undefined
+        sound: sounds[3]
       },
       intervals: [
         { name: '5 mins', hours: 0, mins: 5, sound: sounds[4] },

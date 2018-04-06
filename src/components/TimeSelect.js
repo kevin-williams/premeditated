@@ -37,7 +37,7 @@ export default class TimeSelect extends Component {
         hour: hours,
         minute: minutes,
         is24Hour: true,
-        mode: 'spinner'
+        mode: 'clock'
       });
 
       console.log(`selected ${selectedHours}:${selectedMinutes} for ${action}`);

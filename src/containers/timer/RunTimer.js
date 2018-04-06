@@ -8,26 +8,24 @@ import moment from 'moment';
 import { stopSelectedTimer } from './timerActions';
 import TimerProgress from '../../components/TimerProgress';
 
-import { SCREEN_WIDTH, MILLIS_PER_HOUR, MILLIS_PER_MINUTE, getMillisFromTimer } from '../../utils';
-
-
-let endSound = null;
-let intervalSound = null;
-let backgroundSound = null;
+import {
+  SCREEN_WIDTH,
+  getMillisFromTimer,
+  getTimerDescription
+} from '../../utils';
 
 const DEFAULT_STATE = {
   isRunning: false,
   mainTimer: 0,
   remainingTimer: 0,
   finalTime: 0,
-  intervalTimers: []
+  intervalTimers: [],
+  backgroundSound: undefined
 };
 
 class RunTimer extends Component {
-  state = DEFAULT_STATE;
-
-  componentDidMount() {
-    console.log('this.props.timer', this.props.timer);
+  componentWillMount() {
+    this.setState({ ...DEFAULT_STATE });
 
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
@@ -36,21 +34,6 @@ class RunTimer extends Component {
       shouldDuckAndroid: false,
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS
     });
-    if (!endSound) {
-      endSound = new Audio.Sound();
-      endSound
-        .loadAsync(this.props.timer.runningTimer.duration.sound.file)
-        .then(console.log('duration sound loaded'))
-        .catch(console.log('duration sound already loaded'));
-    }
-
-    if (!backgroundSound) {
-      backgroundSound = new Audio.Sound();
-      backgroundSound
-        .loadAsync(this.props.timer.runningTimer.backgroundSound.file)
-        .then(console.log('background sound loaded'))
-        .catch(console.log('background sound already loaded'));
-    }
   }
 
   componentWillUnmount() {
@@ -61,16 +44,25 @@ class RunTimer extends Component {
   }
 
   endSound() {
-    backgroundSound.stopAsync().then(() => {
-      console.log('Play end sound');
-      endSound.replayAsync();
-    });
+    if (this.state.backgroundSound) {
+      this.state.backgroundSound.stopAsync().then(() => {
+        console.log('Play end sound');
+        const endSound = new Audio.Sound();
+        endSound
+          .loadAsync(this.props.timer.runningTimer.duration.sound.file)
+          .then(console.log('duration sound loaded'))
+          .catch(console.log('duration sound already loaded'));
+        endSound.replayAsync();
+
+        this.setState({ backgroundSound: undefined });
+      });
+    }
   }
 
   async intervalSound(sound) {
     console.log('Play interval sound');
     try {
-      intervalSound = new Audio.Sound();
+      const intervalSound = new Audio.Sound();
       await intervalSound.loadAsync(sound.file);
       intervalSound.replayAsync();
     } catch (error) {
@@ -90,16 +82,19 @@ class RunTimer extends Component {
   }
 
   handleStartStop() {
-    console.log('stop');
     const { isRunning } = this.state;
     this.setState({ isRunning: !isRunning });
 
     // Stop pressed
     if (isRunning) {
+      console.log('stop');
       clearInterval(this.interval);
       this.setState({ isRunning: false });
-      backgroundSound.stopAsync();
+      if (this.state.backgroundSound) {
+        this.state.backgroundSound.stopAsync();
+      }
     } else {
+      console.log('start');
       this.processStart();
     }
   }
@@ -111,15 +106,6 @@ class RunTimer extends Component {
 
     const finalTime = getMillisFromTimer(timer.duration, timer.test);
     const intervalTimes = [];
-
-    // const intervalMillis = timer.intervalMinutes * MILLIS_PER_MINUTE;
-    // // TESTING only const intervalMillis = timer.intervalMinutes * 10000;
-    // if (intervalMillis > 0) {
-    //   for (let i = intervalMillis; i < finalTime; i += intervalMillis) {
-    //     console.log('adding interval=' + i);
-    //     intervalTimes.push({ time: i, soundPlayed: false });
-    //   }
-    // }
 
     timer.intervals.map(interval => {
       intervalTimes.push({
@@ -136,8 +122,18 @@ class RunTimer extends Component {
       intervalTimes
     });
 
-    backgroundSound.setIsLoopingAsync(true);
-    backgroundSound.replayAsync();
+    if (this.state.backgroundSound) {
+      this.state.backgroundSound.playAsync();
+    } else if (timer.backgroundSound && timer.backgroundSound.file) {
+      const backgroundSound = new Audio.Sound();
+      backgroundSound
+        .loadAsync(timer.backgroundSound.file)
+        .then(console.log('background sound loaded'))
+        .catch(console.log('background sound already loaded'));
+      backgroundSound.setIsLoopingAsync(true);
+      backgroundSound.replayAsync();
+      this.setState({ backgroundSound });
+    }
 
     this.interval = setInterval(() => {
       const elapsedTime = moment() - this.state.mainTimerStart + mainTimer;
@@ -158,7 +154,7 @@ class RunTimer extends Component {
     if (this.state.isRunning) {
       this.handleStartStop();
     }
-    this.setState(DEFAULT_STATE);
+    this.setState({ ...DEFAULT_STATE });
   }
 
   formatTime(milliseconds) {
@@ -230,7 +226,19 @@ class RunTimer extends Component {
 
     const intervalTimerDisplay = this.state.intervalTimes.map(
       (timer, index) => {
-        if (!timer.soundPlayed) {
+        const timeDifference = this.state.mainTimer - timer.time;
+
+        // console.log(
+        //   `timer check:
+        //     ${timer.time}
+        //     ${this.state.mainTimer}
+        //     ${timeDifference}
+        //     ${timeDifference > 0}
+        //     ${timer.soundPlayed}`
+        // );
+
+        if (timeDifference > 0 && !timer.soundPlayed) {
+          console.log('hit timer ' + getTimerDescription(timer));
           this.intervalSound(timer.sound);
           timer.soundPlayed = true;
         }
