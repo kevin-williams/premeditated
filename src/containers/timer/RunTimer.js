@@ -25,6 +25,7 @@ const DEFAULT_STATE = {
 
 class RunTimer extends Component {
   componentWillMount() {
+    console.log('runningTimer=', this.props.timer.runningTimer);
     this.setState({ ...DEFAULT_STATE });
 
     Audio.setAudioModeAsync({
@@ -43,19 +44,24 @@ class RunTimer extends Component {
     }
   }
 
-  endSound() {
+  async endSound() {
+    const { runningTimer } = this.props.timer;
     if (this.state.backgroundSound) {
-      this.state.backgroundSound.stopAsync().then(() => {
-        console.log('Play end sound');
-        const endSound = new Audio.Sound();
-        endSound
-          .loadAsync(this.props.timer.runningTimer.duration.sound.file)
-          .then(console.log('duration sound loaded'))
-          .catch(console.log('duration sound already loaded'));
-        endSound.replayAsync();
+      try {
+        await this.state.backgroundSound.stopAsync();
+      } catch (error) {
+        console.log('error stopping background sound', error);
+      }
+      this.setState({ backgroundSound: undefined });
+    }
 
-        this.setState({ backgroundSound: undefined });
-      });
+    console.log('Play end sound');
+    try {
+      const endSound = new Audio.Sound();
+      await endSound.loadAsync(runningTimer.duration.sound.file);
+      endSound.replayAsync();
+    } catch (error) {
+      console.log('error playing end sound', error);
     }
   }
 
@@ -99,7 +105,7 @@ class RunTimer extends Component {
     }
   }
 
-  processStart() {
+  async processStart() {
     // Start pressed
     const timer = this.props.timer.runningTimer;
     const { mainTimer } = this.state;
@@ -125,14 +131,15 @@ class RunTimer extends Component {
     if (this.state.backgroundSound) {
       this.state.backgroundSound.playAsync();
     } else if (timer.backgroundSound && timer.backgroundSound.file) {
-      const backgroundSound = new Audio.Sound();
-      backgroundSound
-        .loadAsync(timer.backgroundSound.file)
-        .then(console.log('background sound loaded'))
-        .catch(console.log('background sound already loaded'));
-      backgroundSound.setIsLoopingAsync(true);
-      backgroundSound.replayAsync();
-      this.setState({ backgroundSound });
+      try {
+        const backgroundSound = new Audio.Sound();
+        await backgroundSound.loadAsync(timer.backgroundSound.file);
+        backgroundSound.setIsLoopingAsync(true);
+        backgroundSound.replayAsync();
+        this.setState({ backgroundSound });
+      } catch (error) {
+        console.log('error loading background sound', error);
+      }
     }
 
     this.interval = setInterval(() => {
@@ -238,7 +245,7 @@ class RunTimer extends Component {
         // );
 
         if (timeDifference > 0 && !timer.soundPlayed) {
-          console.log('hit timer ' + getTimerDescription(timer));
+          // console.log('hit timer ' + getTimerDescription(timer));
           this.intervalSound(timer.sound);
           timer.soundPlayed = true;
         }

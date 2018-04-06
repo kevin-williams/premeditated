@@ -200,18 +200,16 @@ function fixSounds(timers) {
   return timers.map(timer => {
     const newTimer = { ...timer };
     newTimer.backgroundSound = backgroundSounds.find(
-      sound => sound.name === newTimer.backgroundSound
+      sound => sound.name === timer.backgroundSound
     );
 
     newTimer.duration.sound = sounds.find(
-      sound => sound.name === newTimer.duration.sound
+      sound => sound.name === timer.duration.sound
     );
 
     newTimer.intervals = newTimer.intervals.map(interval => {
       const newInterval = { ...interval };
-      newInterval.sound = sounds.find(
-        sound => sound.name === newInterval.sound
-      );
+      newInterval.sound = sounds.find(sound => sound.name === interval.sound);
 
       return newInterval;
     });
