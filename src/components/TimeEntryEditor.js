@@ -39,7 +39,6 @@ export default class TimeEntryEditor extends Component {
         <SoundPicker
           selectedSound={this.props.timeEntry.sound}
           sounds={sounds}
-          path={'../../../assets/sound'}
           onChange={newSound => {
             console.log('interval sound changed', newSound);
             this.props.onSoundChange(newSound);

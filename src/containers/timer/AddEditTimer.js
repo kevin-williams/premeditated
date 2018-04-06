@@ -19,7 +19,7 @@ import { sounds } from '../../../assets/sound/sounds';
 import * as c from './timerConstants';
 import { addTimer, updateTimer, closeAddDialog } from './timerActions';
 
-import { SCREEN_WIDTH, getTimerDescription } from '../../utils';
+import { SCREEN_WIDTH, getTimerDescription, SCREEN_HEIGHT } from '../../utils';
 
 const NEW_TIMER = {
   title: '',
@@ -76,7 +76,6 @@ class AddEditTimer extends Component {
       <TimeEntryEditor
         key={`interval-${index}`}
         timeEntry={interval}
-        containerStyle={{ borderBottomWidth: 0.5 }}
         onTimeChange={time => {
           const newState = { ...this.state };
           const myInterval = newState.intervals[index];
@@ -110,14 +109,12 @@ class AddEditTimer extends Component {
     }
 
     return (
-      <View style={styles.timeSelect}>
+      <View style={[styles.commonContainer, styles.intervalContainer]}>
         <View style={styles.intervalHeader}>
           <Text>Intervals</Text>
           {addButton}
         </View>
-        <ScrollView style={styles.intervalList}>
-          {intervalRender}
-        </ScrollView>
+        <ScrollView style={styles.intervalList}>{intervalRender}</ScrollView>
       </View>
     );
   }
@@ -138,7 +135,7 @@ class AddEditTimer extends Component {
           timer={this.state}
           onChange={this.addIntervalsToState.bind(this)}
         />
-        <ScrollView style={styles.intervalList}>
+        <ScrollView contentContainerStyle={styles.intervalList}>
           {this.renderIntervalSelects(true)}
         </ScrollView>
         <View style={styles.buttonContainer}>
@@ -180,56 +177,54 @@ class AddEditTimer extends Component {
             containerStyle={styles.closeButtonTop}
           />
         </View>
-        <View style={styles.timerContainer}>
-          <View style={styles.nameContainer}>
-            <Text style={styles.nameLabel}>Name</Text>
-            <TextInput
-              style={styles.nameInput}
-              placeholderTextColor="grey"
-              onChangeText={text => this.setState({ title: text })}
-              placeholder="timer name (optional)"
-              underlineColorAndroid="transparent"
-              value={this.state.title}
-            />
-          </View>
+        <View style={[styles.commonContainer, styles.nameContainer]}>
+          <Text style={styles.nameLabel}>Name</Text>
+          <TextInput
+            style={styles.nameInput}
+            placeholderTextColor="grey"
+            onChangeText={text => this.setState({ title: text })}
+            placeholder="timer name (optional)"
+            underlineColorAndroid="transparent"
+            value={this.state.title}
+          />
+        </View>
 
-          <TimeEntryEditor
-            label="Duration"
-            timeEntry={duration}
-            containerStyle={styles.timeSelect}
-            onTimeChange={time => {
-              this.setState({
-                duration: {
-                  ...this.state.duration,
-                  hours: time.hours,
-                  mins: time.minutes
-                }
-              });
-            }}
-            onSoundChange={sound => {
-              this.setState({
-                duration: {
-                  ...this.state.duration,
-                  sound
-                }
-              });
+        <TimeEntryEditor
+          label="Duration"
+          timeEntry={duration}
+          containerStyle={styles.commonContainer}
+          onTimeChange={time => {
+            this.setState({
+              duration: {
+                ...this.state.duration,
+                hours: time.hours,
+                mins: time.minutes
+              }
+            });
+          }}
+          onSoundChange={sound => {
+            this.setState({
+              duration: {
+                ...this.state.duration,
+                sound
+              }
+            });
+          }}
+        />
+        <View style={styles.commonContainer}>
+          <SoundPicker
+            label="Background Sound"
+            selectedSound={this.state.backgroundSound}
+            sounds={backgroundSounds}
+            onChange={newSound => {
+              console.log('background sound changed', newSound);
+              this.setState({ backgroundSound: newSound });
             }}
           />
-          <View style={styles.timeSelect}>
-            <SoundPicker
-              label="Background Sound"
-              selectedSound={this.state.backgroundSound}
-              sounds={backgroundSounds}
-              onChange={newSound => {
-                console.log('background sound changed', newSound);
-                this.setState({ backgroundSound: newSound });
-              }}
-            />
-          </View>
-
-          {this.renderIntervalSelects()}
         </View>
-        <View style={styles.buttonContainer}>
+        {this.renderIntervalSelects()}
+
+        <View style={[styles.commonContainer, styles.buttonContainer]}>
           <Avatar
             medium
             rounded
@@ -257,34 +252,25 @@ const styles = {
     flexDirection: 'column',
     width: SCREEN_WIDTH,
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     flex: 1
   },
-  timerContainer: {
+  headerContainer: {
     width: SCREEN_WIDTH,
-    flex: 3,
-    marginTop: 5
+    backgroundColor: 'rgba(222,222,222,0.7)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 25
   },
   headerText: {
     textAlign: 'center',
     fontSize: 18,
     flex: 5
   },
-  headerContainer: {
-    width: SCREEN_WIDTH,
-    borderBottomWidth: 0.5,
-    backgroundColor: 'rgba(222,222,222,0.7)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 25
-  },
   nameContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(222,222,222,0.9)',
-    borderRadius: 10,
-    margin: 10
+    alignItems: 'center'
   },
   nameLabel: {
     fontSize: 18,
@@ -297,18 +283,20 @@ const styles = {
     width: 200,
     margin: 10
   },
+  intervalContainer: {
+    flex: 1
+  },
   intervalHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   intervalList: {
-    alignSelf: 'stretch'
+    marginTop: 5
   },
   buttonContainer: {
+    backgroundColor: 'transparent',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: SCREEN_WIDTH,
-    margin: 10
+    justifyContent: 'space-around'
   },
   saveButton: {
     backgroundColor: 'rgba(0, 222, 0, 0.6)'
@@ -320,11 +308,13 @@ const styles = {
   closeButton: {
     backgroundColor: 'rgba(222, 0, 0, 0.6)'
   },
-  timeSelect: {
+
+  commonContainer: {
     backgroundColor: 'rgba(222,222,222,0.9)',
+    width: '90%',
     borderRadius: 10,
-    padding: 10,
-    margin: 10
+    padding: 5,
+    margin: 5
   }
 };
 

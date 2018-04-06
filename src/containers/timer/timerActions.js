@@ -7,11 +7,6 @@ export const addTimer = timer => ({
   timer
 });
 
-export const addIntervals = intervals => ({
-  type: c.ADD_INTERVALS,
-  intervals
-});
-
 export const deleteTimer = timerId => ({
   type: c.DELETE_TIMER,
   timerId
