@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Picker, Text, TextInput, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import { SCREEN_WIDTH, getTimerDescription, getMillisFromTimer } from '../utils';
+import {
+  SCREEN_WIDTH,
+  getTimerDescription,
+  getMillisFromTimer
+} from '../utils';
 
 import SoundPicker from './SoundPicker';
 import TimeSelect from './TimeSelect';
@@ -92,7 +96,10 @@ export default class AddNewInterval extends Component {
       return this.addIntervalFromStart();
     }
 
-    const maxEntry = this.props.timer.intervals.reduce((prev, current) => (getMillisFromTimer(prev) > getMillisFromTimer(current)) ? prev : current)
+    const maxEntry = this.props.timer.intervals.reduce(
+      (prev, current) =>
+        getMillisFromTimer(prev) > getMillisFromTimer(current) ? prev : current
+    );
 
     let hours = maxEntry.hours + this.state.hours;
     let mins = maxEntry.mins + this.state.mins;
@@ -176,7 +183,7 @@ const styles = {
   container: {
     backgroundColor: 'rgba(137,234,255,0.8)',
     borderRadius: 20,
-    width: SCREEN_WIDTH * 0.8,
+    width: SCREEN_WIDTH * 0.9,
     marginTop: 10
   },
   headerText: {

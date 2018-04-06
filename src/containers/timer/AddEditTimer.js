@@ -135,9 +135,7 @@ class AddEditTimer extends Component {
           timer={this.state}
           onChange={this.addIntervalsToState.bind(this)}
         />
-        <ScrollView contentContainerStyle={styles.intervalList}>
-          {this.renderIntervalSelects(true)}
-        </ScrollView>
+        {this.renderIntervalSelects(true)}
         <View style={styles.buttonContainer}>
           <Avatar
             medium

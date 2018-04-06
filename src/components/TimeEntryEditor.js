@@ -28,6 +28,7 @@ export default class TimeEntryEditor extends Component {
       <View style={[styles.rowStyle, this.props.containerStyle]}>
         {this.renderTimeEntryName()}
         <TimeSelect
+          style={{ width: 150 }}
           label={this.props.label}
           hours={this.props.timeEntry.hours}
           minutes={this.props.timeEntry.mins}
@@ -51,7 +52,8 @@ export default class TimeEntryEditor extends Component {
 
 const styles = {
   rowStyle: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignContent: 'space-between'
   }
 };
 
