@@ -30,7 +30,7 @@ const DEFAULT_STATE = {
 
 export default class AddNewInterval extends Component {
   componentWillMount() {
-    this.setState(DEFAULT_STATE);
+    this.setState({ ...DEFAULT_STATE });
   }
 
   addIntervals() {
