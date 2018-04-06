@@ -314,7 +314,7 @@ const styles = {
   },
 
   commonContainer: {
-    backgroundColor: 'rgba(222,222,222,0.9)',
+    backgroundColor: 'rgba(222,222,222,0.7)',
     width: '90%',
     borderRadius: 10,
     padding: 5,

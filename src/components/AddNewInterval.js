@@ -181,7 +181,8 @@ export default class AddNewInterval extends Component {
 
 const styles = {
   container: {
-    backgroundColor: 'rgba(137,234,255,0.8)',
+    backgroundColor: 'rgba(222,222,222,0.7)',
+    // backgroundColor: 'rgba(137,234,255,0.8)',
     borderRadius: 20,
     width: SCREEN_WIDTH * 0.9,
     marginTop: 10
@@ -192,7 +193,8 @@ const styles = {
   },
   nameInput: {
     alignSelf: 'center',
-    backgroundColor: 'rgba(137,234,255,1)',
+    backgroundColor: 'rgba(222,222,222,0.7)',
+    // backgroundColor: 'rgba(137,234,255,1)',
     borderRadius: 10,
     paddingLeft: 5,
     paddingRight: 5,
