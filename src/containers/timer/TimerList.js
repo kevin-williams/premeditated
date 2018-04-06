@@ -4,6 +4,7 @@ import {
   ImageBackground,
   LayoutAnimation,
   UIManager,
+  ScrollView,
   Text,
   View
 } from 'react-native';
@@ -126,6 +127,7 @@ class TimerList extends Component {
       return <AddEditTimer />;
     }
 
+    // TODO make title fancier
     return (
       <ImageBackground
         resizeMode="cover"
@@ -144,7 +146,9 @@ class TimerList extends Component {
               containerStyle={styles.addButton}
             />
           </View>
-          <List containerStyle={styles.list}>{this.renderListItems()}</List>
+          <ScrollView>
+            <List containerStyle={styles.list}>{this.renderListItems()}</List>
+          </ScrollView>
           <AdMobBanner
             style={{
               width: SCREEN_WIDTH,

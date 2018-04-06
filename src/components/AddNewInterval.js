@@ -20,14 +20,18 @@ const IntervalTypes = Object.freeze({
   fromLast: 'from last'
 });
 
+const DEFAULT_STATE = {
+  name: '',
+  hours: 0,
+  mins: 5,
+  mode: IntervalTypes.every,
+  sound: sounds[4]
+};
+
 export default class AddNewInterval extends Component {
-  state = {
-    name: '',
-    hours: 0,
-    mins: 5,
-    mode: IntervalTypes.every,
-    sound: sounds[4]
-  };
+  componentWillMount() {
+    this.setState(DEFAULT_STATE);
+  }
 
   addIntervals() {
     switch (IntervalTypes[this.state.mode]) {
