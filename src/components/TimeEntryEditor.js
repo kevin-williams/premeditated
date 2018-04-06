@@ -35,6 +35,7 @@ export default class TimeEntryEditor extends Component {
           onPress={() => this.props.onDelete(this.props.timeEntry)}
           activeOpacity={0.7}
           overlaycontainerStyle={styles.button}
+          containerStyle={styles.buttonContainer}
         />
       );
     }
@@ -69,10 +70,14 @@ export default class TimeEntryEditor extends Component {
 const styles = {
   rowStyle: {
     flexDirection: 'row',
-    alignContent: 'space-between'
+    alignContent: 'space-between',
+    justifyContent: 'center'
   },
   button: {
     backgroundColor: 'white'
+  },
+  buttonContainer: {
+    alignSelf: 'center'
   }
 };
 
