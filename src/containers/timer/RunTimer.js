@@ -8,10 +8,8 @@ import moment from 'moment';
 import { stopSelectedTimer } from './timerActions';
 import TimerProgress from '../../components/TimerProgress';
 
-import { SCREEN_WIDTH } from '../../utils';
+import { SCREEN_WIDTH, MILLIS_PER_HOUR, MILLIS_PER_MINUTE, getMillisFromTimer } from '../../utils';
 
-const MILLIS_PER_MINUTE = 60000;
-const MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;
 
 let endSound = null;
 let intervalSound = null;
@@ -106,22 +104,12 @@ class RunTimer extends Component {
     }
   }
 
-  getMillisFromTimer(entry, test) {
-    if (test) {
-      return (
-        (entry.mins * MILLIS_PER_MINUTE + entry.hours * MILLIS_PER_HOUR) / 10
-      );
-    }
-
-    return entry.mins * MILLIS_PER_MINUTE + entry.hours * MILLIS_PER_HOUR;
-  }
-
   processStart() {
     // Start pressed
     const timer = this.props.timer.runningTimer;
     const { mainTimer } = this.state;
 
-    const finalTime = this.getMillisFromTimer(timer.duration, timer.test);
+    const finalTime = getMillisFromTimer(timer.duration, timer.test);
     const intervalTimes = [];
 
     // const intervalMillis = timer.intervalMinutes * MILLIS_PER_MINUTE;
@@ -135,7 +123,7 @@ class RunTimer extends Component {
 
     timer.intervals.map(interval => {
       intervalTimes.push({
-        time: this.getMillisFromTimer(interval, timer.test),
+        time: getMillisFromTimer(interval, timer.test),
         sound: interval.sound,
         soundPlayed: false
       });
