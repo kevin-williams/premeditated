@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Picker, Text, TextInput, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import { SCREEN_WIDTH } from '../utils';
+import { SCREEN_WIDTH, getTimerDescription, getMillisFromTimer } from '../utils';
 
 import SoundPicker from './SoundPicker';
 import TimeSelect from './TimeSelect';
-
-import { getTimerDescription } from '../utils';
 
 import { sounds } from '../../assets/sound/sounds';
 
@@ -28,9 +26,6 @@ export default class AddNewInterval extends Component {
   };
 
   addIntervals() {
-    console.log(this.state.mode);
-    console.log(IntervalTypes.fromStart);
-
     switch (IntervalTypes[this.state.mode]) {
       case IntervalTypes.every:
         this.addIntervalEvery();
@@ -47,7 +42,27 @@ export default class AddNewInterval extends Component {
     }
   }
 
-  addIntervalEvery() {}
+  addIntervalEvery() {
+    const finalDurationMillis = getMillisFromTimer(this.props.timer.duration);
+    const newIntervals = [];
+
+    let hours = this.state.hours;
+    let mins = this.state.mins;
+
+    while (getMillisFromTimer({ hours, mins }) < finalDurationMillis) {
+      newIntervals.push({ hours, mins, sound: this.state.sound });
+      hours += this.state.hours;
+      mins += this.state.mins;
+
+      if (mins >= 60) {
+        hours += 1;
+        mins -= 60;
+      }
+    }
+
+    console.log('addIntervalEvery=', newIntervals);
+    this.props.onChange(newIntervals);
+  }
 
   addIntervalBeforeEnd() {
     const duration = this.props.timer.duration;
@@ -70,7 +85,33 @@ export default class AddNewInterval extends Component {
     this.props.onChange(newIntervals);
   }
 
-  addIntervalFromLast() {}
+  addIntervalFromLast() {
+    const duration = this.props.timer.duration;
+
+    if (this.props.timer.intervals.length === 0) {
+      return this.addIntervalFromStart();
+    }
+
+    const maxEntry = this.props.timer.intervals.reduce((prev, current) => (getMillisFromTimer(prev) > getMillisFromTimer(current)) ? prev : current)
+
+    let hours = maxEntry.hours + this.state.hours;
+    let mins = maxEntry.mins + this.state.mins;
+
+    if (mins > 60) {
+      hours += 1;
+      mins -= 60;
+    }
+
+    const newInterval = { hours, mins, sound: this.state.sound };
+
+    if (getMillisFromTimer(newInterval) < getMillisFromTimer(duration)) {
+      const newIntervals = [newInterval];
+      console.log('addIntervalFromLast=', newIntervals);
+      this.props.onChange(newIntervals);
+    } else {
+      // TODO Show error?
+    }
+  }
 
   render() {
     return (
