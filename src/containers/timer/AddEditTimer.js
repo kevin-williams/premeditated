@@ -115,7 +115,9 @@ class AddEditTimer extends Component {
           <Text>Intervals</Text>
           {addButton}
         </View>
-        {intervalRender}
+        <ScrollView style={styles.intervalList}>
+          {intervalRender}
+        </ScrollView>
       </View>
     );
   }
@@ -136,7 +138,7 @@ class AddEditTimer extends Component {
           timer={this.state}
           onChange={this.addIntervalsToState.bind(this)}
         />
-        <ScrollView style={styles.timerContainer}>
+        <ScrollView style={styles.intervalList}>
           {this.renderIntervalSelects(true)}
         </ScrollView>
         <View style={styles.buttonContainer}>
@@ -178,7 +180,7 @@ class AddEditTimer extends Component {
             containerStyle={styles.closeButtonTop}
           />
         </View>
-        <ScrollView style={styles.timerContainer}>
+        <View style={styles.timerContainer}>
           <View style={styles.nameContainer}>
             <Text style={styles.nameLabel}>Name</Text>
             <TextInput
@@ -213,9 +215,6 @@ class AddEditTimer extends Component {
               });
             }}
           />
-
-          {this.renderIntervalSelects()}
-
           <View style={styles.timeSelect}>
             <SoundPicker
               label="Background Sound"
@@ -227,7 +226,9 @@ class AddEditTimer extends Component {
               }}
             />
           </View>
-        </ScrollView>
+
+          {this.renderIntervalSelects()}
+        </View>
         <View style={styles.buttonContainer}>
           <Avatar
             medium
@@ -298,7 +299,10 @@ const styles = {
   },
   intervalHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+  },
+  intervalList: {
+    alignSelf: 'stretch'
   },
   buttonContainer: {
     flexDirection: 'row',
