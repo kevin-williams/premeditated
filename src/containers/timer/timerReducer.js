@@ -2,11 +2,11 @@ import { AsyncStorage } from 'react-native';
 
 import * as c from './timerConstants';
 
-import { Backgrounds } from '../../../assets/backgrounds/backgrounds';
+import { backgrounds } from '../../../assets/backgrounds/backgrounds';
 import { backgroundSounds } from '../../../assets/sound/background/background_sounds';
 import { sounds } from '../../../assets/sound/sounds';
 
-const DEFAULT_BACKGROUND_IMAGE = Backgrounds[7];
+const DEFAULT_BACKGROUND_IMAGE = backgrounds[7];
 
 const DEFAULT_STATE = {
   selectedTimerId: 1,
@@ -114,6 +114,12 @@ export default (state = DEFAULT_STATE, action) => {
     case c.CLOSE_ADD_DIALOG:
       return { ...state, showAddEditDialog: action.mode };
 
+    case c.CHANGE_BACKGROUND: {
+      const newState = { ...state, appBackground: action.background };
+      saveState(newState);
+      return newState;
+    }
+
     case c.APP_DATA_LOADED: {
       // Check for default background
       const newState = convertOnLoad(action.state);
@@ -160,7 +166,7 @@ function fixBackgroundImage(state) {
   if (!state.appBackgroundName) {
     newState.appBackground = DEFAULT_BACKGROUND_IMAGE;
   } else {
-    Backgrounds.map(bg => {
+    backgrounds.map(bg => {
       if (state.appBackgroundName === bg.name) {
         newState.appBackground = bg;
       }

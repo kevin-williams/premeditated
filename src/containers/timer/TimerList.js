@@ -12,9 +12,10 @@ import {
 import { Avatar, List, ListItem } from 'react-native-elements';
 import { AdMobBanner } from 'expo';
 
-import TimerListSubtitle from './TimerListSubtitle';
 import AddEditTimer from './AddEditTimer';
+import BackgroundSelection from '../../components/BackgroundSelection';
 import RunTimer from './RunTimer';
+import TimerListSubtitle from './TimerListSubtitle';
 
 import {
   loadApp,
@@ -22,7 +23,8 @@ import {
   selectTimer,
   startSelectedTimer,
   showAddDialog,
-  closeAddDialog
+  closeAddDialog,
+  changeBackground
 } from './timerActions';
 
 import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription } from '../../utils';
@@ -52,6 +54,10 @@ class TimerList extends Component {
     super(props);
     this.props.loadApp();
   }
+
+  state = {
+    showSelectBackground: false
+  };
 
   componentWillMount() {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -130,6 +136,15 @@ class TimerList extends Component {
       return <AddEditTimer />;
     }
 
+    if (this.state.showSelectBackground) {
+      return (
+        <BackgroundSelection
+          selectedBackground={this.props.timer.appBackground}
+          onChange={this.props.changeBackground.bind(this)}
+        />
+      );
+    }
+
     // TODO make title fancier
     return (
       <ImageBackground
@@ -170,7 +185,7 @@ class TimerList extends Component {
               medium
               rounded
               icon={{ name: 'photo-library' }}
-              onPress={() => console.log('do background selection')}
+              onPress={() => this.setState({ showSelectBackground: true })}
               activeOpacity={0.7}
               containerStyle={styles.bottomButton}
             />
@@ -259,5 +274,6 @@ export default connect(mapStateToProps, {
   selectTimer,
   startSelectedTimer,
   showAddDialog,
-  closeAddDialog
+  closeAddDialog,
+  changeBackground
 })(TimerList);

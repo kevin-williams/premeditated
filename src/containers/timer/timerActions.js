@@ -40,6 +40,11 @@ export const updateTimer = timer => ({
   timer
 });
 
+export const changeBackground = background => ({
+  type: c.CHANGE_BACKGROUND,
+  background
+});
+
 export const loadApp = () => dispatch => {
   AsyncStorage.getItem(c.APP_KEY)
     .then(stateStr => {

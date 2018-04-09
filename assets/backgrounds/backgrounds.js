@@ -1,4 +1,4 @@
-export const Backgrounds = [
+export const backgrounds = [
   { name: 'Bark', uri: require('./Bark1.png') },
   { name: 'Cave', uri: require('./Cave1.png') },
   { name: 'Coffee', uri: require('./Coffee.png') },
