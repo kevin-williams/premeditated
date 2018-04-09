@@ -138,7 +138,7 @@ class TimerList extends Component {
         style={styles.backgroundImage}
       >
         <View style={styles.container}>
-          <View style={styles.buttonContainerStyle}>
+          <View style={styles.buttonContainer}>
             <Image style={styles.title} source={TITLE_IMAGE} />
             <Avatar
               small
@@ -165,14 +165,22 @@ class TimerList extends Component {
               console.log('error loading ad banner', error)
             }
           />
-          <View style={styles.buttonContainerStyle}>
+          <View style={styles.bottomButtonContainer}>
             <Avatar
-              small
+              medium
               rounded
-              icon={{ name: 'add' }}
-              onPress={() => this.props.showAddDialog(c.ADD_MODE)}
+              icon={{ name: 'photo-library' }}
+              onPress={() => console.log('do background selection')}
               activeOpacity={0.7}
-              containerStyle={styles.addButton}
+              containerStyle={styles.bottomButton}
+            />
+            <Avatar
+              medium
+              rounded
+              icon={{ name: 'description' }}
+              onPress={() => console.log('do info screen')}
+              activeOpacity={0.7}
+              containerStyle={styles.bottomButton}
             />
           </View>
         </View>
@@ -190,13 +198,20 @@ const styles = {
   container: {
     backgroundColor: 'rgba(222,222,222,0.2)'
   },
-  buttonContainerStyle: {
+  buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
     alignSelf: 'flex-start',
     width: SCREEN_WIDTH
   },
+  bottomButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: SCREEN_WIDTH
+  },
+
   title: {
     marginTop: 30,
     borderRadius: 20,
@@ -208,6 +223,10 @@ const styles = {
     backgroundColor: 'white',
     marginRight: 20,
     marginTop: 30
+  },
+  bottomButton: {
+    backgroundColor: 'white',
+    margin: 10
   },
   list: {
     backgroundColor: 'transparent',
