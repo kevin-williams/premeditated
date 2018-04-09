@@ -129,7 +129,7 @@ export default (state = DEFAULT_STATE, action) => {
 
 function saveState(state) {
   const newState = {
-    timers: convertForSaving(state.timers),
+    timers: state.timers,
     selectedTimerId: state.selectedTimerId,
     applicationBackgroundName: state.appBackground.name
   };
@@ -141,32 +141,6 @@ function saveState(state) {
   } catch (error) {
     console.log('Error saving state', error);
   }
-}
-
-/**
- * Change the referenced objects to just store the names.   Will rehydrate on load.
- */
-function convertForSaving(timers) {
-  return timers.map(timer => {
-    const newTimer = { ...timer };
-    if (timer.duration.sound && timer.duration.sound.name) {
-      newTimer.duration.sound = timer.duration.sound.name;
-    }
-
-    if (timer.backgroundSound && timer.backgroundSound.name) {
-      newTimer.backgroundSound = timer.backgroundSound.name;
-    }
-
-    newTimer.intervals = timer.intervals.map(interval => {
-      const newInterval = { ...interval };
-      if (interval.sound && interval.sound.name) {
-        newInterval.sound = interval.sound.name;
-      }
-      return newInterval;
-    });
-
-    return newTimer;
-  });
 }
 
 function convertOnLoad(state) {
@@ -200,16 +174,18 @@ function fixSounds(timers) {
   return timers.map(timer => {
     const newTimer = { ...timer };
     newTimer.backgroundSound = backgroundSounds.find(
-      sound => sound.name === timer.backgroundSound
+      sound => sound.name === timer.backgroundSound.name
     );
 
     newTimer.duration.sound = sounds.find(
-      sound => sound.name === timer.duration.sound
+      sound => sound.name === timer.duration.sound.name
     );
 
     newTimer.intervals = newTimer.intervals.map(interval => {
       const newInterval = { ...interval };
-      newInterval.sound = sounds.find(sound => sound.name === interval.sound);
+      newInterval.sound = sounds.find(
+        sound => sound.name === interval.sound.name
+      );
 
       return newInterval;
     });

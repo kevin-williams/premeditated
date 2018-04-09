@@ -1,6 +1,6 @@
 export const sounds = [
   {
-    name: "'A' Note",
+    name: 'Note',
     file: require('./A_Note.mp3'),
     license: 'Recorded by His Self'
   },
@@ -53,5 +53,15 @@ export const sounds = [
     name: 'Ting',
     file: require('./ting.mp3'),
     license: 'Recorded by Popup Pixels'
+  },
+  {
+    name: 'Vibrate',
+    file: 500,
+    license: 'n/a'
+  },
+  {
+    name: 'Vibrate Pulse',
+    file: [0, 1000, 1000, 1000, 1000, 1000],
+    license: 'n/a'
   }
 ];

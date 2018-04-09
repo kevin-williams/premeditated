@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ImageBackground, Modal, Text, View } from 'react-native';
+import { ImageBackground, Modal, Text, Vibration, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Audio, KeepAwake } from 'expo';
 import moment from 'moment';
@@ -8,11 +8,7 @@ import moment from 'moment';
 import { stopSelectedTimer } from './timerActions';
 import TimerProgress from '../../components/TimerProgress';
 
-import {
-  SCREEN_WIDTH,
-  getMillisFromTimer,
-  getTimerDescription
-} from '../../utils';
+import { SCREEN_WIDTH, getMillisFromTimer } from '../../utils';
 
 const DEFAULT_STATE = {
   isRunning: false,
@@ -56,23 +52,35 @@ class RunTimer extends Component {
     }
 
     console.log('Play end sound');
-    try {
-      const endSound = new Audio.Sound();
-      await endSound.loadAsync(runningTimer.duration.sound.file);
-      endSound.replayAsync();
-    } catch (error) {
-      console.log('error playing end sound', error);
+    if (runningTimer.duration.sound.name.startsWith('Vibrate')) {
+      // Vibration pattern is stored in the file variable
+      console.log('vibrate');
+      Vibration.vibrate(runningTimer.duration.sound.file);
+    } else {
+      try {
+        const endSound = new Audio.Sound();
+        await endSound.loadAsync(runningTimer.duration.sound.file);
+        endSound.replayAsync();
+      } catch (error) {
+        console.log('error playing end sound', error);
+      }
     }
   }
 
   async intervalSound(sound) {
     console.log('Play interval sound');
-    try {
-      const intervalSound = new Audio.Sound();
-      await intervalSound.loadAsync(sound.file);
-      intervalSound.replayAsync();
-    } catch (error) {
-      console.log('error loading interval sound', error);
+    if (sound.name.startsWith('Vibrate')) {
+      // Vibration pattern is stored in the file variable
+      console.log('vibrate');
+      Vibration.vibrate(sound.file);
+    } else {
+      try {
+        const intervalSound = new Audio.Sound();
+        await intervalSound.loadAsync(sound.file);
+        intervalSound.replayAsync();
+      } catch (error) {
+        console.log('error loading interval sound', error);
+      }
     }
   }
 
