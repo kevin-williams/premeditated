@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Image,
   ImageBackground,
   LayoutAnimation,
   UIManager,
@@ -27,6 +28,8 @@ import {
 import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription } from '../../utils';
 
 import * as c from './timerConstants';
+
+const TITLE_IMAGE = require('../../../assets/PremeditatedTitle.png');
 
 const CustomLayoutLinear = {
   duration: 100,
@@ -136,7 +139,7 @@ class TimerList extends Component {
       >
         <View style={styles.container}>
           <View style={styles.buttonContainerStyle}>
-            <Text style={styles.title}>Premeditated</Text>
+            <Image style={styles.title} source={TITLE_IMAGE} />
             <Avatar
               small
               rounded
@@ -185,13 +188,10 @@ const styles = {
   },
   title: {
     marginTop: 30,
-    fontSize: 24,
-    textAlign: 'center',
-    color: 'black',
-    backgroundColor: 'rgba(222,222,222,0.7)',
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
+    opacity: 0.85,
     flex: 1
   },
   addButton: {
