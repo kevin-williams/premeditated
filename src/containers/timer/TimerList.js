@@ -165,6 +165,16 @@ class TimerList extends Component {
               console.log('error loading ad banner', error)
             }
           />
+          <View style={styles.buttonContainerStyle}>
+            <Avatar
+              small
+              rounded
+              icon={{ name: 'add' }}
+              onPress={() => this.props.showAddDialog(c.ADD_MODE)}
+              activeOpacity={0.7}
+              containerStyle={styles.addButton}
+            />
+          </View>
         </View>
       </ImageBackground>
     );
@@ -182,6 +192,7 @@ const styles = {
   },
   buttonContainerStyle: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-end',
     alignSelf: 'flex-start',
     width: SCREEN_WIDTH
@@ -191,7 +202,6 @@ const styles = {
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
-    opacity: 0.85,
     flex: 1
   },
   addButton: {
