@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Animated,
+  Image,
   ImageBackground,
   PanResponder,
   Text,
   View
 } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import { SCREEN_WIDTH } from '../utils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../utils';
 
 import { backgrounds } from '../../assets/backgrounds/backgrounds';
 
@@ -62,16 +63,22 @@ export default class BackgroundSelection extends Component {
   onSwipeComplete(direction) {
     const indexChange = direction === 'Right' ? 1 : -1;
 
+    let newIndex = this.getNewIndex(indexChange);
+    const newBackground = backgrounds[newIndex];
+
+    this.setState({ selectedIndex: newIndex, background: newBackground });
+    this.position.setValue({ x: 0, y: 0 });
+  }
+
+  getNewIndex(indexChange) {
     let newIndex = this.state.selectedIndex + indexChange;
     if (newIndex < 0) {
       newIndex = backgrounds.length - 1;
     } else if (newIndex >= backgrounds.length) {
       newIndex = 0;
     }
-    const newBackground = backgrounds[newIndex];
 
-    this.setState({ selectedIndex: newIndex, background: newBackground });
-    this.position.setValue({ x: 0, y: 0 });
+    return newIndex;
   }
 
   getCardStyle() {
@@ -94,109 +101,81 @@ export default class BackgroundSelection extends Component {
 
   render() {
     return (
-      <Animated.View
-        style={[this.getCardStyle(), styles.cardStyle, { zIndex: 99 }]}
-        {...this.panResponder.panHandlers}
-      >
-        <ImageBackground
-          resizeMode="cover"
-          source={this.state.background.uri}
-          style={styles.backgroundImage}
+      <View style={styles.mainView}>
+        <Animated.View
+          style={[this.getCardStyle(), styles.cardStyle, { zIndex: 99 }]}
+          {...this.panResponder.panHandlers}
         >
-          <Text>Background</Text>
-          <View style={[styles.commonContainer, styles.buttonContainer]}>
-            <Avatar
-              medium
-              rounded
-              icon={{ name: 'check' }}
-              onPress={() => console.log('save new background')}
-              activeOpacity={0.7}
-              containerStyle={styles.saveButton}
-            />
-            <Avatar
-              medium
-              rounded
-              icon={{ name: 'close' }}
-              onPress={() => console.log('close dialog')}
-              activeOpacity={0.7}
-              containerStyle={styles.closeButton}
-            />
-          </View>
-        </ImageBackground>
-      </Animated.View>
+          <ImageBackground
+            source={this.state.background.uri}
+            style={styles.currentImage}
+            resizeMode="cover"
+          >
+            <Text style={styles.headerText}>Background</Text>
+            <Text style={styles.spacer} />
+            <View style={styles.buttonContainer}>
+              <Avatar
+                medium
+                rounded
+                icon={{ name: 'check' }}
+                onPress={() => console.log('save new background')}
+                activeOpacity={0.7}
+                containerStyle={styles.saveButton}
+              />
+              <Avatar
+                medium
+                rounded
+                icon={{ name: 'close' }}
+                onPress={() => console.log('close dialog')}
+                activeOpacity={0.7}
+                containerStyle={styles.closeButton}
+              />
+            </View>
+          </ImageBackground>
+        </Animated.View>
+      </View>
     );
   }
 }
 
 const styles = {
-  backgroundImage: {
+  mainView: {
     flexDirection: 'column',
+    backgroundColor: 'grey',
     width: SCREEN_WIDTH,
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
     marginTop: 25
   },
-  headerContainer: {
-    width: SCREEN_WIDTH,
-    backgroundColor: 'rgba(222,222,222,0.7)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 25
-  },
   headerText: {
+    backgroundColor: 'rgba(222,222,222,0.7)',
     textAlign: 'center',
-    fontSize: 18,
-    flex: 5
+    fontSize: 18
   },
-  nameContainer: {
+  spacer: { flex: 5 },
+  buttonContainer: {
+    width: SCREEN_WIDTH,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  nameLabel: {
-    fontSize: 18,
-    textAlign: 'center'
-  },
-  nameInput: {
-    borderWidth: 0.5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    width: 200,
-    margin: 10
-  },
-  intervalContainer: {
+    justifyContent: 'space-around',
+    alignSelf: 'flex-end',
+    borderRadius: 10,
+    padding: 5,
+    margin: 5,
     flex: 1
   },
-  intervalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  intervalList: {
-    marginTop: 5
-  },
-  buttonContainer: {
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
-    justifyContent: 'space-around'
+  currentImage: {
+    flex: 1
   },
   saveButton: {
     backgroundColor: 'rgba(0, 222, 0, 0.6)'
   },
-  closeButtonTop: {
-    backgroundColor: 'rgba(180,180,180,.7)',
-    margin: 10
-  },
   closeButton: {
     backgroundColor: 'rgba(222, 0, 0, 0.6)'
   },
-
-  commonContainer: {
-    backgroundColor: 'rgba(222,222,222,0.7)',
-    width: '90%',
-    borderRadius: 10,
-    padding: 5,
-    margin: 5
+  cardStyle: {
+    width: SCREEN_WIDTH,
+    flex: 1
   }
 };
 
