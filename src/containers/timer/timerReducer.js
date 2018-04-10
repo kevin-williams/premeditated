@@ -180,13 +180,17 @@ function fixBackgroundImage(state) {
 function fixSounds(timers) {
   return timers.map(timer => {
     const newTimer = { ...timer };
-    newTimer.backgroundSound = backgroundSounds.find(
-      sound => sound.name === timer.backgroundSound.name
-    );
+    if (timer.backgroundSound) {
+      newTimer.backgroundSound = backgroundSounds.find(
+        sound => sound.name === timer.backgroundSound.name
+      );
+    }
 
-    newTimer.duration.sound = sounds.find(
-      sound => sound.name === timer.duration.sound.name
-    );
+    if (timer.duration.sound) {
+      newTimer.duration.sound = sounds.find(
+        sound => sound.name === timer.duration.sound.name
+      );
+    }
 
     newTimer.intervals = newTimer.intervals.map(interval => {
       const newInterval = { ...interval };

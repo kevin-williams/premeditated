@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Premeditated",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "description": "Simple meditation timers.   Save your favorites.",
     "slug": "premeditated",
     "privacy": "public",

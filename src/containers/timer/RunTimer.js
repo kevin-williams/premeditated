@@ -92,6 +92,9 @@ class RunTimer extends Component {
 
   handleClose() {
     console.log('close');
+    if (this.state.isRunning) {
+      this.handleStartStop();
+    }
     this.props.stopSelectedTimer();
   }
 
@@ -103,10 +106,10 @@ class RunTimer extends Component {
     if (isRunning) {
       console.log('stop');
       clearInterval(this.interval);
-      this.setState({ isRunning: false });
       if (this.state.backgroundSound) {
         this.state.backgroundSound.stopAsync();
       }
+      this.setState({ isRunning: false });
     } else {
       console.log('start');
       this.processStart();
