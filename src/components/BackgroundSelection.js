@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import { Asset, AppLoading } from 'expo';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../utils';
 
 import { backgrounds } from '../../assets/backgrounds/backgrounds';
@@ -48,7 +49,8 @@ export default class BackgroundSelection extends Component {
 
   state = {
     selectedIndex: 0,
-    nextIndex: 1
+    nextIndex: 1,
+    loading: true
   };
 
   componentWillMount() {
@@ -114,7 +116,25 @@ export default class BackgroundSelection extends Component {
     }).start();
   }
 
+  async _loadBackgrounds() {
+    const promises = backgrounds.map(bg =>
+      Asset.fromModule(bg.uri).downloadAsync()
+    );
+
+    await Promise.all(promises);
+  }
+
   render() {
+    if (this.state.loading) {
+      return (
+        <AppLoading
+          startAsync={this._loadBackgrounds}
+          onFinish={() => this.setState({ loading: false })}
+          onError={console.warn}
+        />
+      );
+    }
+
     return (
       <ImageBackground
         source={backgrounds[this.state.nextIndex].uri}
