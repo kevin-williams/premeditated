@@ -130,14 +130,16 @@ export default class BackgroundSelection extends Component {
             style={styles.currentImage}
             resizeMode="cover"
           >
-            <Text style={styles.headerText}>Background</Text>
+            <Text style={styles.headerText}>Background Selection</Text>
             <Text style={styles.spacer} />
             <View style={styles.buttonContainer}>
               <Avatar
                 medium
                 rounded
                 icon={{ name: 'check' }}
-                onPress={() => console.log('save new background')}
+                onPress={() => {
+                  this.props.onChange(backgrounds[this.state.selectedIndex]);
+                }}
                 activeOpacity={0.7}
                 containerStyle={styles.saveButton}
               />
@@ -145,7 +147,7 @@ export default class BackgroundSelection extends Component {
                 medium
                 rounded
                 icon={{ name: 'close' }}
-                onPress={() => console.log('close dialog')}
+                onPress={() => this.props.onChange(null)}
                 activeOpacity={0.7}
                 containerStyle={styles.closeButton}
               />

@@ -70,6 +70,14 @@ class TimerList extends Component {
     LayoutAnimation.configureNext(CustomLayoutLinear);
   }
 
+  onBackgroundChange(bg) {
+    if (bg) {
+      this.props.changeBackground(bg);
+    }
+
+    this.setState({ showSelectBackground: false });
+  }
+
   renderSubtitle(timer) {
     return <TimerListSubtitle myTimer={timer} />;
   }
@@ -140,7 +148,7 @@ class TimerList extends Component {
       return (
         <BackgroundSelection
           selectedBackground={this.props.timer.appBackground}
-          onChange={this.props.changeBackground.bind(this)}
+          onChange={this.onBackgroundChange.bind(this)}
         />
       );
     }

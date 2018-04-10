@@ -137,7 +137,7 @@ function saveState(state) {
   const newState = {
     timers: state.timers,
     selectedTimerId: state.selectedTimerId,
-    applicationBackgroundName: state.appBackground.name
+    appBackgroundName: state.appBackground.name
   };
 
   try {
@@ -166,13 +166,14 @@ function fixBackgroundImage(state) {
   if (!state.appBackgroundName) {
     newState.appBackground = DEFAULT_BACKGROUND_IMAGE;
   } else {
-    backgrounds.map(bg => {
-      if (state.appBackgroundName === bg.name) {
-        newState.appBackground = bg;
-      }
-    });
+    newState.appBackground = backgrounds.find(
+      bg => state.appBackgroundName === bg.name
+    );
   }
 
+  console.log(
+    `found bg ${newState.appBackground.name} for ${state.appBackgroundName}`
+  );
   return newState;
 }
 
