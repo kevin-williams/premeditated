@@ -27,6 +27,11 @@ export default class BackgroundSelection extends Component {
       onPanResponderMove: (event, gesture) => {
         // console.log('gesture=', gesture);
         this.position.setValue({ x: gesture.dx, y: 0 });
+        if (gesture.dx > 10) {
+          this.setState({ nextIndex: this.getNextIndex(1) });
+        } else if (gesture.dx < -10) {
+          this.setState({ nextIndex: this.getNextIndex(-1) });
+        }
       },
       onPanResponderRelease: (event, gesture) => {
         // console.log('release=', gesture);
@@ -42,11 +47,21 @@ export default class BackgroundSelection extends Component {
   }
 
   state = {
-    selectedIndex: 0
+    selectedIndex: 0,
+    nextIndex: 1
   };
 
   componentWillMount() {
-    this.setState({ background: this.props.selectedBackground });
+    let selectedIndex = backgrounds.findIndex(
+      bg => this.props.selectedBackground.name === bg.name
+    );
+    let nextIndex = this.getNextIndex(1);
+
+    this.setState({
+      background: this.props.selectedBackground,
+      selectedIndex,
+      nextIndex
+    });
   }
 
   forceSwipe(direction) {
@@ -63,14 +78,14 @@ export default class BackgroundSelection extends Component {
   onSwipeComplete(direction) {
     const indexChange = direction === 'Right' ? 1 : -1;
 
-    let newIndex = this.getNewIndex(indexChange);
+    let newIndex = this.getNextIndex(indexChange);
     const newBackground = backgrounds[newIndex];
 
     this.setState({ selectedIndex: newIndex, background: newBackground });
     this.position.setValue({ x: 0, y: 0 });
   }
 
-  getNewIndex(indexChange) {
+  getNextIndex(indexChange) {
     let newIndex = this.state.selectedIndex + indexChange;
     if (newIndex < 0) {
       newIndex = backgrounds.length - 1;
@@ -101,7 +116,11 @@ export default class BackgroundSelection extends Component {
 
   render() {
     return (
-      <View style={styles.mainView}>
+      <ImageBackground
+        source={backgrounds[this.state.nextIndex].uri}
+        style={styles.mainView}
+        resizeMode="cover"
+      >
         <Animated.View
           style={[this.getCardStyle(), styles.cardStyle, { zIndex: 99 }]}
           {...this.panResponder.panHandlers}
@@ -133,7 +152,7 @@ export default class BackgroundSelection extends Component {
             </View>
           </ImageBackground>
         </Animated.View>
-      </View>
+      </ImageBackground>
     );
   }
 }
