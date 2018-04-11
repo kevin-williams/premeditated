@@ -94,6 +94,9 @@ class AddEditTimer extends Component {
           );
           this.setState({ intervals: newIntervals });
         }}
+        containerStyle={
+          index === intervals.length - 1 ? null : styles.intervalBorder
+        }
       />
     ));
 
@@ -261,14 +264,16 @@ const styles = {
   },
   headerContainer: {
     width: SCREEN_WIDTH,
-    backgroundColor: 'rgba(222,222,222,0.7)',
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 25
   },
   headerText: {
+    backgroundColor: 'rgba(222,222,222,0.9)',
+    borderRadius: 10,
     textAlign: 'center',
     fontSize: 18,
+    marginLeft: 20,
     flex: 5
   },
   nameContainer: {
@@ -314,7 +319,7 @@ const styles = {
   },
 
   commonContainer: {
-    backgroundColor: 'rgba(222,222,222,0.7)',
+    backgroundColor: 'rgba(222,222,222,0.9)',
     width: '98%',
     borderRadius: 10,
     padding: 5,
@@ -322,6 +327,9 @@ const styles = {
   },
   columnContainer: {
     flexDirection: 'column'
+  },
+  intervalBorder: {
+    borderBottomWidth: 0.5
   }
 };
 

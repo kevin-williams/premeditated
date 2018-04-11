@@ -188,7 +188,7 @@ const styles = {
     backgroundColor: 'rgba(222,222,222,0.7)',
     // backgroundColor: 'rgba(137,234,255,0.8)',
     borderRadius: 20,
-    width: SCREEN_WIDTH * 0.9,
+    width: SCREEN_WIDTH * 0.98,
     marginTop: 10
   },
   headerText: {
