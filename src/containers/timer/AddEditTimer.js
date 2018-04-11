@@ -180,15 +180,28 @@ class AddEditTimer extends Component {
           />
         </View>
         <View style={[styles.commonContainer, styles.nameContainer]}>
-          <Text style={styles.nameLabel}>Name</Text>
-          <TextInput
-            style={styles.nameInput}
-            placeholderTextColor="grey"
-            onChangeText={text => this.setState({ title: text })}
-            placeholder="timer name (optional)"
-            underlineColorAndroid="transparent"
-            value={this.state.title}
-          />
+          <View style={styles.columnContainer}>
+            <Text style={styles.nameLabel}>Name</Text>
+            <TextInput
+              style={styles.nameInput}
+              placeholderTextColor="grey"
+              onChangeText={text => this.setState({ title: text })}
+              placeholder="timer name (optional)"
+              underlineColorAndroid="transparent"
+              value={this.state.title}
+            />
+          </View>
+          <View style={styles.columnContainer}>
+            <SoundPicker
+              label="Background Sound"
+              selectedSound={this.state.backgroundSound}
+              sounds={backgroundSounds}
+              onChange={newSound => {
+                console.log('background sound changed', newSound);
+                this.setState({ backgroundSound: newSound });
+              }}
+            />
+          </View>
         </View>
 
         <TimeEntryEditor
@@ -213,17 +226,6 @@ class AddEditTimer extends Component {
             });
           }}
         />
-        <View style={styles.commonContainer}>
-          <SoundPicker
-            label="Background Sound"
-            selectedSound={this.state.backgroundSound}
-            sounds={backgroundSounds}
-            onChange={newSound => {
-              console.log('background sound changed', newSound);
-              this.setState({ backgroundSound: newSound });
-            }}
-          />
-        </View>
         {this.renderIntervalSelects()}
 
         <View style={[styles.commonContainer, styles.buttonContainer]}>
@@ -313,10 +315,13 @@ const styles = {
 
   commonContainer: {
     backgroundColor: 'rgba(222,222,222,0.7)',
-    width: '90%',
+    width: '98%',
     borderRadius: 10,
     padding: 5,
     margin: 5
+  },
+  columnContainer: {
+    flexDirection: 'column'
   }
 };
 

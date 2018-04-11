@@ -9,6 +9,8 @@ import TimeSelect from './TimeSelect';
 import { sounds } from '../../assets/sound/sounds';
 
 export default class TimeEntryEditor extends Component {
+  state = { expanded: false };
+
   renderTimeEntryName() {
     if (this.props.timer && this.props.timer.name) {
       return (
@@ -34,50 +36,88 @@ export default class TimeEntryEditor extends Component {
           icon={{ name: 'delete-forever' }}
           onPress={() => this.props.onDelete(this.props.timeEntry)}
           activeOpacity={0.7}
-          overlaycontainerStyle={styles.button}
-          containerStyle={styles.buttonContainer}
+          overlaycontainerStyle={styles.deleteButton}
+          containerStyle={styles.deleteButtonContainer}
         />
       );
     }
 
+    const expandIconName = this.state.expanded ? 'expand-less' : 'expand-more';
+
+    let expandedRender = null;
+    if (this.state.expanded) {
+      expandedRender = (
+        <View style={styles.rowContainer}>
+          {this.renderTimeEntryName()}
+          <SoundPicker
+            selectedSound={this.props.timeEntry.sound}
+            sounds={sounds}
+            onChange={newSound => {
+              console.log('interval sound changed', newSound);
+              this.props.onSoundChange(newSound);
+            }}
+          />
+        </View>
+      );
+    }
+
     return (
-      <View style={[styles.rowStyle, this.props.containerStyle]}>
-        {this.renderTimeEntryName()}
-        <TimeSelect
-          style={{ width: 150 }}
-          label={this.props.label}
-          hours={this.props.timeEntry.hours}
-          minutes={this.props.timeEntry.mins}
-          onTimeSelected={time => {
-            console.log('change timeEntry=', time);
-            this.props.onTimeChange(time);
-          }}
-        />
-        <SoundPicker
-          selectedSound={this.props.timeEntry.sound}
-          sounds={sounds}
-          onChange={newSound => {
-            console.log('interval sound changed', newSound);
-            this.props.onSoundChange(newSound);
-          }}
-        />
-        {deleteButton}
+      <View style={[styles.mainContainer, this.props.containerStyle]}>
+        <View style={styles.rowContainer}>
+          <TimeSelect
+            style={styles.timeSelect}
+            label={this.props.label}
+            hours={this.props.timeEntry.hours}
+            minutes={this.props.timeEntry.mins}
+            onTimeSelected={time => {
+              console.log('change timeEntry=', time);
+              this.props.onTimeChange(time);
+            }}
+          />
+          {deleteButton}
+          <Avatar
+            small
+            rounded
+            icon={{ name: expandIconName }}
+            onPress={() => this.setState({ expanded: !this.state.expanded })}
+            activeOpacity={0.7}
+            overlaycontainerStyle={styles.expandButton}
+            containerStyle={styles.expandButtonContainer}
+          />
+        </View>
+
+        {expandedRender}
       </View>
     );
   }
 }
 
 const styles = {
-  rowStyle: {
-    flexDirection: 'row',
-    alignContent: 'space-between',
-    justifyContent: 'center'
+  mainContainer: {
+    flexDirection: 'column'
   },
-  button: {
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  timeSelect: {
+    width: 225,
+    margin: 5
+  },
+  deleteButton: {
     backgroundColor: 'white'
   },
-  buttonContainer: {
-    alignSelf: 'center'
+  deleteButtonContainer: {
+    alignSelf: 'center',
+    margin: 5
+  },
+  expandButton: {
+    backgroundColor: 'grey'
+  },
+  expandButtonContainer: {
+    alignSelf: 'flex-start',
+    margin: 5
   }
 };
 

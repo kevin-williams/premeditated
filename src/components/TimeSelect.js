@@ -106,6 +106,7 @@ export default class TimeSelect extends Component {
           onPress={this.showTimeDialog.bind(this)}
           activeOpacity={0.7}
           overlaycontainerStyle={styles.button}
+          containerStyle={styles.buttonContainer}
         />
       </View>
     );
@@ -127,6 +128,9 @@ const styles = {
   button: {
     backgroundColor: 'white',
     alignSelf: 'flex-end'
+  },
+  buttonContainer: {
+    margin: 5
   },
   textStyle: {
     textAlign: 'center',

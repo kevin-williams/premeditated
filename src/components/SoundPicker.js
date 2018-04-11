@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Picker, Text, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { Audio } from 'expo';
 
 export default class SoundPicker extends Component {
@@ -32,24 +33,41 @@ export default class SoundPicker extends Component {
 
   render() {
     return (
-      <View style={{ width: 150 }}>
+      <View style={styles.mainContainer}>
         <Text>{this.props.label}</Text>
-        <Picker
-          selectedValue={this.props.selectedSound}
-          onValueChange={this.soundChanged.bind(this)}
-        >
-          {this.props.sounds.map((sound, index) => (
-            <Picker.Item
-              key={`Sound-${index}`}
-              label={sound.name}
-              value={sound}
-            />
-          ))}
-        </Picker>
+        <View style={styles.rowStyle}>
+          <Icon name="music-note" />
+          <Picker
+            selectedValue={this.props.selectedSound}
+            onValueChange={this.soundChanged.bind(this)}
+            style={styles.picker}
+          >
+            {this.props.sounds.map((sound, index) => (
+              <Picker.Item
+                key={`Sound-${index}`}
+                label={sound.name}
+                value={sound}
+              />
+            ))}
+          </Picker>
+        </View>
       </View>
     );
   }
 }
+
+const styles = {
+  mainContainer: {
+    flexDirection: 'column'
+  },
+  rowStyle: {
+    flexDirection: 'row'
+  },
+  picker: {
+    width: 150,
+    height: 50
+  }
+};
 
 SoundPicker.propTypes = {
   label: PropTypes.string,
