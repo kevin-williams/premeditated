@@ -27,10 +27,9 @@ class TimerListSubtitle extends Component {
           icon={{ name: 'edit' }}
           onPress={() => this.props.showAddDialog(c.EDIT_MODE)}
           activeOpacity={0.7}
-          overlaycontainerStyle={styles.button}
         />
         <Avatar
-          medium
+          small
           rounded
           icon={{ name: 'play-arrow' }}
           onPress={this.props.startSelectedTimer}
@@ -42,7 +41,7 @@ class TimerListSubtitle extends Component {
           icon={{ name: 'delete-forever' }}
           onPress={() => this.props.deleteTimer(timer.id)}
           activeOpacity={0.7}
-          overlaycontainerStyle={styles.button}
+          overlayContainerStyle={styles.delete}
         />
       </View>
     );
@@ -59,8 +58,8 @@ const styles = {
     fontSize: 14,
     color: 'black'
   },
-  button: {
-    backgroundColor: 'white'
+  delete: {
+    backgroundColor: 'rgba(180,0,0,.7)'
   },
   start: {
     alignSelf: 'center',

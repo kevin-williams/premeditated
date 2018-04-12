@@ -12,7 +12,7 @@ export default class TimeEntryEditor extends Component {
   state = { expanded: false };
 
   renderTimeEntryName() {
-    if (this.props.timer && this.props.timer.name) {
+    if (this.props.timer && this.props.timer.name != undefined) {
       return (
         <TextInput
           style={styles.nameInput}

@@ -162,7 +162,11 @@ class TimerList extends Component {
       >
         <View style={styles.container}>
           <View style={styles.buttonContainer}>
-            <Image style={styles.title} source={TITLE_IMAGE} />
+            <Image
+              style={styles.title}
+              source={TITLE_IMAGE}
+              resizeMode="contain"
+            />
             <Avatar
               small
               rounded

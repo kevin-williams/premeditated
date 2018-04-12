@@ -54,11 +54,12 @@ export default class AddNewInterval extends Component {
     const finalDurationMillis = getMillisFromTimer(this.props.timer.duration);
     const newIntervals = [];
 
+    let name = this.state.name;
     let hours = this.state.hours;
     let mins = this.state.mins;
 
     while (getMillisFromTimer({ hours, mins }) < finalDurationMillis) {
-      newIntervals.push({ hours, mins, sound: this.state.sound });
+      newIntervals.push({ name, hours, mins, sound: this.state.sound });
       hours += this.state.hours;
       mins += this.state.mins;
 
@@ -73,11 +74,12 @@ export default class AddNewInterval extends Component {
   }
 
   addIntervalBeforeEnd() {
+    let name = this.state.name;
     const duration = this.props.timer.duration;
     const hours = duration.hours - this.state.hours;
     const mins = duration.mins - this.state.mins;
 
-    const newIntervals = [{ hours, mins, sound: this.state.sound }];
+    const newIntervals = [{ name, hours, mins, sound: this.state.sound }];
     console.log('addIntervalBeforeEnd=', newIntervals);
     this.props.onChange(newIntervals);
   }
@@ -88,7 +90,7 @@ export default class AddNewInterval extends Component {
       name = getTimerDescription(this.state);
     }
 
-    const newIntervals = [{ name, hours, mins, sound }];
+    const newIntervals = [{ name, name, hours, mins, sound }];
     console.log('addIntervalFromStart=', newIntervals);
     this.props.onChange(newIntervals);
   }
@@ -105,6 +107,7 @@ export default class AddNewInterval extends Component {
         getMillisFromTimer(prev) > getMillisFromTimer(current) ? prev : current
     );
 
+    let name = this.state.name;
     let hours = maxEntry.hours + this.state.hours;
     let mins = maxEntry.mins + this.state.mins;
 
@@ -113,7 +116,7 @@ export default class AddNewInterval extends Component {
       mins -= 60;
     }
 
-    const newInterval = { hours, mins, sound: this.state.sound };
+    const newInterval = { name, hours, mins, sound: this.state.sound };
 
     if (getMillisFromTimer(newInterval) < getMillisFromTimer(duration)) {
       const newIntervals = [newInterval];
