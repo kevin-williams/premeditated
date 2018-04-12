@@ -94,6 +94,13 @@ class AddEditTimer extends Component {
           );
           this.setState({ intervals: newIntervals });
         }}
+        onNameChange={name => {
+          const newIntervals = [].concat(this.state.intervals);
+          const myInterval = this.state.intervals[index];
+          myInterval.name = name;
+
+          this.setState({ intervals: newIntervals });
+        }}
         containerStyle={
           index === intervals.length - 1 ? null : styles.intervalBorder
         }

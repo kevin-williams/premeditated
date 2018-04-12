@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
@@ -12,16 +12,19 @@ export default class TimeEntryEditor extends Component {
   state = { expanded: false };
 
   renderTimeEntryName() {
-    if (this.props.timer && this.props.timer.name != undefined) {
+    if (this.props.timeEntry && this.props.timeEntry.name != undefined) {
       return (
-        <TextInput
-          style={styles.nameInput}
-          placeholderTextColor="grey"
-          onChangeText={text => this.props.onNameChange(text)}
-          placeholder="Interval name"
-          underlineColorAndroid="transparent"
-          value={this.props.timer.name}
-        />
+        <View style={styles.nameContainer}>
+          <Text>Interval Name</Text>
+          <TextInput
+            style={styles.nameInput}
+            placeholderTextColor="grey"
+            onChangeText={text => this.props.onNameChange(text)}
+            placeholder="Interval name"
+            underlineColorAndroid="transparent"
+            value={this.props.timeEntry.name}
+          />
+        </View>
       );
     }
   }
@@ -95,6 +98,15 @@ export default class TimeEntryEditor extends Component {
 const styles = {
   mainContainer: {
     flexDirection: 'column'
+  },
+  nameContainer: {
+    flex: 1,
+    margin: 5
+  },
+  nameInput: {
+    flex: 1,
+    borderWidth: 0.5,
+    padding: 5
   },
   rowContainer: {
     flexDirection: 'row',

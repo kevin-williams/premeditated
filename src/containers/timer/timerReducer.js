@@ -15,15 +15,15 @@ const DEFAULT_STATE = {
   timers: [
     {
       id: 1,
-      title: '15 min with 5 min interval',
+      title: 'Meditate and Stretch',
       duration: {
         hours: 0,
         mins: 15,
         sound: sounds[3]
       },
       intervals: [
-        { name: '5 mins', hours: 0, mins: 5, sound: sounds[4] },
-        { name: '10 mins', hours: 0, mins: 10, sound: sounds[4] }
+        { name: 'Meditate', hours: 0, mins: 5, sound: sounds[4] },
+        { name: 'Stretch', hours: 0, mins: 10, sound: sounds[4] }
       ]
     }
   ],
@@ -98,13 +98,9 @@ export default (state = DEFAULT_STATE, action) => {
     }
     case c.UPDATE_TIMER: {
       const newState = { ...state };
-      newState.timers = state.timers.map(timer => {
-        if (timer.id === action.timer.id) {
-          return action.timer;
-        } else {
-          return timer;
-        }
-      });
+      newState.timers = state.timers.map(
+        timer => (timer.id === action.timer.id ? action.timer : timer)
+      );
 
       saveState(newState);
       return newState;

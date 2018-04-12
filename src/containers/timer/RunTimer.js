@@ -21,8 +21,13 @@ const DEFAULT_STATE = {
 
 class RunTimer extends Component {
   componentWillMount() {
-    console.log('runningTimer=', this.props.timer.runningTimer);
-    this.setState({ ...DEFAULT_STATE });
+    const timer = this.props.timer.runningTimer;
+    console.log('runningTimer=', timer);
+
+    this.setState({
+      ...DEFAULT_STATE,
+      intervalTimes: this.getIntervalTimes(timer)
+    });
 
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
@@ -38,6 +43,21 @@ class RunTimer extends Component {
       clearInterval(this.interval);
       this.setState({ isRunning: false });
     }
+  }
+
+  getIntervalTimes(timer) {
+    const intervalTimes = [];
+
+    timer.intervals.map(interval => {
+      intervalTimes.push({
+        name: interval.name,
+        time: getMillisFromTimer(interval, timer.test),
+        sound: interval.sound,
+        soundPlayed: false
+      });
+    });
+
+    return intervalTimes;
   }
 
   async endSound() {
@@ -122,21 +142,12 @@ class RunTimer extends Component {
     const { mainTimer } = this.state;
 
     const finalTime = getMillisFromTimer(timer.duration, timer.test);
-    const intervalTimes = [];
-
-    timer.intervals.map(interval => {
-      intervalTimes.push({
-        time: getMillisFromTimer(interval, timer.test),
-        sound: interval.sound,
-        soundPlayed: false
-      });
-    });
 
     this.setState({
       mainTimerStart: moment(),
       isRunning: true,
       finalTime,
-      intervalTimes
+      intervalTimes: this.getIntervalTimes(timer)
     });
 
     if (this.state.backgroundSound) {
@@ -261,7 +272,9 @@ class RunTimer extends Component {
           timer.soundPlayed = true;
         }
 
-        const label = timer.name ? timer.name : this.formatTime(timer.time);
+        const label = timer.name
+          ? `${timer.name} (${this.formatTime(timer.time)})`
+          : this.formatTime(timer.time);
 
         return (
           <TimerProgress
