@@ -6,7 +6,6 @@ import {
   LayoutAnimation,
   UIManager,
   ScrollView,
-  Text,
   View
 } from 'react-native';
 import { Avatar, List, ListItem } from 'react-native-elements';
@@ -14,6 +13,7 @@ import { AdMobBanner } from 'expo';
 
 import AddEditTimer from './AddEditTimer';
 import BackgroundSelection from '../../components/BackgroundSelection';
+import ApplicationInfo from '../../components/ApplicationInfo';
 import RunTimer from './RunTimer';
 import TimerListSubtitle from './TimerListSubtitle';
 
@@ -56,7 +56,8 @@ class TimerList extends Component {
   }
 
   state = {
-    showSelectBackground: false
+    showSelectBackground: false,
+    showAppInfo: false
   };
 
   componentWillMount() {
@@ -153,6 +154,15 @@ class TimerList extends Component {
       );
     }
 
+    if (this.state.showAppInfo) {
+      return (
+        <ApplicationInfo
+          selectedBackground={this.props.timer.appBackground}
+          onClose={() => this.setState({ showAppInfo: false })}
+        />
+      );
+    }
+
     // TODO make title fancier
     return (
       <ImageBackground
@@ -205,7 +215,7 @@ class TimerList extends Component {
               medium
               rounded
               icon={{ name: 'description' }}
-              onPress={() => console.log('do info screen')}
+              onPress={() => this.setState({ showAppInfo: true })}
               activeOpacity={0.7}
               containerStyle={styles.bottomButton}
             />
