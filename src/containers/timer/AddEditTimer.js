@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Alert,
   Clipboard,
   ImageBackground,
   ScrollView,
@@ -66,7 +67,12 @@ class AddEditTimer extends Component {
 
     Clipboard.setString(timerStr);
 
-
+    Alert.alert(
+      'Timer Share',
+      'Your timer has been copied to the clipboard.   Paste it into a text/email/tweet/etc. then have them copy it and use the import button.',
+      [
+        { text: 'OK', onPress: () => console.log('OK Pressed') }
+      ]);
   }
 
   async importTimer() {
@@ -80,6 +86,12 @@ class AddEditTimer extends Component {
       console.log('import str=' + timerStr);
       const timer = JSON.parse(timerStr);
       this.setState(timer);
+      Alert.alert(
+        'Timer Import',
+        'Your timer has been imported from the clipboard.',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') }
+        ]);
     } catch (error) {
       console.log('error importing timer', error)
     }
@@ -296,7 +308,7 @@ class AddEditTimer extends Component {
             icon={{ name: 'import-contacts' }}
             onPress={() => this.importTimer()}
             activeOpacity={0.7}
-            containerStyle={styles.importButton}
+            containerStyle={styles.shareButton}
           />
         </View>
       </ImageBackground>
@@ -366,6 +378,9 @@ const styles = {
   },
   closeButton: {
     backgroundColor: 'rgba(222, 0, 0, 0.6)'
+  },
+  shareButton: {
+    backgroundColor: 'rgba(180,180,180,.7)',
   },
 
   commonContainer: {
