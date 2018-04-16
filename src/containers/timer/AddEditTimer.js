@@ -58,6 +58,23 @@ class AddEditTimer extends Component {
     this.props.closeAddDialog();
   }
 
+  shareTimer() {
+    const timerStr = `>>>>>>>>> PREMEDITATED TIMER >>>>>>>>>
+    ${JSON.stringify(this.state)}
+    <<<<<<<<< PREMEDITATED TIMER <<<<<<<<<`;
+
+    Clipboard.setString(timerStr);
+  }
+
+  importTimer() {
+    let timerStr = Clipboard.getString();
+    timerStr = timerStr.replaceAll(/.*\>* PREMEDITATED TIMER \>*/, '');
+    timerStr = timerStr.replaceAll(/\<* PREMEDITATED TIMER \<*.*/, '');
+
+    const timer = JSON.parse(timerStr);
+    this.setState(timer);
+  }
+
   addIntervalsToState(intervals) {
     let newIntervals = [];
     newIntervals = newIntervals.concat(this.state.intervals);
@@ -254,6 +271,22 @@ class AddEditTimer extends Component {
             onPress={() => this.props.closeAddDialog()}
             activeOpacity={0.7}
             containerStyle={styles.closeButton}
+          />
+          <Avatar
+            medium
+            rounded
+            icon={{ name: 'share' }}
+            onPress={() => this.shareTimer()}
+            activeOpacity={0.7}
+            containerStyle={styles.shareButton}
+          />
+          <Avatar
+            medium
+            rounded
+            icon={{ name: 'import-contacts' }}
+            onPress={() => this.importTimer()}
+            activeOpacity={0.7}
+            containerStyle={styles.importButton}
           />
         </View>
       </ImageBackground>
