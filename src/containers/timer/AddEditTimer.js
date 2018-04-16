@@ -69,10 +69,9 @@ class AddEditTimer extends Component {
 
     Alert.alert(
       'Timer Share',
-      'Your timer has been copied to the clipboard.   Paste it into a text/email/tweet/etc. then have them copy it and use the import button.',
-      [
-        { text: 'OK', onPress: () => console.log('OK Pressed') }
-      ]);
+      'Your timer has been copied to the clipboard.   Paste it into a text/email/tweet/etc. then the receipient will copy it and use the import button.',
+      [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+    );
   }
 
   async importTimer() {
@@ -85,9 +84,8 @@ class AddEditTimer extends Component {
         Alert.alert(
           'Timer Import Error',
           'Make sure you copied the entire timer string including the >>>> and <<<< lines into your clipboard.',
-          [
-            { text: 'OK', onPress: () => console.log('OK Pressed') }
-          ]);
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+        );
       }
 
       timerStr = timerStr.replace(/[\s\S]*TIMER [>]{9}/gm, '');
@@ -99,17 +97,15 @@ class AddEditTimer extends Component {
       Alert.alert(
         'Timer Import',
         'Your timer has been imported from the clipboard.',
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ]);
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+      );
     } catch (error) {
       console.log('error importing timer', error);
       Alert.alert(
         'Timer Import Error',
         'Error importing timer from clipboard.  Copy the entire timer including the >>> and <<< lines',
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ]);
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+      );
     }
   }
 
@@ -314,7 +310,7 @@ class AddEditTimer extends Component {
           <Avatar
             medium
             rounded
-            icon={{ name: 'import-contacts' }}
+            icon={{ name: 'input' }}
             onPress={() => this.importTimer()}
             activeOpacity={0.7}
             containerStyle={styles.shareButton}
@@ -398,7 +394,7 @@ const styles = {
     backgroundColor: 'rgba(222, 0, 0, 0.6)'
   },
   shareButton: {
-    backgroundColor: 'rgba(180,180,180,.7)',
+    backgroundColor: 'rgba(180,180,180,.7)'
   },
 
   commonContainer: {
