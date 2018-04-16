@@ -17,16 +17,6 @@ export const selectTimer = timer => ({
   timer
 });
 
-export const showAddDialog = mode => ({
-  type: c.SHOW_ADD_DIALOG,
-  mode
-});
-
-export const closeAddDialog = () => ({
-  type: c.CLOSE_ADD_DIALOG,
-  mode: c.NOT_SHOWN
-});
-
 export const startSelectedTimer = () => ({
   type: c.START_SELECTED_TIMER
 });

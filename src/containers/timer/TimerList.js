@@ -9,7 +9,7 @@ import {
   View
 } from 'react-native';
 import { Avatar, List, ListItem } from 'react-native-elements';
-import { Link } from 'react-router-native'
+import { Link } from 'react-router-native';
 
 import { AdMobBanner } from 'expo';
 
@@ -24,8 +24,6 @@ import {
   deleteTimer,
   selectTimer,
   startSelectedTimer,
-  showAddDialog,
-  closeAddDialog,
   changeBackground
 } from './timerActions';
 
@@ -267,7 +265,5 @@ export default connect(mapStateToProps, {
   deleteTimer,
   selectTimer,
   startSelectedTimer,
-  showAddDialog,
-  closeAddDialog,
   changeBackground
 })(TimerList);

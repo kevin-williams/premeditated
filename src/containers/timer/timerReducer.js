@@ -106,10 +106,6 @@ export default (state = DEFAULT_STATE, action) => {
       return newState;
     }
 
-    case c.SHOW_ADD_DIALOG:
-    case c.CLOSE_ADD_DIALOG:
-      return { ...state, showAddEditDialog: action.mode };
-
     case c.CHANGE_BACKGROUND: {
       const newState = { ...state, appBackground: action.background };
       saveState(newState);

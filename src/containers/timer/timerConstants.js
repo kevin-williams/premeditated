@@ -8,8 +8,6 @@ export const STOP_SELECTED_TIMER = 'STOP_SELECTED_TIMER';
 export const UPDATE_TIMER = 'UPDATE_TIMER';
 export const APP_DATA_LOADED = 'APP_DATA_LOADED';
 export const APP_DATA_DEFAULT = 'APP_DATA_DEFAULT';
-export const SHOW_ADD_DIALOG = 'SHOW_ADD_DIALOG';
-export const CLOSE_ADD_DIALOG = 'CLOSE_ADD_DIALOG';
 export const CHANGE_BACKGROUND = 'CHANGE_BACKGROUND';
 
 // AddEdit Modal constants

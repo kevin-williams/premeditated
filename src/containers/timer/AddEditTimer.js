@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import { BackButton, Link } from 'react-router-native'
+import { BackButton, Link } from 'react-router-native';
 
 import SoundPicker from '../../components/SoundPicker';
 import TimeEntryEditor from '../../components/TimeEntryEditor';
@@ -20,7 +20,7 @@ import { backgroundSounds } from '../../../assets/sound/background/background_so
 import { sounds } from '../../../assets/sound/sounds';
 
 import * as c from './timerConstants';
-import { addTimer, updateTimer, closeAddDialog } from './timerActions';
+import { addTimer, updateTimer } from './timerActions';
 
 import { SCREEN_WIDTH, getTimerDescription } from '../../utils';
 
@@ -58,7 +58,7 @@ class AddEditTimer extends Component {
       console.log('adding timer', this.state);
       this.props.addTimer(this.state);
     }
-    this.props.closeAddDialog();
+    this.props.history.goBack();
   }
 
   shareTimer() {
@@ -237,7 +237,7 @@ class AddEditTimer extends Component {
             small
             rounded
             icon={{ name: 'close' }}
-            onPress={() => this.props.closeAddDialog()}
+            onPress={() => this.props.history.goBack()}
             activeOpacity={0.7}
             containerStyle={styles.closeButtonTop}
           />
@@ -322,7 +322,7 @@ class AddEditTimer extends Component {
             medium
             rounded
             icon={{ name: 'close' }}
-            onPress={() => this.props.closeAddDialog()}
+            onPress={() => this.props.history.goBack()}
             activeOpacity={0.7}
             containerStyle={styles.closeButton}
           />
@@ -417,6 +417,5 @@ const styles = {
 const mapStateToProps = state => state;
 export default connect(mapStateToProps, {
   addTimer,
-  updateTimer,
-  closeAddDialog
+  updateTimer
 })(AddEditTimer);
