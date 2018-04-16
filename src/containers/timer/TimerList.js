@@ -13,10 +13,6 @@ import { Link } from 'react-router-native';
 
 import { AdMobBanner } from 'expo';
 
-import AddEditTimer from './AddEditTimer';
-import BackgroundSelection from '../../components/BackgroundSelection';
-import ApplicationInfo from '../../components/ApplicationInfo';
-import RunTimer from './RunTimer';
 import TimerListSubtitle from './TimerListSubtitle';
 
 import {

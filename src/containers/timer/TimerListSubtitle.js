@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-native'
+import { Link } from 'react-router-native';
 
 import * as c from './timerConstants';
 import {
@@ -22,7 +22,7 @@ class TimerListSubtitle extends Component {
 
     return (
       <View style={styles.subtitleContainer}>
-        <Link to="AddEditTimer">
+        <Link to="/AddEditTimer">
           <Avatar
             small
             rounded
@@ -36,7 +36,7 @@ class TimerListSubtitle extends Component {
             small
             rounded
             icon={{ name: 'play-arrow' }}
-            onPress={this.props.startSelectedTimer}
+            onPress={() => this.props.startSelectedTimer()}
             overlayContainerStyle={styles.start}
           />
         </Link>
