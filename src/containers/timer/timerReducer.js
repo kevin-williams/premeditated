@@ -27,7 +27,8 @@ const DEFAULT_STATE = {
       ]
     }
   ],
-  appBackground: DEFAULT_BACKGROUND_IMAGE
+  appBackground: DEFAULT_BACKGROUND_IMAGE,
+  appDataLoadStarted: false
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -118,6 +119,8 @@ export default (state = DEFAULT_STATE, action) => {
 
       return newState;
     }
+    case c.APP_DATA_LOAD_STARTED:
+      return { ...state, appDataLoadStarted: true };
     case c.APP_DATA_DEFAULT:
       return { ...DEFAULT_STATE };
     default:
@@ -143,11 +146,12 @@ function saveState(state) {
 
 function convertOnLoad(state) {
   if (!state) {
-    return DEFAULT_STATE;
+    return { ...DEFAULT_STATE, appDataLoadStarted: true };
   }
   const newState = fixBackgroundImage(state);
 
   newState.timers = fixSounds(state.timers);
+  newState.appDataLoadStarted = true;
 
   console.log('final state after load', newState);
   return newState;

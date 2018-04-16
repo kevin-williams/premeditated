@@ -48,31 +48,21 @@ const CustomLayoutLinear = {
 class TimerList extends Component {
   constructor(props) {
     super(props);
-    this.props.loadApp();
   }
-
-  state = {
-    showSelectBackground: false,
-    showAppInfo: false
-  };
 
   componentWillMount() {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
       UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+    if (!this.props.timer.appDataLoadStarted) {
+      console.log('appDataLoadStarted=', this.props.timer.appDataLoadStarted);
+      this.props.loadApp();
     }
   }
 
   componentWillUpdate() {
     // LayoutAnimation.easeInEaseOut();
     LayoutAnimation.configureNext(CustomLayoutLinear);
-  }
-
-  onBackgroundChange(bg) {
-    if (bg) {
-      this.props.changeBackground(bg);
-    }
-
-    this.setState({ showSelectBackground: false });
   }
 
   renderSubtitle(timer) {

@@ -5,12 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-native';
 
 import * as c from './timerConstants';
-import {
-  deleteTimer,
-  selectTimer,
-  startSelectedTimer,
-  showAddDialog
-} from './timerActions';
+import { deleteTimer, startSelectedTimer } from './timerActions';
 
 class TimerListSubtitle extends Component {
   render() {
@@ -75,7 +70,5 @@ const mapStateToProps = state => state;
 
 export default connect(mapStateToProps, {
   deleteTimer,
-  selectTimer,
-  showAddDialog,
   startSelectedTimer
 })(TimerListSubtitle);

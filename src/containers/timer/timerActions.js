@@ -36,6 +36,10 @@ export const changeBackground = background => ({
 });
 
 export const loadApp = () => dispatch => {
+  dispatch({
+    type: c.APP_DATA_LOAD_STARTED
+  });
+
   AsyncStorage.getItem(c.APP_KEY)
     .then(stateStr => {
       // console.log('loaded state=' + stateStr);
