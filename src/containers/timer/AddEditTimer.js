@@ -64,6 +64,8 @@ class AddEditTimer extends Component {
     <<<<<<<<< PREMEDITATED TIMER <<<<<<<<<`;
 
     Clipboard.setString(timerStr);
+
+
   }
 
   importTimer() {
