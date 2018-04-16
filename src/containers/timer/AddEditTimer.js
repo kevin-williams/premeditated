@@ -78,7 +78,17 @@ class AddEditTimer extends Component {
   async importTimer() {
     try {
       let timerStr = await Clipboard.getString();
-      console.log('Found timer in clipboard=', timerStr.match(/.*TIMER [>]{9}/gm));
+      const timerInClipboard = timerStr.match(/.*TIMER [>]{9}/gm);
+      console.log('Found timer in clipboard=', timerInClipboard);
+
+      if (!timerInClipboard) {
+        Alert.alert(
+          'Timer Import Error',
+          'Make sure you copied the entire timer string including the >>>> and <<<< lines into your clipboard.',
+          [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+          ]);
+      }
 
       timerStr = timerStr.replace(/[\s\S]*TIMER [>]{9}/gm, '');
       timerStr = timerStr.replace(/[<]{9} PREMEDITATED[\s\S]*/gm, '');
@@ -93,7 +103,13 @@ class AddEditTimer extends Component {
           { text: 'OK', onPress: () => console.log('OK Pressed') }
         ]);
     } catch (error) {
-      console.log('error importing timer', error)
+      console.log('error importing timer', error);
+      Alert.alert(
+        'Timer Import Error',
+        'Error importing timer from clipboard.  Copy the entire timer including the >>> and <<< lines',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') }
+        ]);
     }
   }
 
@@ -286,14 +302,7 @@ class AddEditTimer extends Component {
             activeOpacity={0.7}
             containerStyle={styles.saveButton}
           />
-          <Avatar
-            medium
-            rounded
-            icon={{ name: 'close' }}
-            onPress={() => this.props.closeAddDialog()}
-            activeOpacity={0.7}
-            containerStyle={styles.closeButton}
-          />
+
           <Avatar
             medium
             rounded
@@ -309,6 +318,15 @@ class AddEditTimer extends Component {
             onPress={() => this.importTimer()}
             activeOpacity={0.7}
             containerStyle={styles.shareButton}
+          />
+
+          <Avatar
+            medium
+            rounded
+            icon={{ name: 'close' }}
+            onPress={() => this.props.closeAddDialog()}
+            activeOpacity={0.7}
+            containerStyle={styles.closeButton}
           />
         </View>
       </ImageBackground>
