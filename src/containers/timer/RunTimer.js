@@ -146,7 +146,7 @@ class RunTimer extends Component {
 
     this.setState({
       mainTimerStart: moment(),
-      isRunning: true, import { Link } from 'react-router-native'
+      isRunning: true,
 
       finalTime,
       intervalTimes: this.getIntervalTimes(timer)

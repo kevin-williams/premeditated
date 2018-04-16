@@ -8,8 +8,11 @@ import { NativeRouter, Route } from 'react-router-native'
 
 import reducers from './src/reducers';
 
+import RunTimer from './src/containers/timer/RunTimer';
 import TimerList from './src/containers/timer/TimerList';
 import AddEditTimer from './src/containers/timer/AddEditTimer';
+import BackgroundSelection from './src/components/BackgroundSelection';
+import ApplicationInfo from './src/components/ApplicationInfo';
 
 export default class App extends React.Component {
   render() {
@@ -19,11 +22,13 @@ export default class App extends React.Component {
           store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}
         >
           <NativeRouter>
-            <Route exact path="/" component={TimerList} />
-            <Route path="/AddEditTimer" component={AddEditTimer} />
-            <Route path="/BackgroundSelection" component={BackgroundSelection} />
-            <Route path="/RunTimer" component={RunTimer} />
-            <Route path="/ApplicationInfo" component={ApplicationInfo} />
+            <View style={styles.container}>
+              <Route exact path="/" component={TimerList} />
+              <Route path="/AddEditTimer" component={AddEditTimer} />
+              <Route path="/BackgroundSelection" component={BackgroundSelection} />
+              <Route path="/RunTimer" component={RunTimer} />
+              <Route path="/ApplicationInfo" component={ApplicationInfo} />
+            </View>
           </NativeRouter>
         </Provider>
       </AppFontLoader>
