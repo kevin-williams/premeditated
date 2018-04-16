@@ -38,20 +38,15 @@ const NEW_TIMER = {
 
 class AddEditTimer extends Component {
   componentWillMount() {
-    if (this.props.timer.showAddEditDialog === c.EDIT_MODE) {
-      const selectedTimer = this.props.timer.timers.filter(
-        timer => timer.id === this.props.timer.selectedTimerId
-      );
-      if (selectedTimer) {
-        this.setState({ ...selectedTimer[0] });
-      }
+    if (this.props.location.state && this.props.location.state.timer) {
+      this.setState({ ...this.props.location.state.timer });
     } else {
       this.setState({ ...NEW_TIMER });
     }
   }
 
   saveTimer() {
-    if (this.props.timer.showAddEditDialog === c.EDIT_MODE) {
+    if (this.props.location.state && this.props.location.state.timer) {
       console.log('saving timer', this.state);
       this.props.updateTimer(this.state);
     } else {

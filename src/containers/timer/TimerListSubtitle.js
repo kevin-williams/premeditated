@@ -22,14 +22,13 @@ class TimerListSubtitle extends Component {
 
     return (
       <View style={styles.subtitleContainer}>
-        <Link to="/AddEditTimer">
-          <Avatar
-            small
-            rounded
-            icon={{ name: 'edit' }}
-            onPress={() => this.props.showAddDialog(c.EDIT_MODE)}
-            activeOpacity={0.7}
-          />
+        <Link
+          to={{
+            pathname: '/AddEditTimer',
+            state: { timer }
+          }}
+        >
+          <Avatar small rounded icon={{ name: 'edit' }} activeOpacity={0.7} />
         </Link>
         <Link to="/RunTimer">
           <Avatar
