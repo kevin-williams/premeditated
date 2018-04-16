@@ -8,6 +8,7 @@ import {
   View
 } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import { BackButton, Link } from 'react-router-native'
 
 import SoundPicker from '../../components/SoundPicker';
 import TimeEntryEditor from '../../components/TimeEntryEditor';
@@ -178,6 +179,7 @@ class AddEditTimer extends Component {
         source={this.props.timer.appBackground.uri}
         style={styles.backgroundImage}
       >
+        <BackButton />
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Add/Edit Timer</Text>
           <Avatar

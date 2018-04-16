@@ -8,6 +8,9 @@ import {
   Text,
   View
 } from 'react-native';
+
+import { BackButton } from 'react-router-native'
+
 import { Avatar } from 'react-native-elements';
 import { Asset, AppLoading } from 'expo';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../utils';
@@ -141,6 +144,7 @@ export default class BackgroundSelection extends Component {
         style={styles.mainView}
         resizeMode="cover"
       >
+        <BackButton />
         <Animated.View
           style={[this.getCardStyle(), styles.cardStyle, { zIndex: 99 }]}
           {...this.panResponder.panHandlers}

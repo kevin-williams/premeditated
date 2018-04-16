@@ -9,6 +9,8 @@ import {
   View
 } from 'react-native';
 import { Avatar, List, ListItem } from 'react-native-elements';
+import { Link } from 'react-router-native'
+
 import { AdMobBanner } from 'expo';
 
 import AddEditTimer from './AddEditTimer';
@@ -131,39 +133,6 @@ class TimerList extends Component {
   }
 
   render() {
-    if (
-      this.props.timer.runningTimer &&
-      this.props.timer.runningTimer.isRunning
-    ) {
-      return <RunTimer />;
-    }
-
-    if (
-      this.props.timer.showAddEditDialog === c.ADD_MODE ||
-      this.props.timer.showAddEditDialog === c.EDIT_MODE
-    ) {
-      return <AddEditTimer />;
-    }
-
-    if (this.state.showSelectBackground) {
-      return (
-        <BackgroundSelection
-          selectedBackground={this.props.timer.appBackground}
-          onChange={this.onBackgroundChange.bind(this)}
-        />
-      );
-    }
-
-    if (this.state.showAppInfo) {
-      return (
-        <ApplicationInfo
-          selectedBackground={this.props.timer.appBackground}
-          onClose={() => this.setState({ showAppInfo: false })}
-        />
-      );
-    }
-
-    // TODO make title fancier
     return (
       <ImageBackground
         resizeMode="cover"
@@ -177,14 +146,15 @@ class TimerList extends Component {
               source={TITLE_IMAGE}
               resizeMode="contain"
             />
-            <Avatar
-              small
-              rounded
-              icon={{ name: 'add' }}
-              onPress={() => this.props.showAddDialog(c.ADD_MODE)}
-              activeOpacity={0.7}
-              containerStyle={styles.addButton}
-            />
+            <Link to="/AddEditTimer">
+              <Avatar
+                small
+                rounded
+                icon={{ name: 'add' }}
+                activeOpacity={0.7}
+                containerStyle={styles.addButton}
+              />
+            </Link>
           </View>
           <ScrollView>
             <List containerStyle={styles.list}>{this.renderListItems()}</List>
@@ -203,22 +173,24 @@ class TimerList extends Component {
             }
           />
           <View style={styles.bottomButtonContainer}>
-            <Avatar
-              medium
-              rounded
-              icon={{ name: 'photo-library' }}
-              onPress={() => this.setState({ showSelectBackground: true })}
-              activeOpacity={0.7}
-              containerStyle={styles.bottomButton}
-            />
-            <Avatar
-              medium
-              rounded
-              icon={{ name: 'description' }}
-              onPress={() => this.setState({ showAppInfo: true })}
-              activeOpacity={0.7}
-              containerStyle={styles.bottomButton}
-            />
+            <Link to="BackgroundSelection">
+              <Avatar
+                medium
+                rounded
+                icon={{ name: 'photo-library' }}
+                activeOpacity={0.7}
+                containerStyle={styles.bottomButton}
+              />
+            </Link>
+            <Link to="/ApplicationInfo">
+              <Avatar
+                medium
+                rounded
+                icon={{ name: 'description' }}
+                activeOpacity={0.7}
+                containerStyle={styles.bottomButton}
+              />
+            </Link>
           </View>
         </View>
       </ImageBackground>

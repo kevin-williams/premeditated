@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ImageBackground, Modal, Text, Vibration, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import { BackButton } from 'react-router-native'
 import { Audio, KeepAwake } from 'expo';
 import moment from 'moment';
 
@@ -145,7 +146,8 @@ class RunTimer extends Component {
 
     this.setState({
       mainTimerStart: moment(),
-      isRunning: true,
+      isRunning: true, import { Link } from 'react-router-native'
+
       finalTime,
       intervalTimes: this.getIntervalTimes(timer)
     });
@@ -310,6 +312,7 @@ class RunTimer extends Component {
           source={this.props.timer.appBackground.uri}
           style={styles.backgroundImage}
         >
+          <BackButton />
           <KeepAwake />
           <View style={styles.top}>
             <View style={styles.headerContainer}>

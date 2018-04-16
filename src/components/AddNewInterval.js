@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Picker, Text, TextInput, View } from 'react-native';
+import { BackButton } from 'react-router-native'
 import { Avatar } from 'react-native-elements';
 import {
   SCREEN_WIDTH,
@@ -130,6 +131,7 @@ export default class AddNewInterval extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <BackButton />
         <Text style={styles.headerText}>Interval</Text>
         <TextInput
           style={styles.nameInput}

@@ -4,10 +4,12 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { AppFontLoader } from './src/utils';
+import { NativeRouter, Route } from 'react-router-native'
 
 import reducers from './src/reducers';
 
 import TimerList from './src/containers/timer/TimerList';
+import AddEditTimer from './src/containers/timer/AddEditTimer';
 
 export default class App extends React.Component {
   render() {
@@ -16,9 +18,13 @@ export default class App extends React.Component {
         <Provider
           store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}
         >
-          <View style={styles.container}>
-            <TimerList />
-          </View>
+          <NativeRouter>
+            <Route exact path="/" component={TimerList} />
+            <Route path="/AddEditTimer" component={AddEditTimer} />
+            <Route path="/BackgroundSelection" component={BackgroundSelection} />
+            <Route path="/RunTimer" component={RunTimer} />
+            <Route path="/ApplicationInfo" component={ApplicationInfo} />
+          </NativeRouter>
         </Provider>
       </AppFontLoader>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native';
+import { BackButton } from 'react-router-native'
 import { Avatar } from 'react-native-elements';
 import { SCREEN_WIDTH } from '../utils';
 
@@ -32,6 +33,7 @@ export default class BackgroundSelection extends Component {
         style={styles.mainView}
         resizeMode="cover"
       >
+        <BackButton />
         <View style={styles.headerContainer}>
           <Image
             style={styles.title}
