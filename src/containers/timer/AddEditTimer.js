@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Clipboard,
   ImageBackground,
   ScrollView,
   Text,
@@ -68,13 +69,20 @@ class AddEditTimer extends Component {
 
   }
 
-  importTimer() {
-    let timerStr = Clipboard.getString();
-    timerStr = timerStr.replaceAll(/.*\>* PREMEDITATED TIMER \>*/, '');
-    timerStr = timerStr.replaceAll(/\<* PREMEDITATED TIMER \<*.*/, '');
+  async importTimer() {
+    try {
+      let timerStr = await Clipboard.getString();
+      console.log('Found timer in clipboard=', timerStr.match(/.*TIMER [>]{9}/gm));
 
-    const timer = JSON.parse(timerStr);
-    this.setState(timer);
+      timerStr = timerStr.replace(/[\s\S]*TIMER [>]{9}/gm, '');
+      timerStr = timerStr.replace(/[<]{9} PREMEDITATED[\s\S]*/gm, '');
+
+      console.log('import str=' + timerStr);
+      const timer = JSON.parse(timerStr);
+      this.setState(timer);
+    } catch (error) {
+      console.log('error importing timer', error)
+    }
   }
 
   addIntervalsToState(intervals) {
