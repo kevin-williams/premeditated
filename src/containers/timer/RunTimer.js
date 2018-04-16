@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ImageBackground, Modal, Text, Vibration, View } from 'react-native';
+import { ImageBackground, Text, Vibration, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import { BackButton } from 'react-router-native'
+import { BackButton } from 'react-router-native';
 import { Audio, KeepAwake } from 'expo';
 import moment from 'moment';
 
-import { stopSelectedTimer } from './timerActions';
 import TimerProgress from '../../components/TimerProgress';
 
 import { SCREEN_WIDTH, getMillisFromTimer } from '../../utils';
@@ -22,7 +21,7 @@ const DEFAULT_STATE = {
 
 class RunTimer extends Component {
   componentWillMount() {
-    const timer = this.props.timer.runningTimer;
+    const timer = this.props.location.state.timer;
     console.log('runningTimer=', timer);
 
     this.setState({
@@ -116,7 +115,7 @@ class RunTimer extends Component {
     if (this.state.isRunning) {
       this.handleStartStop();
     }
-    this.props.stopSelectedTimer();
+    this.props.history.goBack();
   }
 
   handleStartStop() {
@@ -139,7 +138,7 @@ class RunTimer extends Component {
 
   async processStart() {
     // Start pressed
-    const timer = this.props.timer.runningTimer;
+    const timer = this.props.location.state.timer;
     const { mainTimer } = this.state;
 
     const finalTime = getMillisFromTimer(timer.duration, timer.test);
@@ -275,7 +274,7 @@ class RunTimer extends Component {
         }
 
         const label = timer.name
-          ? `${timer.name} (${this.formatTime(timer.time)})`
+          ? `${this.formatTime(timer.time)} - ${timer.name}`
           : this.formatTime(timer.time);
 
         return (
@@ -298,40 +297,33 @@ class RunTimer extends Component {
   }
 
   render() {
-    const timer = this.props.timer.runningTimer;
+    const timer = this.props.location.state.timer;
 
     return (
-      <Modal
-        animationType="slide"
-        tranparent={false}
-        visible
-        onRequestClose={() => console.log('close timer modal')}
+      <ImageBackground
+        resizeMode="cover"
+        source={this.props.timer.appBackground.uri}
+        style={styles.backgroundImage}
       >
-        <ImageBackground
-          resizeMode="cover"
-          source={this.props.timer.appBackground.uri}
-          style={styles.backgroundImage}
-        >
-          <BackButton />
-          <KeepAwake />
-          <View style={styles.top}>
-            <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>{timer.title}</Text>
-              <Avatar
-                small
-                rounded
-                icon={{ name: 'close' }}
-                onPress={this.handleClose.bind(this)}
-                activeOpacity={0.7}
-                containerStyle={styles.closeButton}
-              />
-            </View>
-            {this.renderTimers()}
-            {this.renderButtons()}
+        <BackButton />
+        <KeepAwake />
+        <View style={styles.top}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>{timer.title}</Text>
+            <Avatar
+              small
+              rounded
+              icon={{ name: 'close' }}
+              onPress={this.handleClose.bind(this)}
+              activeOpacity={0.7}
+              containerStyle={styles.closeButton}
+            />
           </View>
-          <View style={styles.bottom}>{this.renderIntervals()}</View>
-        </ImageBackground>
-      </Modal>
+          {this.renderTimers()}
+          {this.renderButtons()}
+        </View>
+        <View style={styles.bottom}>{this.renderIntervals()}</View>
+      </ImageBackground>
     );
   }
 }
@@ -342,7 +334,8 @@ const styles = {
     flexDirection: 'column',
     flex: 1,
     alignContent: 'stretch',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 25
   },
 
   headerText: {
@@ -422,4 +415,4 @@ const styles = {
 };
 
 const mapStateToProps = state => state;
-export default connect(mapStateToProps, { stopSelectedTimer })(RunTimer);
+export default connect(mapStateToProps)(RunTimer);

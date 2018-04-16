@@ -61,7 +61,6 @@ class TimerList extends Component {
   }
 
   componentWillUpdate() {
-    // LayoutAnimation.easeInEaseOut();
     LayoutAnimation.configureNext(CustomLayoutLinear);
   }
 

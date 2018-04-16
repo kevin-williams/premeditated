@@ -17,14 +17,6 @@ export const selectTimer = timer => ({
   timer
 });
 
-export const startSelectedTimer = () => ({
-  type: c.START_SELECTED_TIMER
-});
-
-export const stopSelectedTimer = () => ({
-  type: c.STOP_SELECTED_TIMER
-});
-
 export const updateTimer = timer => ({
   type: c.UPDATE_TIMER,
   timer

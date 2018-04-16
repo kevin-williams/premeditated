@@ -25,12 +25,16 @@ class TimerListSubtitle extends Component {
         >
           <Avatar small rounded icon={{ name: 'edit' }} activeOpacity={0.7} />
         </Link>
-        <Link to="/RunTimer">
+        <Link
+          to={{
+            pathname: '/RunTimer',
+            state: { timer }
+          }}
+        >
           <Avatar
             small
             rounded
             icon={{ name: 'play-arrow' }}
-            onPress={() => this.props.startSelectedTimer()}
             overlayContainerStyle={styles.start}
           />
         </Link>

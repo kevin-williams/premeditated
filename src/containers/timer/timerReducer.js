@@ -80,23 +80,6 @@ export default (state = DEFAULT_STATE, action) => {
         runningTimer: undefined
       };
     }
-    case c.START_SELECTED_TIMER: {
-      let selectedTimer = {};
-      state.timers.map(timer => {
-        if (timer.id === state.selectedTimerId) {
-          selectedTimer = { ...timer };
-        }
-
-        return timer;
-      });
-      selectedTimer.isRunning = true;
-      return { ...state, runningTimer: selectedTimer };
-    }
-    case c.STOP_SELECTED_TIMER: {
-      const timer = state.runningTimer;
-      timer.isRunning = false;
-      return { ...state, runningTimer: timer };
-    }
     case c.UPDATE_TIMER: {
       const newState = { ...state };
       newState.timers = state.timers.map(
