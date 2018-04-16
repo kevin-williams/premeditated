@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Alert,
+  Clipboard,
   ImageBackground,
   ScrollView,
   Text,
@@ -57,6 +59,59 @@ class AddEditTimer extends Component {
       this.props.addTimer(this.state);
     }
     this.props.closeAddDialog();
+  }
+
+  shareTimer() {
+    const timerStr = `>>>>>>>>> PREMEDITATED TIMER >>>>>>>>>
+    ${JSON.stringify(this.state)}
+    <<<<<<<<< PREMEDITATED TIMER <<<<<<<<<`;
+
+    Clipboard.setString(timerStr);
+
+    Alert.alert(
+      'Timer Share',
+      'Your timer has been copied to the clipboard.   Paste it into a text/email/tweet/etc. then have them copy it and use the import button.',
+      [
+        { text: 'OK', onPress: () => console.log('OK Pressed') }
+      ]);
+  }
+
+  async importTimer() {
+    try {
+      let timerStr = await Clipboard.getString();
+      const timerInClipboard = timerStr.match(/.*TIMER [>]{9}/gm);
+      console.log('Found timer in clipboard=', timerInClipboard);
+
+      if (!timerInClipboard) {
+        Alert.alert(
+          'Timer Import Error',
+          'Make sure you copied the entire timer string including the >>>> and <<<< lines into your clipboard.',
+          [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+          ]);
+      }
+
+      timerStr = timerStr.replace(/[\s\S]*TIMER [>]{9}/gm, '');
+      timerStr = timerStr.replace(/[<]{9} PREMEDITATED[\s\S]*/gm, '');
+
+      console.log('import str=' + timerStr);
+      const timer = JSON.parse(timerStr);
+      this.setState(timer);
+      Alert.alert(
+        'Timer Import',
+        'Your timer has been imported from the clipboard.',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') }
+        ]);
+    } catch (error) {
+      console.log('error importing timer', error);
+      Alert.alert(
+        'Timer Import Error',
+        'Error importing timer from clipboard.  Copy the entire timer including the >>> and <<< lines',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') }
+        ]);
+    }
   }
 
   addIntervalsToState(intervals) {
@@ -249,6 +304,24 @@ class AddEditTimer extends Component {
             activeOpacity={0.7}
             containerStyle={styles.saveButton}
           />
+
+          <Avatar
+            medium
+            rounded
+            icon={{ name: 'share' }}
+            onPress={() => this.shareTimer()}
+            activeOpacity={0.7}
+            containerStyle={styles.shareButton}
+          />
+          <Avatar
+            medium
+            rounded
+            icon={{ name: 'import-contacts' }}
+            onPress={() => this.importTimer()}
+            activeOpacity={0.7}
+            containerStyle={styles.shareButton}
+          />
+
           <Avatar
             medium
             rounded
@@ -325,6 +398,9 @@ const styles = {
   },
   closeButton: {
     backgroundColor: 'rgba(222, 0, 0, 0.6)'
+  },
+  shareButton: {
+    backgroundColor: 'rgba(180,180,180,.7)',
   },
 
   commonContainer: {
