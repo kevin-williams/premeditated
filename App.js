@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
-import { AppFontLoader } from './src/utils';
+import { AppFontLoader, GA } from './src/utils';
 import { NativeRouter, Route } from 'react-router-native';
+import { ScreenHit } from 'expo-analytics';
 
 import reducers from './src/reducers';
 
@@ -14,7 +15,11 @@ import AddEditTimer from './src/containers/timer/AddEditTimer';
 import BackgroundSelection from './src/containers/timer/BackgroundSelection';
 import ApplicationInfo from './src/containers/timer/ApplicationInfo';
 
-export default class App extends React.Component {
+export default class App extends Component {
+  componentWillMount() {
+    GA.hit(new ScreenHit('App'));
+  }
+
   render() {
     return (
       <AppFontLoader>

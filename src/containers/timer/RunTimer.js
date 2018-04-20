@@ -8,7 +8,8 @@ import moment from 'moment';
 
 import TimerProgress from '../../components/TimerProgress';
 
-import { SCREEN_WIDTH, getMillisFromTimer } from '../../utils';
+import { SCREEN_WIDTH, getMillisFromTimer, GA } from '../../utils';
+import { ScreenHit } from 'expo-analytics';
 
 const DEFAULT_STATE = {
   isRunning: false,
@@ -36,6 +37,8 @@ class RunTimer extends Component {
       shouldDuckAndroid: false,
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS
     });
+
+    GA.hit(new ScreenHit('RunTimer'));
   }
 
   componentWillUnmount() {

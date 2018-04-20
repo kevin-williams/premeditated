@@ -15,8 +15,8 @@ import { Avatar } from 'react-native-elements';
 import { Asset, AppLoading } from 'expo';
 
 import { changeBackground } from './timerActions';
-import { SCREEN_WIDTH } from '../../utils';
-
+import { GA, SCREEN_WIDTH } from '../../utils';
+import { ScreenHit } from 'expo-analytics';
 import { backgrounds } from '../../../assets/backgrounds/backgrounds';
 
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -69,6 +69,8 @@ class BackgroundSelection extends Component {
       selectedIndex,
       nextIndex
     });
+
+    GA.hit(new ScreenHit('BackgroundSelection'));
   }
 
   forceSwipe(direction) {

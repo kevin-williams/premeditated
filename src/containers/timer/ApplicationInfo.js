@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native';
 import { BackButton } from 'react-router-native';
 import { Avatar } from 'react-native-elements';
-import { SCREEN_WIDTH } from '../../utils';
-
+import { SCREEN_WIDTH, GA } from '../../utils';
+import { ScreenHit } from 'expo-analytics';
 import { expo } from '../../../app.json';
 import { backgroundSounds } from '../../../assets/sound/background/background_sounds';
 import { sounds } from '../../../assets/sound/sounds';
@@ -13,6 +13,10 @@ import { sounds } from '../../../assets/sound/sounds';
 const TITLE_IMAGE = require('../../../assets/PremeditatedTitle.png');
 
 class ApplicationInfo extends Component {
+  componentWillMount() {
+    GA.hit(new ScreenHit('ApplicationInfo'));
+  }
+
   renderSounds() {
     const mySounds = sounds
       .concat(backgroundSounds)

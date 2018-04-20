@@ -22,11 +22,11 @@ import { sounds } from '../../../assets/sound/sounds';
 import * as c from './timerConstants';
 import { addTimer, updateTimer } from './timerActions';
 
-import { SCREEN_WIDTH, getTimerDescription } from '../../utils';
+import { SCREEN_WIDTH, getTimerDescription, GA } from '../../utils';
+import { ScreenHit } from 'expo-analytics';
 
 const NEW_TIMER = {
   title: '',
-  test: true,
   duration: {
     hours: 0,
     mins: 15,
@@ -43,6 +43,7 @@ class AddEditTimer extends Component {
     } else {
       this.setState({ ...NEW_TIMER });
     }
+    GA.hit(new ScreenHit('AddEditTimer'));
   }
 
   saveTimer() {

@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import { Analytics } from 'expo-analytics';
 
 export * from './AppFontLoader';
 
@@ -9,6 +10,8 @@ export const AD_MOB_ID = 'ca-app-pub-6513320241703770/6458258805';
 
 export const MILLIS_PER_MINUTE = 60000;
 export const MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;
+
+export const GA = new Analytics('UA-117920354-1');
 
 export const getTimerDescription = timeEntry => {
   let hourStr = '';
@@ -36,4 +39,4 @@ export const getMillisFromTimer = (entry, test) => {
   }
 
   return entry.mins * MILLIS_PER_MINUTE + entry.hours * MILLIS_PER_HOUR;
-}
+};

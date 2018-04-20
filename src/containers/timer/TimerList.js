@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { Avatar, List, ListItem } from 'react-native-elements';
 import { Link } from 'react-router-native';
-
 import { AdMobBanner } from 'expo';
 
 import TimerListSubtitle from './TimerListSubtitle';
@@ -23,7 +22,8 @@ import {
   changeBackground
 } from './timerActions';
 
-import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription } from '../../utils';
+import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription, GA } from '../../utils';
+import { ScreenHit } from 'expo-analytics';
 
 import * as c from './timerConstants';
 
@@ -58,6 +58,8 @@ class TimerList extends Component {
       console.log('appDataLoadStarted=', this.props.timer.appDataLoadStarted);
       this.props.loadApp();
     }
+
+    GA.hit(new ScreenHit('TimerList'));
   }
 
   componentWillUpdate() {
