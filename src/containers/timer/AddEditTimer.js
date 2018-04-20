@@ -363,7 +363,7 @@ const styles = {
     borderWidth: 0.5,
     paddingLeft: 5,
     paddingRight: 5,
-    width: 200,
+    width: 170,
     margin: 10
   },
   intervalContainer: {
