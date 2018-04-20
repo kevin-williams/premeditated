@@ -40,7 +40,7 @@ export default class TimeSelect extends Component {
         mode: 'clock'
       });
 
-      console.log(`selected ${selectedHours}:${selectedMinutes} for ${action}`);
+      // console.log(`selected ${selectedHours}:${selectedMinutes} for ${action}`);
 
       if (action !== TimePickerAndroid.dismissedAction) {
         this.props.onTimeSelected({
@@ -65,7 +65,7 @@ export default class TimeSelect extends Component {
     return (
       <DatePickerIOS
         onDateChange={date => {
-          console.log('date changed', date);
+          // console.log('date changed', date);
           const m = moment(date);
 
           this.props.onTimeSelected({

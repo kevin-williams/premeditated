@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Picker, Text, TextInput, View } from 'react-native';
-import { BackButton } from 'react-router-native'
+import { BackButton } from 'react-router-native';
 import { Avatar } from 'react-native-elements';
 import {
   SCREEN_WIDTH,
@@ -70,7 +70,7 @@ export default class AddNewInterval extends Component {
       }
     }
 
-    console.log('addIntervalEvery=', newIntervals);
+    // console.log('addIntervalEvery=', newIntervals);
     this.props.onChange(newIntervals);
   }
 
@@ -81,7 +81,7 @@ export default class AddNewInterval extends Component {
     const mins = duration.mins - this.state.mins;
 
     const newIntervals = [{ name, hours, mins, sound: this.state.sound }];
-    console.log('addIntervalBeforeEnd=', newIntervals);
+    // console.log('addIntervalBeforeEnd=', newIntervals);
     this.props.onChange(newIntervals);
   }
 
@@ -92,7 +92,7 @@ export default class AddNewInterval extends Component {
     }
 
     const newIntervals = [{ name, name, hours, mins, sound }];
-    console.log('addIntervalFromStart=', newIntervals);
+    // console.log('addIntervalFromStart=', newIntervals);
     this.props.onChange(newIntervals);
   }
 
@@ -121,7 +121,7 @@ export default class AddNewInterval extends Component {
 
     if (getMillisFromTimer(newInterval) < getMillisFromTimer(duration)) {
       const newIntervals = [newInterval];
-      console.log('addIntervalFromLast=', newIntervals);
+      // console.log('addIntervalFromLast=', newIntervals);
       this.props.onChange(newIntervals);
     } else {
       // TODO Show error?
@@ -147,7 +147,7 @@ export default class AddNewInterval extends Component {
             hours={this.state.hours}
             minutes={this.state.mins}
             onTimeSelected={time => {
-              console.log('change interval timeEntry=', time);
+              // console.log('change interval timeEntry=', time);
               this.setState({ hours: time.hours, mins: time.minutes });
             }}
           />
@@ -170,7 +170,7 @@ export default class AddNewInterval extends Component {
             selectedSound={this.state.sound}
             sounds={sounds}
             onChange={sound => {
-              console.log('interval sound changed', sound);
+              // console.log('interval sound changed', sound);
               this.setState({ sound });
             }}
           />

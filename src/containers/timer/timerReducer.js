@@ -32,7 +32,7 @@ const DEFAULT_STATE = {
 };
 
 export default (state = DEFAULT_STATE, action) => {
-  console.log('timerReducer processing action=', action);
+  // console.log('timerReducer processing action=', action);
 
   switch (action.type) {
     case c.ADD_TIMER: {
@@ -120,7 +120,7 @@ function saveState(state) {
 
   try {
     const stateStr = JSON.stringify(newState);
-    console.log('saving state=' + stateStr);
+    // console.log('saving state=' + stateStr);
     AsyncStorage.setItem(c.APP_KEY, stateStr);
   } catch (error) {
     console.log('Error saving state', error);
@@ -136,7 +136,7 @@ function convertOnLoad(state) {
   newState.timers = fixSounds(state.timers);
   newState.appDataLoadStarted = true;
 
-  console.log('final state after load', newState);
+  // console.log('final state after load', newState);
   return newState;
 }
 

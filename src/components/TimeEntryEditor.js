@@ -56,7 +56,7 @@ export default class TimeEntryEditor extends Component {
             selectedSound={this.props.timeEntry.sound}
             sounds={sounds}
             onChange={newSound => {
-              console.log('interval sound changed', newSound);
+              // console.log('interval sound changed', newSound);
               this.props.onSoundChange(newSound);
             }}
           />
@@ -73,7 +73,6 @@ export default class TimeEntryEditor extends Component {
             hours={this.props.timeEntry.hours}
             minutes={this.props.timeEntry.mins}
             onTimeSelected={time => {
-              console.log('change timeEntry=', time);
               this.props.onTimeChange(time);
             }}
           />

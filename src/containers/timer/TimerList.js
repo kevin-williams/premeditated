@@ -55,7 +55,7 @@ class TimerList extends Component {
       UIManager.setLayoutAnimationEnabledExperimental(true);
     }
     if (!this.props.timer.appDataLoadStarted) {
-      console.log('appDataLoadStarted=', this.props.timer.appDataLoadStarted);
+      // console.log('appDataLoadStarted=', this.props.timer.appDataLoadStarted);
       this.props.loadApp();
     }
 

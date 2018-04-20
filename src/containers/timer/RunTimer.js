@@ -69,7 +69,7 @@ class RunTimer extends Component {
   }
 
   async endSound() {
-    const { runningTimer } = this.props.timer;
+    const timer = this.props.location.state.timer;
     if (this.state.backgroundSound) {
       try {
         await this.state.backgroundSound.stopAsync();
@@ -80,14 +80,14 @@ class RunTimer extends Component {
     }
 
     console.log('Play end sound');
-    if (runningTimer.duration.sound.name.startsWith('Vibrate')) {
+    if (timer.duration.sound.name.startsWith('Vibrate')) {
       // Vibration pattern is stored in the file variable
       console.log('vibrate');
-      Vibration.vibrate(runningTimer.duration.sound.file);
+      Vibration.vibrate(timer.duration.sound.file);
     } else {
       try {
         const endSound = new Audio.Sound();
-        await endSound.loadAsync(runningTimer.duration.sound.file);
+        await endSound.loadAsync(timer.duration.sound.file);
         endSound.replayAsync();
       } catch (error) {
         console.log('error playing end sound', error);
@@ -113,6 +113,15 @@ class RunTimer extends Component {
   }
 
   handleEndTimer() {
+    const timer = this.props.location.state.timer;
+    GA.event(
+      new Event(
+        'Timer',
+        'End',
+        getTimerDescription(timer.duration),
+        Number(getMillisFromTimer(timer.duration))
+      )
+    );
     this.endSound();
     this.handleStartStop();
     // TODO Add "snooze" here to add time?
@@ -139,12 +148,13 @@ class RunTimer extends Component {
         this.state.backgroundSound.stopAsync();
       }
       this.setState({ isRunning: false });
+
       GA.event(
         new Event(
           'Timer',
           'Pause',
-          getTimerDescription(timer),
-          getMillisFromTimer(timer)
+          getTimerDescription(timer.duration),
+          Number(getMillisFromTimer(timer.duration))
         )
       );
     } else {
@@ -153,8 +163,8 @@ class RunTimer extends Component {
         new Event(
           'Timer',
           'Unpause',
-          getTimerDescription(timer),
-          getMillisFromTimer(timer)
+          getTimerDescription(timer.duration),
+          Number(getMillisFromTimer(timer.duration))
         )
       );
       this.processStart();
@@ -167,12 +177,13 @@ class RunTimer extends Component {
     const { mainTimer } = this.state;
 
     const finalTime = getMillisFromTimer(timer.duration, timer.test);
+
     GA.event(
       new Event(
         'Timer',
         'Start',
-        getTimerDescription(timer),
-        getMillisFromTimer(timer)
+        getTimerDescription(timer.duration),
+        Number(getMillisFromTimer(timer.duration))
       )
     );
 
@@ -207,14 +218,6 @@ class RunTimer extends Component {
       });
 
       if (remainingTime < 0) {
-        GA.event(
-          new Event(
-            'Timer',
-            'End',
-            getTimerDescription(timer),
-            getMillisFromTimer(timer)
-          )
-        );
         this.handleEndTimer();
       }
     }, 30);
@@ -231,8 +234,8 @@ class RunTimer extends Component {
       new Event(
         'Timer',
         'Reset',
-        getTimerDescription(timer),
-        getMillisFromTimer(timer)
+        getTimerDescription(timer.duration),
+        Number(getMillisFromTimer(timer.duration))
       )
     );
 
@@ -321,6 +324,8 @@ class RunTimer extends Component {
 
         if (timeDifference > 0 && !timer.soundPlayed) {
           // console.log('hit timer ' + getTimerDescription(timer));
+          GA.event(new Event('Timer', 'Interval', timer.name, timer.time));
+
           this.intervalSound(timer.sound);
           timer.soundPlayed = true;
         }
