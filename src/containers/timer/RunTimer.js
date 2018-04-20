@@ -8,8 +8,13 @@ import moment from 'moment';
 
 import TimerProgress from '../../components/TimerProgress';
 
-import { SCREEN_WIDTH, getMillisFromTimer, GA } from '../../utils';
-import { ScreenHit } from 'expo-analytics';
+import {
+  SCREEN_WIDTH,
+  getMillisFromTimer,
+  GA,
+  getTimerDescription
+} from '../../utils';
+import { Event, ScreenHit } from 'expo-analytics';
 
 const DEFAULT_STATE = {
   isRunning: false,
@@ -123,6 +128,7 @@ class RunTimer extends Component {
 
   handleStartStop() {
     const { isRunning } = this.state;
+    const timer = this.props.location.state.timer;
     this.setState({ isRunning: !isRunning });
 
     // Stop pressed
@@ -133,8 +139,24 @@ class RunTimer extends Component {
         this.state.backgroundSound.stopAsync();
       }
       this.setState({ isRunning: false });
+      GA.event(
+        new Event(
+          'Timer',
+          'Pause',
+          getTimerDescription(timer),
+          getMillisFromTimer(timer)
+        )
+      );
     } else {
       console.log('start');
+      GA.event(
+        new Event(
+          'Timer',
+          'Unpause',
+          getTimerDescription(timer),
+          getMillisFromTimer(timer)
+        )
+      );
       this.processStart();
     }
   }
@@ -145,6 +167,14 @@ class RunTimer extends Component {
     const { mainTimer } = this.state;
 
     const finalTime = getMillisFromTimer(timer.duration, timer.test);
+    GA.event(
+      new Event(
+        'Timer',
+        'Start',
+        getTimerDescription(timer),
+        getMillisFromTimer(timer)
+      )
+    );
 
     this.setState({
       mainTimerStart: moment(),
@@ -177,6 +207,14 @@ class RunTimer extends Component {
       });
 
       if (remainingTime < 0) {
+        GA.event(
+          new Event(
+            'Timer',
+            'End',
+            getTimerDescription(timer),
+            getMillisFromTimer(timer)
+          )
+        );
         this.handleEndTimer();
       }
     }, 30);
@@ -184,9 +222,20 @@ class RunTimer extends Component {
 
   handleReset() {
     console.log('reset timer');
+    const timer = this.props.location.state.timer;
+
     if (this.state.isRunning) {
       this.handleStartStop();
     }
+    GA.event(
+      new Event(
+        'Timer',
+        'Reset',
+        getTimerDescription(timer),
+        getMillisFromTimer(timer)
+      )
+    );
+
     this.setState({ ...DEFAULT_STATE });
   }
 
