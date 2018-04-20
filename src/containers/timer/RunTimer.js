@@ -125,6 +125,7 @@ class RunTimer extends Component {
     this.endSound();
     this.handleStartStop();
     // TODO Add "snooze" here to add time?
+    this.handleReset();
   }
 
   handleClose() {
