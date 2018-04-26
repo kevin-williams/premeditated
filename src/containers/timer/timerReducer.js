@@ -29,7 +29,7 @@ const DEFAULT_STATE = {
       ]
     },
     {
-      id: 1,
+      id: 2,
       title: 'Beginner Yoga',
       test: true,
       duration: {
@@ -176,9 +176,9 @@ function fixBackgroundImage(state) {
     );
   }
 
-  console.log(
-    `found bg ${newState.appBackground.name} for ${state.appBackgroundName}`
-  );
+  // console.log(
+  //   `found bg ${newState.appBackground.name} for ${state.appBackgroundName}`
+  // );
   return newState;
 }
 
