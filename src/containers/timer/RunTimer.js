@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ImageBackground, Text, Vibration, View } from 'react-native';
+import {
+  ImageBackground,
+  ScrollView,
+  Slider,
+  Text,
+  Vibration,
+  View
+} from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { BackButton } from 'react-router-native';
 import { Audio, KeepAwake } from 'expo';
@@ -257,6 +264,12 @@ class RunTimer extends Component {
     return d.format('mm.ss');
   }
 
+  onVolumeSliderValueChange(value) {
+    if (this.state.backgroundSound != null) {
+      this.state.backgroundSound.setVolumeAsync(value);
+    }
+  }
+
   renderButtons() {
     const stopStyle = this.state.isRunning
       ? styles.stopButton
@@ -349,7 +362,7 @@ class RunTimer extends Component {
     return (
       <View style={styles.timerWrapper}>
         <Text style={styles.intervalText}>Interval Timers</Text>
-        {intervalTimerDisplay}
+        <ScrollView>{intervalTimerDisplay}</ScrollView>
       </View>
     );
   }
@@ -379,6 +392,11 @@ class RunTimer extends Component {
           </View>
           {this.renderTimers()}
           {this.renderButtons()}
+          <Slider
+            style={styles.volumeSlider}
+            value={1}
+            onValueChange={this.onVolumeSliderValueChange.bind(this)}
+          />
         </View>
         <View style={styles.bottom}>{this.renderIntervals()}</View>
       </ImageBackground>
@@ -406,7 +424,7 @@ const styles = {
   headerContainer: {
     backgroundColor: 'transparent',
     borderBottomWidth: 0.5,
-    paddingTop: 10,
+    marginTop: 10,
     paddingBottom: 10,
     flexDirection: 'row'
   },
@@ -417,7 +435,7 @@ const styles = {
   timerWrapper: {
     backgroundColor: 'transparent',
     alignSelf: 'center',
-    width: 200
+    width: '80%'
   },
   remainingTimer: {
     backgroundColor: 'transparent',
@@ -427,21 +445,24 @@ const styles = {
   },
   intervalText: {
     fontSize: 20,
-    backgroundColor: 'rgba(222,222,222,0.7)',
+    backgroundColor: 'rgba(93,188,212,0.9)',
     borderRadius: 20,
-    textAlign: 'center'
+    marginBottom: 5,
+    width: '50%',
+    textAlign: 'center',
+    alignSelf: 'center'
   },
   top: {
-    backgroundColor: 'rgba(222,222,222,0.4)',
-    height: 280
+    backgroundColor: 'rgba(222,222,222,0.2)',
+    height: 230
   },
   bottom: {
-    backgroundColor: 'rgba(222,222,222,0.4)',
+    backgroundColor: 'rgba(222,222,222,0.2)',
     flexDirection: 'row',
     justifyContent: 'space-around',
     flex: 1,
     borderTopWidth: 0.5,
-    marginBottom: 30
+    marginBottom: 5
   },
   buttonWrapper: {
     backgroundColor: 'transparent',

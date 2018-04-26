@@ -15,15 +15,41 @@ const DEFAULT_STATE = {
   timers: [
     {
       id: 1,
-      title: 'Meditate and Stretch',
+      title: 'Beginner Meditation',
+      backgroundSound: backgroundSounds[1],
       duration: {
         hours: 0,
-        mins: 15,
+        mins: 8,
         sound: sounds[3]
       },
       intervals: [
-        { name: 'Meditate', hours: 0, mins: 5, sound: sounds[4] },
-        { name: 'Stretch', hours: 0, mins: 10, sound: sounds[4] }
+        { name: 'Stretch', hours: 0, mins: 2, sound: sounds[5] },
+        { name: 'Sit Comfy', hours: 0, mins: 3, sound: sounds[4] },
+        { name: 'Breathe & Focus', hours: 0, mins: 8, sound: sounds[6] }
+      ]
+    },
+    {
+      id: 1,
+      title: 'Beginner Yoga',
+      test: true,
+      duration: {
+        hours: 0,
+        mins: 12,
+        sound: sounds[3]
+      },
+      intervals: [
+        { name: 'Mountain', hours: 0, mins: 1, sound: sounds[6] },
+        { name: 'Downward Dog', hours: 0, mins: 2, sound: sounds[4] },
+        { name: 'Plank', hours: 0, mins: 3, sound: sounds[6] },
+        { name: 'Triangle', hours: 0, mins: 4, sound: sounds[5] },
+        { name: 'Tree', hours: 0, mins: 5, sound: sounds[6] },
+        { name: 'Warrior', hours: 0, mins: 6, sound: sounds[5] },
+        { name: 'Forward Bend', hours: 0, mins: 7, sound: sounds[6] },
+        { name: 'Bridge', hours: 0, mins: 8, sound: sounds[4] },
+        { name: 'Child', hours: 0, mins: 9, sound: sounds[6] },
+        { name: 'Cobra', hours: 0, mins: 10, sound: sounds[4] },
+        { name: 'Twist', hours: 0, mins: 11, sound: sounds[6] },
+        { name: 'Crow', hours: 0, mins: 12, sound: sounds[4] }
       ]
     }
   ],
