@@ -58,7 +58,9 @@ class AddEditTimer extends Component {
   }
 
   shareTimer() {
-    const timerStr = `>>>>>>>>> PREMEDITATED TIMER >>>>>>>>>
+    const timerStr = `
+    Download Premeditated for Android at https://play.google.com/store/apps/details?id=com.williamskbw.premeditated
+    >>>>>>>>> PREMEDITATED TIMER >>>>>>>>>
     ${JSON.stringify(this.state)}
     <<<<<<<<< PREMEDITATED TIMER <<<<<<<<<`;
 

@@ -14,10 +14,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "android": { "package": "com.williamskbw.premeditated" },
+    "packagerOpts": {
+      "assetExts": ["ttf"]
+    },
     "assetBundlePatterns": [
       "assets/sound/*",
       "assets/sound/background/*",
-      "assets/backgrounds/*"
+      "assets/backgrounds/*",
+      "node_modules/@expo/vector-icons/fonts"
     ],
     "ios": {
       "supportsTablet": true
