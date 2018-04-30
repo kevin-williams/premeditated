@@ -22,7 +22,12 @@ import { sounds } from '../../../assets/sound/sounds';
 import * as c from './timerConstants';
 import { addTimer, updateTimer } from './timerActions';
 
-import { SCREEN_WIDTH, getTimerDescription, GA } from '../../utils';
+import {
+  SCREEN_WIDTH,
+  getTimerDescription,
+  GA,
+  getMillisFromTimer
+} from '../../utils';
 import { ScreenHit } from 'expo-analytics';
 
 const NEW_TIMER = {
@@ -120,7 +125,11 @@ class AddEditTimer extends Component {
     const { intervals } = this.state;
     console.log('intervals=', intervals);
 
-    const intervalRender = intervals.map((interval, index) => (
+    const myIntervals = intervals.sort(
+      (a, b) => getMillisFromTimer(a) - getMillisFromTimer(b)
+    );
+
+    const intervalRender = myIntervals.map((interval, index) => (
       <TimeEntryEditor
         key={`interval-${index}`}
         timeEntry={interval}
