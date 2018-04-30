@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   DatePickerIOS,
   Modal,
+  Picker,
   Platform,
   Text,
   TimePickerAndroid,
@@ -10,7 +11,10 @@ import {
 import moment from 'moment';
 
 import { Avatar } from 'react-native-elements';
-import { getTimerDescription } from '../utils';
+import { getTimerDescription, SCREEN_WIDTH } from '../utils';
+
+const hourPickerItems = [];
+const minutePickerItems = [];
 
 export default class TimeSelect extends Component {
   state = {
@@ -24,6 +28,28 @@ export default class TimeSelect extends Component {
       this.showAndroidPicker();
     }
   }
+
+  renderPickerHours = () => {
+    if (hourPickerItems.length === 0) {
+      for (let i = 0; i <= 2; i++) {
+        hourPickerItems.push(
+          <Picker.Item key={`HourItem${i}`} label={`${i}`} value={i} />
+        );
+      }
+    }
+    return hourPickerItems;
+  };
+
+  renderPickerMinutes = () => {
+    if (minutePickerItems.length === 0) {
+      for (let i = 0; i <= 59; i++) {
+        minutePickerItems.push(
+          <Picker.Item key={`MinuteItem${i}`} label={`${i}`} value={i} />
+        );
+      }
+    }
+    return minutePickerItems;
+  };
 
   async showAndroidPicker() {
     const { hours, minutes } = this.props;
@@ -62,20 +88,43 @@ export default class TimeSelect extends Component {
   }
 
   renderIOSPicker() {
+    const { hours, minutes } = this.props;
     return (
-      <DatePickerIOS
-        onDateChange={date => {
-          // console.log('date changed', date);
-          const m = moment(date);
+      <View style={styles.iosPickerView}>
+        <Text style={styles.label}>Hours</Text>
+        <Picker
+          style={styles.picker}
+          itemStyle={styles.pickerItem}
+          selectedValue={hours}
+          prompt="Hours"
+          onValueChange={itemValue =>
+            this.props.onTimeSelected({ hours: itemValue, minutes })
+          }
+        >
+          {this.renderPickerHours()}
+        </Picker>
 
-          this.props.onTimeSelected({
-            hours: m.hours(),
-            minutes: m.minutes()
-          });
-        }}
-        mode="time"
-        minuteInterval="1"
-      />
+        <Text style={styles.label}>Minutes</Text>
+        <Picker
+          style={styles.picker}
+          itemStyle={styles.pickerItem}
+          selectedValue={minutes}
+          prompt="Minutes"
+          onValueChange={itemValue =>
+            this.props.onTimeSelected({ hours, minutes: itemValue })
+          }
+        >
+          {this.renderPickerMinutes()}
+        </Picker>
+        <Avatar
+          medium
+          rounded
+          icon={{ name: 'check' }}
+          onPress={() => this.setState({ showModal: false })}
+          activeOpacity={0.7}
+          containerStyle={styles.saveButton}
+        />
+      </View>
     );
   }
 
@@ -121,17 +170,35 @@ const styles = {
     justifyContent: 'space-between',
     margin: 5
   },
-  pickerStyle: {
-    width: 100,
-    height: Platform.OS === 'ios' ? 200 : 50
+  iosPickerView: {
+    flexDirection: 'column',
+    width: SCREEN_WIDTH,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    margin: 10,
+    marginTop: 20,
+    paddingTop: 20
+  },
+  picker: {
+    width: 300,
+    height: 150
+  },
+  pickerItem: {
+    height: 150
   },
   button: {
     backgroundColor: 'white',
-    alignSelf: 'flex-end'
+    alignSelf: 'center'
   },
   buttonContainer: {
-    margin: 5
+    margin: 5,
+    alignSelf: 'center'
   },
+  saveButton: {
+    backgroundColor: 'rgba(0, 222, 0, 0.6)',
+    marginTop: 20
+  },
+
   textStyle: {
     textAlign: 'center',
     flex: 1
