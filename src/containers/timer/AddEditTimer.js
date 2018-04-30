@@ -175,7 +175,7 @@ class AddEditTimer extends Component {
     return (
       <View style={[styles.commonContainer, styles.intervalContainer]}>
         <View style={styles.intervalHeader}>
-          <Text>Intervals</Text>
+          <Text style={styles.intervalLabel}>Intervals (time from start)</Text>
           {addButton}
         </View>
         <ScrollView style={styles.intervalList}>{intervalRender}</ScrollView>
@@ -409,6 +409,10 @@ const styles = {
   },
   intervalBorder: {
     borderBottomWidth: 0.5
+  },
+  intervalLabel: {
+    marginLeft: 5,
+    fontSize: 18
   }
 };
 
