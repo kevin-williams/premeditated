@@ -12,7 +12,7 @@ import {
 import { BackButton } from 'react-router-native';
 
 import { Avatar } from 'react-native-elements';
-import { Asset, AppLoading } from 'expo';
+import { Asset, AppLoading, ImagePicker } from 'expo';
 
 import { changeBackground } from './timerActions';
 import { GA, SCREEN_WIDTH } from '../../utils';
@@ -131,6 +131,26 @@ class BackgroundSelection extends Component {
     await Promise.all(promises);
   }
 
+  async selectImageFromDevice() {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images
+      });
+
+      if (!result.cancelled) {
+        this.props.changeBackground({
+          name: 'Custom',
+          uri: { uri: result.uri }
+        });
+        this.props.history.goBack();
+      }
+
+      console.log('image=', result);
+    } catch (error) {
+      console.log('Error loading image from device', error);
+    }
+  }
+
   render() {
     if (this.state.loading) {
       return (
@@ -174,6 +194,15 @@ class BackgroundSelection extends Component {
                 activeOpacity={0.7}
                 containerStyle={styles.saveButton}
               />
+              <Avatar
+                medium
+                rounded
+                icon={{ name: 'collections' }}
+                onPress={this.selectImageFromDevice.bind(this)}
+                activeOpacity={0.7}
+                containerStyle={styles.pickButton}
+              />
+
               <Avatar
                 medium
                 rounded
@@ -222,6 +251,10 @@ const styles = {
   saveButton: {
     backgroundColor: 'rgba(0, 222, 0, 0.6)'
   },
+  pickButton: {
+    backgroundColor: 'rgba(87, 191, 234, 0.6)'
+  },
+
   closeButton: {
     backgroundColor: 'rgba(222, 0, 0, 0.6)'
   },

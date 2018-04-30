@@ -144,6 +144,10 @@ function saveState(state) {
     appBackgroundName: state.appBackground.name
   };
 
+  if (newState.appBackgroundName === 'Custom') {
+    newState.appBackground = state.appBackground;
+  }
+
   try {
     const stateStr = JSON.stringify(newState);
     // console.log('saving state=' + stateStr);
@@ -170,7 +174,7 @@ function fixBackgroundImage(state) {
   const newState = { ...state };
   if (!state.appBackgroundName) {
     newState.appBackground = DEFAULT_BACKGROUND_IMAGE;
-  } else {
+  } else if (state.appBackgroundName !== 'Custom') {
     newState.appBackground = backgrounds.find(
       bg => state.appBackgroundName === bg.name
     );
