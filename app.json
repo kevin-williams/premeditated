@@ -15,6 +15,7 @@
       "backgroundColor": "#ffffff"
     },
     "android": { "package": "com.williamskbw.premeditated" },
+    "usesIcloudStorage": true,
     "packagerOpts": {
       "assetExts": ["ttf"]
     },

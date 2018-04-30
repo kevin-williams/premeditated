@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Picker, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { Audio } from 'expo';
+import { Audio, DocumentPicker } from 'expo';
 
 export default class SoundPicker extends Component {
   componentDidMount() {
@@ -31,24 +31,53 @@ export default class SoundPicker extends Component {
     this.props.onChange(newSound);
   }
 
+  async selectSoundFromDevice() {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({ type: 'audio/*' });
+      console.log('picked sound file=', result);
+
+      this.soundChanged({
+        name: result.name,
+        file: { uri: result.uri },
+        license: 'Local file'
+      });
+    } catch (error) {
+      console.log('Error selecting sound file', error);
+    }
+  }
+
   render() {
+    const pickerItems = this.props.sounds.map((sound, index) => (
+      <Picker.Item key={`Sound-${index}`} label={sound.name} value={sound} />
+    ));
+
+    if (this.props.selectedSound.file.uri) {
+      pickerItems.push(
+        <Picker.Item
+          key={'Sound-User'}
+          label={this.props.selectedSound.name}
+          value={this.props.selectedSound}
+        />
+      );
+    }
+
     return (
       <View style={styles.mainContainer}>
         <Text>{this.props.label}</Text>
         <View style={styles.rowStyle}>
-          <Icon name="music-note" />
+          <Icon
+            name="music-note"
+            raised
+            onPress={this.selectSoundFromDevice.bind(this)}
+            size={18}
+            color="#57bfea"
+          />
           <Picker
             selectedValue={this.props.selectedSound}
             onValueChange={this.soundChanged.bind(this)}
             style={styles.picker}
           >
-            {this.props.sounds.map((sound, index) => (
-              <Picker.Item
-                key={`Sound-${index}`}
-                label={sound.name}
-                value={sound}
-              />
-            ))}
+            {pickerItems}
           </Picker>
         </View>
       </View>

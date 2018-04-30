@@ -62,34 +62,7 @@ export default (state = DEFAULT_STATE, action) => {
 
   switch (action.type) {
     case c.ADD_TIMER: {
-      const newState = { ...state };
-
-      let newId = 1;
-      if (state.timers && state.timers.length > 0) {
-        const timerIdObject = state.timers.reduce((accumulator, timer) => {
-          if (timer.id > accumulator.id) {
-            return { ...accumulator, id: timer.id };
-          }
-
-          return accumulator;
-        });
-
-        newId = timerIdObject.id + 1;
-      }
-
-      const newTimer = { ...action.timer, id: newId };
-
-      if (!newTimer.title) {
-        newTimer.title = `Timer ${newTimer.id}`;
-      }
-
-      if (!newState.timers) {
-        newState.timers = [];
-      }
-      newState.timers.push(newTimer);
-      newState.selectedTimerId = newTimer.id;
-      saveState(newState);
-      return newState;
+      return addTimer(state, action);
     }
     case c.DELETE_TIMER: {
       const newState = { ...state };
@@ -136,6 +109,38 @@ export default (state = DEFAULT_STATE, action) => {
       return state;
   }
 };
+
+function addTimer(state, action) {
+  const newState = { ...state };
+
+  let newId = 1;
+  if (state.timers && state.timers.length > 0) {
+    const timerIdObject = state.timers.reduce((accumulator, timer) => {
+      if (timer.id > accumulator.id) {
+        return { ...accumulator, id: timer.id };
+      }
+
+      return accumulator;
+    });
+
+    newId = timerIdObject.id + 1;
+  }
+
+  const newTimer = { ...action.timer, id: newId };
+
+  if (!newTimer.title) {
+    newTimer.title = `Timer ${newTimer.id}`;
+  }
+
+  if (!newState.timers) {
+    newState.timers = [];
+  }
+  newState.timers.push(newTimer);
+  newState.selectedTimerId = newTimer.id;
+  saveState(newState);
+
+  return newState;
+}
 
 function saveState(state) {
   const newState = {
@@ -189,13 +194,13 @@ function fixBackgroundImage(state) {
 function fixSounds(timers) {
   return timers.map(timer => {
     const newTimer = { ...timer };
-    if (timer.backgroundSound) {
+    if (timer.backgroundSound && !timer.backgroundSound.file.uri) {
       newTimer.backgroundSound = backgroundSounds.find(
         sound => sound.name === timer.backgroundSound.name
       );
     }
 
-    if (timer.duration.sound) {
+    if (timer.duration.sound && !timer.duration.sound.file.uri) {
       newTimer.duration.sound = sounds.find(
         sound => sound.name === timer.duration.sound.name
       );
@@ -203,9 +208,11 @@ function fixSounds(timers) {
 
     newTimer.intervals = newTimer.intervals.map(interval => {
       const newInterval = { ...interval };
-      newInterval.sound = sounds.find(
-        sound => sound.name === interval.sound.name
-      );
+      if (!interval.sound.file.uri) {
+        newInterval.sound = sounds.find(
+          sound => sound.name === interval.sound.name
+        );
+      }
 
       return newInterval;
     });
