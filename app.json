@@ -15,7 +15,6 @@
       "backgroundColor": "#ffffff"
     },
     "android": { "package": "com.williamskbw.premeditated" },
-    "usesIcloudStorage": true,
     "packagerOpts": {
       "assetExts": ["ttf"]
     },
@@ -23,10 +22,11 @@
       "assets/sound/*",
       "assets/sound/background/*",
       "assets/backgrounds/*",
-      "node_modules/@expo/vector-icons/fonts"
+      "node_modules/@expo/vector-icons/fonts/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "usesIcloudStorage": true
     }
   }
 }

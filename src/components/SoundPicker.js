@@ -51,7 +51,11 @@ export default class SoundPicker extends Component {
       <Picker.Item key={`Sound-${index}`} label={sound.name} value={sound} />
     ));
 
-    if (this.props.selectedSound.file.uri) {
+    if (
+      this.props.selectedSound &&
+      this.props.selectedSound.file &&
+      this.props.selectedSound.file.uri
+    ) {
       pickerItems.push(
         <Picker.Item
           key={'Sound-User'}

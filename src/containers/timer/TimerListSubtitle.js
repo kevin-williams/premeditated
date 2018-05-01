@@ -7,49 +7,47 @@ import { Link } from 'react-router-native';
 import * as c from './timerConstants';
 import { deleteTimer, startSelectedTimer } from './timerActions';
 
-class TimerListSubtitle extends Component {
-  render() {
-    const timer = this.props.myTimer;
+export const TimerListSubtitle = props => {
+  const timer = props.myTimer;
 
-    if (timer.id !== this.props.timer.selectedTimerId) {
-      return null;
-    }
+  if (timer.id !== props.timer.selectedTimerId) {
+    return null;
+  }
 
-    return (
-      <View style={styles.subtitleContainer}>
-        <Link
-          to={{
-            pathname: '/AddEditTimer',
-            state: { timer }
-          }}
-        >
-          <Avatar small rounded icon={{ name: 'edit' }} activeOpacity={0.7} />
-        </Link>
-        <Link
-          to={{
-            pathname: '/RunTimer',
-            state: { timer }
-          }}
-        >
-          <Avatar
-            small
-            rounded
-            icon={{ name: 'play-arrow' }}
-            overlayContainerStyle={styles.start}
-          />
-        </Link>
+  return (
+    <View style={styles.subtitleContainer}>
+      <Link
+        to={{
+          pathname: '/AddEditTimer',
+          state: { timer }
+        }}
+      >
+        <Avatar small rounded icon={{ name: 'edit' }} activeOpacity={0.7} />
+      </Link>
+      <Link
+        to={{
+          pathname: '/RunTimer',
+          state: { timer }
+        }}
+      >
         <Avatar
           small
           rounded
-          icon={{ name: 'delete-forever' }}
-          onPress={() => this.props.deleteTimer(timer.id)}
-          activeOpacity={0.7}
-          overlayContainerStyle={styles.delete}
+          icon={{ name: 'play-arrow' }}
+          overlayContainerStyle={styles.start}
         />
-      </View>
-    );
-  }
-}
+      </Link>
+      <Avatar
+        small
+        rounded
+        icon={{ name: 'delete-forever' }}
+        onPress={() => props.deleteTimer(timer.id)}
+        activeOpacity={0.7}
+        overlayContainerStyle={styles.delete}
+      />
+    </View>
+  );
+};
 
 const styles = {
   subtitleContainer: {
