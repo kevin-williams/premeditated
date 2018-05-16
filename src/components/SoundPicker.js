@@ -18,7 +18,7 @@ export default class SoundPicker extends Component {
 
   async soundChanged(newSound) {
     // console.log('selected sound=', newSound);
-    await this.props.onChange(newSound);
+    this.props.onChange(newSound);
 
     const selectedSound = new Audio.Sound();
 
