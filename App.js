@@ -16,7 +16,7 @@ import BackgroundSelection from './src/containers/timer/BackgroundSelection';
 import ApplicationInfo from './src/containers/timer/ApplicationInfo';
 
 export default class App extends Component {
-  componentWillMount() {
+  componentDidMount() {
     GA.hit(new ScreenHit('App'));
   }
 
