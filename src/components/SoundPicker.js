@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Picker, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Audio, DocumentPicker } from 'expo';
+import { ICONS } from '../utils';
 
 export default class SoundPicker extends Component {
   componentDidMount() {
@@ -70,7 +71,8 @@ export default class SoundPicker extends Component {
         <Text>{this.props.label}</Text>
         <View style={styles.rowStyle}>
           <Icon
-            name="music-note"
+            name={ICONS.MusicNote.name}
+            type={ICONS.MusicNote.type}
             raised
             onPress={this.selectSoundFromDevice.bind(this)}
             size={18}
