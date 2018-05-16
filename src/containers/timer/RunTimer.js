@@ -276,9 +276,7 @@ class RunTimer extends Component {
       ? styles.stopButton
       : styles.startButton;
 
-    const stopIcon = this.state.isRunning
-      ? ICONS.Pause
-      : ICONS.Play;
+    const stopIcon = this.state.isRunning ? ICONS.Pause : ICONS.Play;
 
     return (
       <View style={styles.buttonWrapper}>
@@ -385,7 +383,7 @@ class RunTimer extends Component {
             <Avatar
               small
               rounded
-              icon={{ name: 'close' }}
+              icon={ICONS.Close}
               onPress={this.handleClose.bind(this)}
               activeOpacity={0.7}
               containerStyle={styles.closeButton}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Picker, Text, View } from 'react-native';
+import { Picker, Platform, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Audio, DocumentPicker } from 'expo';
 import { ICONS } from '../utils';
@@ -18,6 +18,7 @@ export default class SoundPicker extends Component {
 
   async soundChanged(newSound) {
     // console.log('selected sound=', newSound);
+    await this.props.onChange(newSound);
 
     const selectedSound = new Audio.Sound();
 
@@ -29,7 +30,6 @@ export default class SoundPicker extends Component {
     } catch (error) {
       console.log('error loading sound', error);
     }
-    this.props.onChange(newSound);
   }
 
   async selectSoundFromDevice() {
@@ -82,6 +82,7 @@ export default class SoundPicker extends Component {
             selectedValue={this.props.selectedSound}
             onValueChange={this.soundChanged.bind(this)}
             style={styles.picker}
+            itemStyle={styles.itemPicker}
           >
             {pickerItems}
           </Picker>
@@ -96,11 +97,15 @@ const styles = {
     flexDirection: 'column'
   },
   rowStyle: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   picker: {
     width: 150,
-    height: 50
+    height: Platform.OS === 'ios' ? 88 : 50
+  },
+  itemPicker: {
+    height: Platform.OS === 'ios' ? 88 : 50
   }
 };
 
