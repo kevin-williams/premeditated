@@ -22,7 +22,13 @@ import {
   changeBackground
 } from './timerActions';
 
-import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription, GA, ICONS } from '../../utils';
+import {
+  AD_MOB_ID,
+  SCREEN_WIDTH,
+  getTimerDescription,
+  GA,
+  ICONS
+} from '../../utils';
 import { ScreenHit } from 'expo-analytics';
 
 import * as c from './timerConstants';
@@ -108,6 +114,7 @@ class TimerList extends Component {
               backgroundColor: 'grey'
             }
           }}
+          rightIcon={<View />}
           title={timer.title}
           titleStyle={titleStyle}
           onPress={() => this.props.selectTimer(timer)}
