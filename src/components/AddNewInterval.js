@@ -6,7 +6,8 @@ import { Avatar } from 'react-native-elements';
 import {
   SCREEN_WIDTH,
   getTimerDescription,
-  getMillisFromTimer
+  getMillisFromTimer,
+  ICONS
 } from '../utils';
 
 import SoundPicker from './SoundPicker';
@@ -129,6 +130,7 @@ export default class AddNewInterval extends Component {
   }
 
   render() {
+    console.log('Icons.AddIntervals', ICONS);
     return (
       <View style={styles.container}>
         <BackButton />
@@ -177,7 +179,7 @@ export default class AddNewInterval extends Component {
           <Avatar
             medium
             rounded
-            icon={{ name: 'play-for-work' }}
+            icon={ICONS.AddIntervals}
             onPress={this.addIntervals.bind(this)}
             activeOpacity={0.7}
             containerStyle={styles.saveButton}

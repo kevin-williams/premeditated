@@ -7,6 +7,7 @@ import SoundPicker from './SoundPicker';
 import TimeSelect from './TimeSelect';
 
 import { sounds } from '../../assets/sound/sounds';
+import { ICONS } from '../utils';
 
 export default class TimeEntryEditor extends Component {
   state = { expanded: false };
@@ -36,7 +37,7 @@ export default class TimeEntryEditor extends Component {
         <Avatar
           small
           rounded
-          icon={{ name: 'delete-forever' }}
+          icon={ICONS.Delete}
           onPress={() => this.props.onDelete(this.props.timeEntry)}
           activeOpacity={0.7}
           overlaycontainerStyle={styles.deleteButton}
@@ -45,7 +46,7 @@ export default class TimeEntryEditor extends Component {
       );
     }
 
-    const expandIconName = this.state.expanded ? 'expand-less' : 'expand-more';
+    const expandIcon = this.state.expanded ? ICONS.ExpandLess : ICONS.ExpandMore;
 
     let expandedRender = null;
     if (this.state.expanded) {
@@ -80,7 +81,7 @@ export default class TimeEntryEditor extends Component {
           <Avatar
             small
             rounded
-            icon={{ name: expandIconName }}
+            icon={expandIcon}
             onPress={() => this.setState({ expanded: !this.state.expanded })}
             activeOpacity={0.7}
             overlaycontainerStyle={styles.expandButton}

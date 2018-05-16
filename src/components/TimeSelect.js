@@ -11,7 +11,7 @@ import {
 import moment from 'moment';
 
 import { Avatar } from 'react-native-elements';
-import { getTimerDescription, SCREEN_WIDTH } from '../utils';
+import { getTimerDescription, SCREEN_WIDTH, ICONS } from '../utils';
 
 const hourPickerItems = [];
 const minutePickerItems = [];
@@ -119,7 +119,7 @@ export default class TimeSelect extends Component {
         <Avatar
           medium
           rounded
-          icon={{ name: 'check' }}
+          icon={ICONS.Check}
           onPress={() => this.setState({ showModal: false })}
           activeOpacity={0.7}
           containerStyle={styles.saveButton}
@@ -151,7 +151,7 @@ export default class TimeSelect extends Component {
         <Avatar
           small
           rounded
-          icon={{ name: 'av-timer' }}
+          icon={ICONS.Timer}
           onPress={this.showTimeDialog.bind(this)}
           activeOpacity={0.7}
           overlaycontainerStyle={styles.button}

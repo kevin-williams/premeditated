@@ -19,7 +19,8 @@ import {
   SCREEN_WIDTH,
   getMillisFromTimer,
   GA,
-  getTimerDescription
+  getTimerDescription,
+  ICONS
 } from '../../utils';
 import { Event, ScreenHit } from 'expo-analytics';
 
@@ -276,8 +277,8 @@ class RunTimer extends Component {
       : styles.startButton;
 
     const stopIcon = this.state.isRunning
-      ? { name: 'pause-circle-outline' }
-      : { name: 'play-arrow' };
+      ? ICONS.Pause
+      : ICONS.Play;
 
     return (
       <View style={styles.buttonWrapper}>
@@ -293,7 +294,7 @@ class RunTimer extends Component {
         <Avatar
           medium
           rounded
-          icon={{ name: 'refresh' }}
+          icon={ICONS.Reset}
           onPress={this.handleReset.bind(this)}
           activeOpacity={0.7}
           containerStyle={styles.closeButton}

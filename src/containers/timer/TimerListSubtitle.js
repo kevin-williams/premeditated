@@ -6,6 +6,7 @@ import { Link } from 'react-router-native';
 
 import * as c from './timerConstants';
 import { deleteTimer, startSelectedTimer } from './timerActions';
+import { ICONS } from '../../utils'
 
 export const TimerListSubtitle = props => {
   const timer = props.myTimer;
@@ -22,7 +23,7 @@ export const TimerListSubtitle = props => {
           state: { timer }
         }}
       >
-        <Avatar small rounded icon={{ name: 'edit' }} activeOpacity={0.7} />
+        <Avatar small rounded icon={ICONS.Edit} activeOpacity={0.7} />
       </Link>
       <Link
         to={{
@@ -33,14 +34,14 @@ export const TimerListSubtitle = props => {
         <Avatar
           small
           rounded
-          icon={{ name: 'play-arrow' }}
+          icon={ICONS.Play}
           overlayContainerStyle={styles.start}
         />
       </Link>
       <Avatar
         small
         rounded
-        icon={{ name: 'delete-forever' }}
+        icon={ICONS.Delete}
         onPress={() => props.deleteTimer(timer.id)}
         activeOpacity={0.7}
         overlayContainerStyle={styles.delete}

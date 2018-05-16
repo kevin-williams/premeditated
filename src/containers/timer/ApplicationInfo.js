@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native';
 import { BackButton } from 'react-router-native';
 import { Avatar } from 'react-native-elements';
-import { SCREEN_WIDTH, GA } from '../../utils';
+import { SCREEN_WIDTH, GA, ICONS } from '../../utils';
 import { ScreenHit } from 'expo-analytics';
 import { expo } from '../../../app.json';
 import { backgroundSounds } from '../../../assets/sound/background/background_sounds';
@@ -48,7 +48,7 @@ class ApplicationInfo extends Component {
           <Avatar
             small
             rounded
-            icon={{ name: 'close' }}
+            icon={ICONS.Close}
             onPress={() => this.props.history.goBack()}
             activeOpacity={0.7}
             containerStyle={styles.closeButton}

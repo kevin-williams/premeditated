@@ -2,6 +2,7 @@ import { Dimensions } from 'react-native';
 import { Analytics } from 'expo-analytics';
 
 export * from './AppFontLoader';
+export * from './icons';
 
 export const SCREEN_WIDTH = Dimensions.get('window').width;
 export const SCREEN_HEIGHT = Dimensions.get('window').height;

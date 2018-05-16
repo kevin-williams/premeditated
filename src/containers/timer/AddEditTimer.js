@@ -26,7 +26,8 @@ import {
   SCREEN_WIDTH,
   getTimerDescription,
   GA,
-  getMillisFromTimer
+  getMillisFromTimer,
+  ICONS
 } from '../../utils';
 import { ScreenHit } from 'expo-analytics';
 
@@ -170,7 +171,7 @@ class AddEditTimer extends Component {
       <Avatar
         small
         rounded
-        icon={{ name: 'add' }}
+        icon={ICONS.PlusSign}
         onPress={() => this.setState({ addInterval: true })}
         activeOpacity={0.7}
         containerStyle={styles.addButton}
@@ -213,7 +214,7 @@ class AddEditTimer extends Component {
           <Avatar
             medium
             rounded
-            icon={{ name: 'check' }}
+            icon={ICONS.Check}
             onPress={() => this.setState({ addInterval: false })}
             activeOpacity={0.7}
             containerStyle={styles.saveButton}
@@ -243,7 +244,7 @@ class AddEditTimer extends Component {
           <Avatar
             small
             rounded
-            icon={{ name: 'close' }}
+            icon={ICONS.Close}
             onPress={() => this.props.history.goBack()}
             activeOpacity={0.7}
             containerStyle={styles.closeButtonTop}
@@ -302,7 +303,7 @@ class AddEditTimer extends Component {
           <Avatar
             medium
             rounded
-            icon={{ name: 'check' }}
+            icon={ICONS.Check}
             onPress={this.saveTimer.bind(this)}
             activeOpacity={0.7}
             containerStyle={styles.saveButton}
@@ -311,7 +312,7 @@ class AddEditTimer extends Component {
           <Avatar
             medium
             rounded
-            icon={{ name: 'share' }}
+            icon={ICONS.Share}
             onPress={() => this.shareTimer()}
             activeOpacity={0.7}
             containerStyle={styles.shareButton}
@@ -319,7 +320,7 @@ class AddEditTimer extends Component {
           <Avatar
             medium
             rounded
-            icon={{ name: 'input' }}
+            icon={ICONS.Import}
             onPress={() => this.importTimer()}
             activeOpacity={0.7}
             containerStyle={styles.shareButton}
@@ -328,7 +329,7 @@ class AddEditTimer extends Component {
           <Avatar
             medium
             rounded
-            icon={{ name: 'close' }}
+            icon={ICONS.Close}
             onPress={() => this.props.history.goBack()}
             activeOpacity={0.7}
             containerStyle={styles.closeButton}

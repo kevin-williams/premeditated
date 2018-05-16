@@ -22,7 +22,7 @@ import {
   changeBackground
 } from './timerActions';
 
-import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription, GA } from '../../utils';
+import { AD_MOB_ID, SCREEN_WIDTH, getTimerDescription, GA, ICONS } from '../../utils';
 import { ScreenHit } from 'expo-analytics';
 
 import * as c from './timerConstants';
@@ -94,7 +94,7 @@ class TimerList extends Component {
             <Avatar
               small
               rounded
-              icon={{ name: 'av-timer', color: 'white' }}
+              icon={{ ...ICONS.Timer, color: 'white' }}
               containerStyle={{ backgroundColor: 'grey' }}
             />
           }
@@ -135,7 +135,7 @@ class TimerList extends Component {
               <Avatar
                 small
                 rounded
-                icon={{ name: 'add' }}
+                icon={ICONS.PlusSign}
                 activeOpacity={0.7}
                 containerStyle={styles.addButton}
               />
@@ -162,7 +162,7 @@ class TimerList extends Component {
               <Avatar
                 medium
                 rounded
-                icon={{ name: 'photo-library' }}
+                icon={ICONS.SelectImage}
                 activeOpacity={0.7}
                 containerStyle={styles.bottomButton}
               />
@@ -171,7 +171,7 @@ class TimerList extends Component {
               <Avatar
                 medium
                 rounded
-                icon={{ name: 'description' }}
+                icon={ICONS.Description}
                 activeOpacity={0.7}
                 containerStyle={styles.bottomButton}
               />

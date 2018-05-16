@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { Icon } from 'react-native-elements';
+import { ICONS } from '../utils';
 
 export default class TimerProgress extends Component {
   renderProgressBar(progress) {
@@ -45,7 +46,7 @@ export default class TimerProgress extends Component {
     const checkMark =
       progress > 1 ? (
         <Icon
-          name="check"
+          name={ICONS.Check.name}
           color="green"
           containerStyle={{ backgroundColor: 'lightgrey', borderRadius: 10 }}
         />

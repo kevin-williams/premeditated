@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import { AppLoading, Font } from 'expo';
 
 import MaterialIcons from '../../node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf';
+import Ionicons from '../../node_modules/@expo/vector-icons/fonts/Ionicons.ttf';
 
 class AppFontLoader extends React.Component {
   state = {
@@ -12,7 +13,7 @@ class AppFontLoader extends React.Component {
   async componentWillMount() {
     try {
       await Font.loadAsync({
-        MaterialIcons
+        MaterialIcons, Ionicons
       });
       this.setState({ fontLoaded: true });
     } catch (error) {

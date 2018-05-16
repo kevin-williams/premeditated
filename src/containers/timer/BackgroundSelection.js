@@ -15,7 +15,7 @@ import { Avatar } from 'react-native-elements';
 import { Asset, AppLoading, ImagePicker } from 'expo';
 
 import { changeBackground } from './timerActions';
-import { GA, SCREEN_WIDTH } from '../../utils';
+import { GA, SCREEN_WIDTH, ICONS } from '../../utils';
 import { ScreenHit } from 'expo-analytics';
 import { backgrounds } from '../../../assets/backgrounds/backgrounds';
 
@@ -184,7 +184,7 @@ class BackgroundSelection extends Component {
               <Avatar
                 medium
                 rounded
-                icon={{ name: 'check' }}
+                icon={ICONS.Check}
                 onPress={() => {
                   this.props.changeBackground(
                     backgrounds[this.state.selectedIndex]
@@ -197,7 +197,7 @@ class BackgroundSelection extends Component {
               <Avatar
                 medium
                 rounded
-                icon={{ name: 'collections' }}
+                icon={ICONS.SelectImage}
                 onPress={this.selectImageFromDevice.bind(this)}
                 activeOpacity={0.7}
                 containerStyle={styles.pickButton}
@@ -206,7 +206,7 @@ class BackgroundSelection extends Component {
               <Avatar
                 medium
                 rounded
-                icon={{ name: 'close' }}
+                icon={ICONS.Close}
                 onPress={() => this.props.history.goBack()}
                 activeOpacity={0.7}
                 containerStyle={styles.closeButton}
